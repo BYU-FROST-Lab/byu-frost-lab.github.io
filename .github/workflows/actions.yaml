@@ -3,10 +3,10 @@ name: GitHub Actions
 on:
   pull_request:
     branches:
-      - main
+      - turned_off
   push:
     branches:
-      - main
+      - turned_off
 
 jobs:
   build:
