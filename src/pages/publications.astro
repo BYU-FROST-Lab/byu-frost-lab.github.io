@@ -18,6 +18,19 @@ entries.sort((a, b) => {
 const grouped = groupByYear(entries);
 const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
 const metadata = { title: 'Publications' };
+
+function sanitizeBib(bib?: string) {
+  if (!bib) return '';
+  // Remove UI-only fields whether they appear on their own line or inline
+  // e.g. thumbnail = {..}, image="..", poster = {...}
+  let out = String(bib);
+  // Remove occurrences like thumbnail = {...}, possibly with surrounding commas
+  out = out.replace(/(?:,?\s*)?(thumbnail|image|poster|_venue)\s*=\s*(\{[^}]*\}|"[^"]*"|[^,}\n]*)\s*,?/gi, '');
+  // Clean up any leftover duplicate commas or trailing commas before closing brace
+  out = out.replace(/,\s*,+/g, ',');
+  out = out.replace(/,\s*([}\)])/g, '$1');
+  return out.trim();
+}
 ---
 
 <Layout metadata={metadata}>
@@ -31,7 +44,8 @@ const metadata = { title: 'Publications' };
           {grouped[year].map((entry) => {
             const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
             return (
-              <article class="flex items-stretch border rounded overflow-hidden">
+              <div class="mb-2">
+                <article class="flex items-stretch border rounded overflow-hidden">
                 {entry.fields.image ? (
                   <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
                     <img loading="lazy" src={entry.fields.image} alt={entry.fields.title || entry.citationKey} class="w-full h-full object-cover block" />
@@ -73,12 +87,14 @@ const metadata = { title: 'Publications' };
                     </details>
                   )}
 
-                  <details id={`d-bib-${id}`} class="mt-1">
-                    <summary class="sr-only">Raw BibTeX</summary>
-                    <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-1 rounded">{entry.bibtex}</pre>
-                  </details>
                 </div>
-              </article>
+                </article>
+
+                <details id={`d-bib-${id}`} class="mt-2">
+                  <summary class="sr-only">Raw BibTeX</summary>
+                  <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-2 rounded">{sanitizeBib(entry.bibtex)}</pre>
+                </details>
+              </div>
             );
           })}
         </div>
