@@ -31,34 +31,39 @@ const metadata = { title: 'Publications' };
           {grouped[year].map((entry) => {
             const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
             return (
-              <article class="p-2 border rounded">
-                  <div>
-                    <h3 class="text-sm font-medium truncate">{entry.fields.title || entry.citationKey}</h3>
-                    <div class="text-xs text-gray-600 truncate">{entry.fields.author}</div>
-                    {entry.fields.venue && (
-                      <div class="text-xs text-gray-500 mt-1">{entry.fields.venue}</div>
-                    )}
+              <article class="flex items-stretch border rounded overflow-hidden">
+                {entry.fields.image ? (
+                  <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
+                    <img loading="lazy" src={entry.fields.image} alt={entry.fields.title || entry.citationKey} class="w-full h-full object-cover block" />
+                  </div>
+                ) : null}
 
-                    <div class="mt-1 flex flex-wrap items-center gap-1">
+                <div class="flex-1 min-w-0 p-2">
+                  <h3 class="text-sm font-medium truncate">{entry.fields.title || entry.citationKey}</h3>
+                  <div class="text-xs text-gray-600 truncate">{entry.fields.author}</div>
+                  {entry.fields.venue && (
+                    <div class="text-xs text-gray-500 mt-1">{entry.fields.venue}</div>
+                  )}
+
+                  <div class="mt-1 flex flex-wrap items-center gap-1">
                     {entry.fields.pdf && (
-                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.pdf} target="_blank" rel="noopener">PDF</a>
+                      <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.pdf} target="_blank" rel="noopener">PDF</a>
                     )}
                     {entry.fields.url && (
-                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.url} target="_blank" rel="noopener">Paper</a>
+                      <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.url} target="_blank" rel="noopener">Paper</a>
                     )}
                     {entry.fields.video && (
-                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.video} target="_blank" rel="noopener">Video</a>
+                      <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.video} target="_blank" rel="noopener">Video</a>
                     )}
                     {entry.fields.poster && (
-                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.poster} target="_blank" rel="noopener">Poster</a>
+                      <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.poster} target="_blank" rel="noopener">Poster</a>
                     )}
 
-                      {entry.fields.abstract && (
-                        <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-abs-${id}').open = !document.getElementById('d-abs-${id}').open`}>Abstract</button>
-                      )}
+                    {entry.fields.abstract && (
+                      <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-abs-${id}').open = !document.getElementById('d-abs-${id}').open`}>Abstract</button>
+                    )}
 
-                      <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-bib-${id}').open = !document.getElementById('d-bib-${id}').open`}>BibTeX</button>
-                  </div>
+                    <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-bib-${id}').open = !document.getElementById('d-bib-${id}').open`}>BibTeX</button>
                   </div>
 
                   {entry.fields.abstract && (
@@ -72,6 +77,7 @@ const metadata = { title: 'Publications' };
                     <summary class="sr-only">Raw BibTeX</summary>
                     <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-1 rounded">{entry.bibtex}</pre>
                   </details>
+                </div>
               </article>
             );
           })}

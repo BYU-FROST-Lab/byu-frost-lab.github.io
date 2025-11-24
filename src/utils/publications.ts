@@ -31,8 +31,14 @@ export function parseBib(bibRaw: string): BibEntry[] {
         fields.url = it.URL || it.url || it.link || '';
         fields.pdf = it.pdf || it.PDF || it.file || '';
         fields.poster = it.poster || '';
+        // image/thumbnail fields
+        fields.image = it.image || it.thumbnail || it.image_url || it['image'] || '';
         // Determine venue from common Citation.js/CSL fields
         fields.venue = it['container-title'] || it.containerTitle || it.journal || it['journal'] || it.publisher || it.booktitle || it['collection-title'] || '';
+        // try some other common image fields
+        if (!fields.image) {
+          fields.image = it['thumbnail'] || it['image'] || it['preview'] || '';
+        }
         const year = (it.issued && it.issued['date-parts'] && it.issued['date-parts'][0] && it.issued['date-parts'][0][0]) || it.year || '';
         fields.year = year ? String(year) : '';
 
@@ -81,6 +87,8 @@ export function parseBib(bibRaw: string): BibEntry[] {
 
     // populate venue from common fallback fields
     fields.venue = fields.journal || fields.booktitle || fields.publisher || fields['collection-title'] || fields.series || '';
+    // fallback for images in raw bibtex
+    fields.image = fields.image || fields.thumbnail || fields.photo || fields.image || '';
 
     // Normalize author string to "Given Family" comma-separated when possible
     if (fields.author && typeof fields.author === 'string') {
