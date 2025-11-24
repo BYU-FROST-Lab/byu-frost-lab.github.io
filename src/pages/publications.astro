@@ -1,0 +1,82 @@
+---
+import type { BibEntry } from '../utils/publications';
+import { parseBib, groupByYear } from '../utils/publications';
+import moonRaw from '../data/bib/moon.bib?raw';
+import mangelsonRaw from '../data/bib/mangelson.bib?raw';
+import Layout from '~/layouts/PageLayout.astro';
+
+const entries: BibEntry[] = [...parseBib(moonRaw), ...parseBib(mangelsonRaw)];
+
+// sort by year desc then citation key
+entries.sort((a, b) => {
+  const ay = a.fields.year || '0';
+  const by = b.fields.year || '0';
+  if (ay === by) return a.citationKey.localeCompare(b.citationKey);
+  return Number(by) - Number(ay);
+});
+
+const grouped = groupByYear(entries);
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+const metadata = { title: 'Publications' };
+---
+
+<Layout metadata={metadata}>
+  <main class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-semibold mb-4">Publications</h1>
+
+    {years.map((year) => (
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mt-6 mb-4">{year}</h2>
+        <div class="space-y-4">
+          {grouped[year].map((entry) => {
+            const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
+            return (
+              <article class="p-2 border rounded">
+                  <div>
+                    <h3 class="text-sm font-medium truncate">{entry.fields.title || entry.citationKey}</h3>
+                    <div class="text-xs text-gray-600 truncate">{entry.fields.author}</div>
+                    {entry.fields.venue && (
+                      <div class="text-xs text-gray-500 mt-1">{entry.fields.venue}</div>
+                    )}
+
+                    <div class="mt-1 flex flex-wrap items-center gap-1">
+                    {entry.fields.pdf && (
+                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.pdf} target="_blank" rel="noopener">PDF</a>
+                    )}
+                    {entry.fields.url && (
+                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.url} target="_blank" rel="noopener">Paper</a>
+                    )}
+                    {entry.fields.video && (
+                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.video} target="_blank" rel="noopener">Video</a>
+                    )}
+                    {entry.fields.poster && (
+                        <a class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.poster} target="_blank" rel="noopener">Poster</a>
+                    )}
+
+                      {entry.fields.abstract && (
+                        <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-abs-${id}').open = !document.getElementById('d-abs-${id}').open`}>Abstract</button>
+                      )}
+
+                      <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-bib-${id}').open = !document.getElementById('d-bib-${id}').open`}>BibTeX</button>
+                  </div>
+                  </div>
+
+                  {entry.fields.abstract && (
+                    <details id={`d-abs-${id}`} class="mt-1">
+                      <summary class="sr-only">Abstract</summary>
+                      <p class="mt-1 text-xs">{entry.fields.abstract}</p>
+                    </details>
+                  )}
+
+                  <details id={`d-bib-${id}`} class="mt-1">
+                    <summary class="sr-only">Raw BibTeX</summary>
+                    <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-1 rounded">{entry.bibtex}</pre>
+                  </details>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </main>
+</Layout>
