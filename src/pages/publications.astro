@@ -45,7 +45,7 @@ function sanitizeBib(bib?: string) {
     {years.map((year) => (
       <section class="mb-8">
         <h2 class="text-2xl font-bold mt-6 mb-4">{year}</h2>
-        <div class="space-y-4">
+        <div class="space-y-2">
           {grouped[year].map((entry) => {
             const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
             return (
