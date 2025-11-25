@@ -25,6 +25,7 @@ and
 
 You can run the website locally with
 ```
+docker compose build
 docker compose up
 ```
 Then navigate to localhost:8080 to view the website.
