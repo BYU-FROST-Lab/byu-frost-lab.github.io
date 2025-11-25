@@ -6,7 +6,11 @@ import mangelsonRaw from '../data/bib/mangelson.bib?raw';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 
-const entries: BibEntry[] = [...parseBib(moonRaw), ...parseBib(mangelsonRaw)];
+// Parse bib files and exclude any `@manual` entries (these are typically non-published manuals)
+const entries: BibEntry[] = [...parseBib(moonRaw), ...parseBib(mangelsonRaw)].filter((e) => {
+  const t = (e.type || '').toString().toLowerCase();
+  return t !== 'manual';
+});
 
 // sort by year desc then citation key
 entries.sort((a, b) => {
