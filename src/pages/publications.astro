@@ -85,17 +85,17 @@ function sanitizeBib(bib?: string) {
                         const doiHref = doiRaw ? (/^https?:\/\//i.test(doiRaw) ? doiRaw : `https://doi.org/${doiRaw.replace(/^doi:\s*/i, '')}`) : '';
                         return (
                           <>
-                            <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" data-bib-target={`d-bib-${id}`}>
-                              <Icon name="tabler:quote" class="w-4 h-4 mr-1" />
-                              <span class="hidden sm:inline">BibTeX</span>
-                            </button>
-
                             {pdfHref && (
                               <a aria-label="Open PDF" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={pdfHref} target="_blank" rel="noopener">
                                 <Icon name="tabler:file-type-pdf" class="w-4 h-4 mr-1" />
                                 <span class="hidden sm:inline">PDF</span>
                               </a>
                             )}
+                            
+                            <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" data-bib-target={`d-bib-${id}`}>
+                              <Icon name="tabler:quote" class="w-4 h-4 mr-1" />
+                              <span class="hidden sm:inline">BibTeX</span>
+                            </button>
 
                             {doiHref && (
                               <a aria-label="Open DOI" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={doiHref} target="_blank" rel="noopener">
