@@ -1,0 +1,188 @@
+---
+import type { BibEntry } from '../utils/publications';
+import { parseBib, groupByYear } from '../utils/publications';
+import moonRaw from '../data/bib/moon.bib?raw';
+import mangelsonRaw from '../data/bib/mangelson.bib?raw';
+import Layout from '~/layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+// Parse bib files and exclude any `@manual` entries (these are typically non-published manuals)
+const entries: BibEntry[] = [...parseBib(moonRaw), ...parseBib(mangelsonRaw)].filter((e) => {
+  const t = (e.type || '').toString().toLowerCase();
+  return t !== 'manual';
+});
+
+// sort by year desc then citation key
+entries.sort((a, b) => {
+  const ay = a.fields.year || '0';
+  const by = b.fields.year || '0';
+  if (ay === by) return (a.citationKey || '').localeCompare(b.citationKey || '');
+  return Number(by) - Number(ay);
+});
+
+const grouped = groupByYear(entries);
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+const metadata = { title: 'Publications' };
+
+function sanitizeBib(bib?: string) {
+  if (!bib) return '';
+  // Remove UI-only fields whether they appear on their own line or inline
+  // e.g. thumbnail = {..}, image="..", poster = {...}
+  let out = String(bib);
+  // Remove occurrences like thumbnail = {...}, possibly with surrounding commas
+  out = out.replace(/(?:,?\s*)?(thumbnail|image|poster|_venue|website)\s*=\s*(\{[^}]*\}|"[^"]*"|[^,}\n]*)\s*,?/gi, '');
+  // Clean up any leftover duplicate commas or trailing commas before closing brace
+  out = out.replace(/,\s*,+/g, ',');
+  out = out.replace(/,\s*([}\)])/g, '$1');
+  return out.trim();
+}
+---
+
+<Layout metadata={metadata}>
+  <header class="max-w-4xl mx-auto px-4 pt-12 pb-1">
+    <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Publications</h1>
+    <p class="text-md text-muted max-w-4xl">
+      Explore the research outputs from our lab, including journal articles, conference papers, and other scholarly works.
+      For individual publication lists, see
+      <a class="text-accent hover:underline" href="https://scholar.google.com/citations?user=PBFqKyQAAAAJ&hl=en" target="_blank" rel="noopener">Joshua Mangelson's Google Scholar</a>
+      and
+      <a class="text-accent hover:underline" href="https://scholar.google.com/citations?hl=en&user=veuF-GkAAAAJ" target="_blank" rel="noopener">Brady Moon's Google Scholar</a>.
+    </p>
+  </header>
+  <main class="max-w-4xl mx-auto p-6">
+    {years.map((year) => (
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mt-6 mb-4">{year}</h2>
+        <div class="space-y-2">
+          {grouped[year].map((entry) => {
+            const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
+            return (
+              <div class="mb-2">
+                <article class="flex items-stretch border rounded overflow-hidden">
+                {entry.fields.image ? (
+                  <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
+                    <img loading="lazy" src={entry.fields.image} alt={entry.fields.title || entry.citationKey} class="w-full h-full object-cover block" />
+                  </div>
+                ) : null}
+
+                <div class="flex-1 min-w-0 p-2">
+                  <h3 class="text-sm font-medium truncate">{entry.fields.title || entry.citationKey}</h3>
+                  <div class="text-xs text-gray-600 truncate">{entry.fields.author}</div>
+                  {entry.fields.venue && (
+                    <div class="text-xs text-gray-500 mt-1">{entry.fields.venue}</div>
+                  )}
+
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    {
+                      // Determine prioritized hrefs
+                    }
+                    {
+                      (() => {
+                        // PDF should reference the `url` field in the bibtex per request
+                        const pdfHref = entry.fields.url || '';
+                        const codeHref = entry.fields.code || '';
+                        const doiRaw = entry.fields.doi || '';
+                        const doiHref = doiRaw ? (/^https?:\/\//i.test(doiRaw) ? doiRaw : `https://doi.org/${doiRaw.replace(/^doi:\s*/i, '')}`) : '';
+                        return (
+                          <>
+                            <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" data-bib-target={`d-bib-${id}`}>
+                              <Icon name="tabler:quote" class="w-4 h-4 mr-1" />
+                              <span class="hidden sm:inline">BibTeX</span>
+                            </button>
+
+                            {pdfHref && (
+                              <a aria-label="Open PDF" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={pdfHref} target="_blank" rel="noopener">
+                                <Icon name="tabler:file-type-pdf" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline">PDF</span>
+                              </a>
+                            )}
+
+                            {doiHref && (
+                              <a aria-label="Open DOI" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={doiHref} target="_blank" rel="noopener">
+                                <Icon name="academicons:doi" class="w-3.5 h-3.5 mr-1" />
+                                <span class="hidden sm:inline">DOI</span>
+                              </a>
+                            )}
+
+                            {codeHref && (
+                              <a aria-label="View code" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={codeHref} target="_blank" rel="noopener">
+                                <Icon name="tabler:brand-github" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline">Code</span>
+                              </a>
+                            )}
+
+                            {entry.fields.video && (
+                              <a aria-label="Watch video" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={entry.fields.video} target="_blank" rel="noopener">
+                                <Icon name="tabler:brand-youtube" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline ml-1">Video</span>
+                              </a>
+                            )}
+
+                            {entry.fields.poster && (
+                              <a aria-label="Open poster" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" href={entry.fields.poster} target="_blank" rel="noopener">
+                                <Icon name="tabler:file" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline">Poster</span>
+                              </a>
+                            )}
+
+
+                            {entry.fields.website && (
+                              <a aria-label="Open website" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200 text-gray-700" href={entry.fields.website} target="_blank" rel="noopener">
+                                <Icon name="tabler:link" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline">Paper Website</span>
+                              </a>
+                            )}
+
+                            {/* {entry.fields.abstract && (
+                              <button type="button" class="inline-flex items-center text-[11px] px-2 py-0.5 border rounded bg-gray-100 hover:bg-gray-200" onclick={`document.getElementById('d-abs-${id}').open = !document.getElementById('d-abs-${id}').open`}>
+                                <Icon name="tabler:file-text" class="w-4 h-4 mr-1" />
+                                <span class="hidden sm:inline">Abstract</span>
+                              </button>
+                            )} */}
+
+                          </>
+                        );
+                      })()
+                    }
+                  </div>
+
+                  {entry.fields.abstract && (
+                    <details id={`d-abs-${id}`} class="mt-1">
+                      <summary class="sr-only">Abstract</summary>
+                      <p class="mt-1 text-xs">{entry.fields.abstract}</p>
+                    </details>
+                  )}
+
+                </div>
+                </article>
+
+                <details id={`d-bib-${id}`} class="mt-2">
+                  <summary class="sr-only">Raw BibTeX</summary>
+                  <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-2 rounded">{sanitizeBib(entry.bibtex)}</pre>
+                </details>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </main>
+</Layout>
+
+<script>
+  // Handle BibTeX toggle buttons using event delegation
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest('[data-bib-target]') as HTMLElement | null;
+    if (button) {
+      const bibId = button.dataset.bibTarget;
+      // Validate bibId matches expected pattern: starts with 'd-bib-' and contains only safe characters
+      if (bibId && /^d-bib-[a-zA-Z0-9_-]+$/.test(bibId)) {
+        const details = document.getElementById(bibId) as HTMLDetailsElement | null;
+        if (details) {
+          details.open = !details.open;
+        }
+      }
+    }
+  });
+</script>

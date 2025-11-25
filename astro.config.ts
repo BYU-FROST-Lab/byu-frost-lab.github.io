@@ -44,6 +44,7 @@ export default defineConfig({
           'business-contact',
           'database',
         ],
+        'academicons': ['doi', 'arxiv'],
       },
     }),
 
