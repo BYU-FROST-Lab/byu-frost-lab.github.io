@@ -1,0 +1,179 @@
+---
+import PageLayout from "~/layouts/PageLayout.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+const modules = import.meta.glob("../../content/research_projects/*.md", {
+  eager: true,
+}) as any;
+const research = Object.entries(modules).map(([path, mod]: [string, any]) => {
+  const parts = path.split("/");
+  const filename = parts[parts.length - 1];
+  const slug = filename.replace(/\.md$/, "");
+  return { slug, ...(mod.frontmatter || {}) };
+});
+research.sort((a, b) => a.project_name.localeCompare(b.project_name));
+
+const metadata = { title: "Research" };
+
+// Set the image style for index cards: 'rect' | 'square' | 'round'
+// Change this value to quickly preview different styles.
+const IMAGE_STYLE = "square";
+
+function getImageWrapperClass(style) {
+  if (style === "square")
+    return "w-full aspect-square bg-gray-100 flex-shrink-0 overflow-hidden";
+  if (style === "round")
+    return "w-48 h-48 mx-auto md:mx-0 overflow-hidden rounded-full";
+  // default: rectangular (historic look)
+  return "h-48 bg-gray-100 flex-shrink-0 overflow-hidden";
+}
+
+function getImgClass(style) {
+  if (style === "round") return "w-full h-full object-cover";
+  return "w-full h-full object-cover";
+}
+
+// Return grid classes for a group. Students use 5 columns on large screens.
+function getGridClass(group) {
+  if (group === "current_research")
+    return "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6";
+  return "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6";
+}
+
+const GROUPS = {
+  current_research: {
+    title: "Current Research",
+    intro:
+      "Our current research initiatives focus on developing robust field-robotic systems.",
+  },
+  previous_research: {
+    title: "Previous Research",
+    intro:
+      "These projects represent our previous research contributions.",
+  }
+};
+
+function projectsByGroup(group) {
+  return research.filter((p) => (p.group || "current_research") === group);
+}
+---
+
+<PageLayout metadata={metadata}>
+  <header class="max-w-6xl mx-auto px-4 pt-12 pb-6">
+    <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Research</h1>
+    <p class="text-lg text-muted max-w-3xl">
+      The Field Robotic Systems Lab (FRoSt Lab) at Brigham Young
+      University is focused on enabling the development of <em><strong>robust and reliable</strong></em> field-robotic
+      systems that are able to <em><strong>consistently</strong> perceive, navigate,</em> and <em>perform work</em>
+      in complex unstructured <em><strong>real-world</strong></em> environments.
+    </p>
+  </header>
+
+  <section class="max-w-6xl mx-auto px-4 py-8">
+    {
+      Object.keys(GROUPS).map((g) => {
+        const list = projectsByGroup(g);
+        return list.length ? (
+          <section class="mb-12">
+            <div class="flex items-baseline justify-between mb-4">
+              <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
+            </div>
+            <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
+
+            <div class={getGridClass(g)}>
+              {list.map((p) => (
+                <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
+                  <a
+                    href={`/research/${p.slug}`}
+                    class="absolute inset-0 z-10"
+                    aria-hidden="true"
+                  />
+                  <div class={getImageWrapperClass(IMAGE_STYLE)}>
+                    <Image
+                      src={p.photo}
+                      alt={p.project_name}
+                      class={getImgClass(IMAGE_STYLE)}
+                      widths={[320, 640, 1024]}
+                      formats={["avif", "webp", "jpeg"]}
+                      width={
+                        IMAGE_STYLE === "round"
+                          ? 192
+                          : IMAGE_STYLE === "square"
+                            ? 480
+                            : 1024
+                      }
+                      height={
+                        IMAGE_STYLE === "round"
+                          ? 192
+                          : IMAGE_STYLE === "square"
+                            ? 480
+                            : 192
+                      }
+                    />
+                  </div>
+                  <div class="p-4 flex flex-col flex-1 relative z-20">
+                    <div>
+                      <h3 class="text-lg font-semibold">{p.project_name}</h3>
+                      <p class="text-sm text-gray-500">{p.subtext}</p>
+                    </div>
+
+                    {p.links && p.links.length ? (
+                      <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
+                        {p.links.map((l) => {
+                          const url = l.url || "";
+                          const label = (l.label || "").toLowerCase();
+                          let iconName = "tabler:globe";
+                          if (
+                            url.includes("github.com") ||
+                            label.includes("github")
+                          )
+                            iconName = "tabler:brand-github";
+                          else if (
+                            url.includes("linkedin.com") ||
+                            label.includes("linkedin")
+                          )
+                            iconName = "tabler:brand-linkedin";
+                          else if (
+                            url.includes("x.com") ||
+                            url.includes("twitter.com") ||
+                            label.includes("twitter") ||
+                            label === "x"
+                          )
+                            iconName = "tabler:brand-x";
+                          else if (
+                            url.startsWith("mailto:") ||
+                            label.includes("email")
+                          )
+                            iconName = "tabler:mail";
+                          else if (
+                            label.includes("cv") ||
+                            label.includes("resume")
+                          )
+                            iconName = "tabler:file-cv";
+
+                          return (
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded"
+                              title={l.label}
+                              aria-label={l.label}
+                            >
+                              <Icon name={iconName} class="w-5 h-5" />
+                            </a>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null;
+      })
+    }
+  </section>
+</PageLayout>

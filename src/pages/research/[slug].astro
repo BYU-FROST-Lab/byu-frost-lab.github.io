@@ -1,0 +1,80 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const modules = (import.meta.glob('../../content/research_projects/*.md', { eager: true }) as any);
+  return Object.keys(modules).map((path) => {
+    const parts = path.split('/');
+    const filename = parts[parts.length - 1];
+    const slug = filename.replace(/\.md$/, '');
+    return { params: { slug } };
+  });
+}
+
+const modules = (import.meta.glob('../../content/research_projects/*.md', { eager: true }) as any);
+const research_projects = Object.entries(modules).map(([path, mod]: [string, any]) => {
+  const parts = path.split('/');
+  const filename = parts[parts.length - 1];
+  const slug = filename.replace(/\.md$/, '');
+  return { slug, ...(mod.frontmatter || {}), Content: (mod as any).default };
+});
+
+const { slug } = Astro.params;
+const project = research_projects.find((p) => p.slug === slug);
+if (!project) {
+  throw new Error(`Research project not found: ${slug}`);
+}
+const Content = project.Content;
+const metadata = { title: `${project.project_name} | Research Projects | FROST Lab` };
+---
+
+<PageLayout metadata={metadata}>
+  <section class="max-w-7xl mx-auto px-4 py-12">
+    <a class="text-sm text-blue-600 mb-4 inline-block" href="/research">← Back to research projects</a>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+      <aside class="md:col-span-1">
+        <div class="w-full aspect-square mx-auto md:mx-0 overflow-hidden rounded-lg">
+          <img src={project.photo} alt={project.project_name} class="w-full h-full object-cover" />
+        </div>
+        <h2 class="mt-4 text-2xl font-bold">{project.project_name}</h2>
+        <p class="text-sm text-gray-500 mb-3">{project.subtext}</p>
+
+        {project.links && project.links.length ? (
+          <div class="space-y-2">
+            {project.links.map((l) => {
+              const url = l.url || '';
+              const label = (l.label || 'link');
+              let iconName = 'tabler:globe';
+              const lname = label.toLowerCase();
+              if (url.includes('github.com') || lname.includes('github')) iconName = 'tabler:brand-github';
+              else if (url.includes('linkedin.com') || lname.includes('linkedin')) iconName = 'tabler:brand-linkedin';
+              else if (url.includes('x.com') || url.includes('twitter.com') || lname.includes('twitter') || lname === 'x') iconName = 'tabler:brand-x';
+              else if (url.startsWith('mailto:') || lname.includes('email')) iconName = 'tabler:mail';
+              else if (lname.includes('cv') || lname.includes('resume')) iconName = 'tabler:file-cv';
+
+              return (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center text-sm text-blue-600 hover:underline"
+                >
+                  <Icon name={iconName} class="w-4 h-4 mr-2" />
+                  {label}
+                </a>
+              );
+            })}
+          </div>
+        ) : null}
+      </aside>
+
+      <main class="md:col-span-2">
+        <article class="prose dark:prose-invert">
+          <Content />
+        </article>
+      </main>
+    </div>
+  </section>
+</PageLayout>
