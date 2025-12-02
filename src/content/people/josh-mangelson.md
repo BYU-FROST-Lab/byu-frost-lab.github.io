@@ -2,7 +2,7 @@
 name: "Joshua Mangelson"
 title: "Assistant Professor"
 group: "faculty"
-photo: "/src/assets/images/people/josh.jpeg"
+photo: "/src/assets/images/people/joshua-mangelson.jpg"
 links:
   - label: "Personal site"
     url: "https://example.com/jane"
