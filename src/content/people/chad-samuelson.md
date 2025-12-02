@@ -4,7 +4,7 @@ title: "Ph. D. Student"
 group: "graduate"
 photo: "/src/assets/images/people/chad-samuelson.jpg"
 links:
-  - label: "Personal site"
+  - label: "Linkedin"
     url: "https://www.linkedin.com/in/chad-samuelson-5bab12134/"
   - label: "Email"
     url: "mailto:crsamuelson87@gmail.com"
