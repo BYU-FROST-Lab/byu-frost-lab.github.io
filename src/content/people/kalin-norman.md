@@ -2,7 +2,7 @@
 name: "Kalin Norman"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/kalin-norman.jpeg"
+photo: "/src/assets/images/people/grad_curr/kalin-norman.jpeg"
 links:
   - label: "Email"
     url: "mailto:kalinnorman@byu.edu"

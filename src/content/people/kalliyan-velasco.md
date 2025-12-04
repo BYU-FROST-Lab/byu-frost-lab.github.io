@@ -2,7 +2,7 @@
 name: "Kalliyan Velasco"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/kalliyan-velasco.jpg"
+photo: "/src/assets/images/people/grad_curr/kalliyan-velasco.jpg"
 links:
   - label: "Email"
     url: "mailto:kalliyanlay@gmail.com"
