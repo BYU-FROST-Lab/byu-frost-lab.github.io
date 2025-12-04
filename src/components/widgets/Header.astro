@@ -56,7 +56,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     // { 'overflow-hidden': heroOverlap },
   ]}
   {...(isSticky ? { 'data-aw-sticky-header': true } : {})}
-  {...(heroOverlap ? { style: 'background-color: rgba(255,255,255,0.9);' } : {})}
+  {...(heroOverlap ? { style: 'background-color: rgba(255,255,255,1.0);' } : {})}
   {...(id ? { id } : {})}
 >
   <div class="absolute inset-0"></div>
