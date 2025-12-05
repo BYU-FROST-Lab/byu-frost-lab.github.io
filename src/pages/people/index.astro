@@ -73,12 +73,12 @@ function getOrderedMembers(group) {
 ---
 
 <PageLayout metadata={metadata}>
-  <header class="max-w-6xl mx-auto px-4 pt-12 pb-6">
+  <header class="max-w-4xl mx-auto px-4 pt-12 pb-6">
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Lab Members</h1>
     <p class="text-lg text-muted max-w-3xl">Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering.</p>
   </header>
 
-  <section class="max-w-6xl mx-auto px-4 py-8">
+  <section class="max-w-4xl mx-auto px-4 py-8">
     {Object.keys(GROUPS).map((g) => {
       const list = getOrderedMembers(g);
       return list.length ? (
