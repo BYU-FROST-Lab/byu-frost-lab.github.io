@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   astrowind:
     build:
@@ -15,7 +14,13 @@ services:
       - /app/node_modules
     # Ensure the dev server binds to 0.0.0.0 so it's reachable from the host
     command: ["npx", "astro", "dev", "--port", "8080", "--host", "0.0.0.0"]
+    
+    
 
 # Optional: define a named volume for node_modules if you prefer
 #volumes:
 #  node_modules: {}
+
+# For interactive development, you can also run the following command directly:
+# docker compose run --rm astrowind
+# npx astro dev --port 8080 --host 0.0.0.0
