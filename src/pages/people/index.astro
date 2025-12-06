@@ -62,7 +62,7 @@ function shuffle(arr) {
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
-    const phd = list.filter((p) => /ph\.?d/i.test(p.title));
+    const phd = list.filter((p) => /ph\.?\s*d/i.test(p.title));
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
     return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
