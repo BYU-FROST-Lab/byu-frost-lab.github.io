@@ -46,11 +46,14 @@ export const footerData = {
         { text: 'Publications', href: getPermalink('/publications') },
         { text: 'Robots', href: getPermalink('/robots') },
         { text: 'Facilities', href: getPermalink('/facilities') },
+        { text: 'Get Involved', href: getPermalink('/get-involved') },
       ],
     },
     {
       title: 'Related Webpages',
       links: [
+        { text: 'BYU Homepage', href: 'https://byu.edu/' },
+        { text: 'BYU Robotics REU', href: 'https://robotics.byu.edu/' },
         { text: 'BYU ECE', href: 'https://ece.byu.edu/' },
         { text: 'BYU Mech. Eng.', href: 'https://www.me.byu.edu/' },
       ],
@@ -61,6 +64,7 @@ export const footerData = {
         { text: 'LinkedIn', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
         { text: 'GitHub', href: 'https://github.com/byu-frost-lab' },
         { text: 'Twitter', href: 'https://x.com/byu-frost-lab' },
+        { text: 'YouTube', href: 'https://www.youtube.com/@byufrostlab' },
       ],
     },
     {
@@ -79,7 +83,7 @@ export const footerData = {
     { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu-frost-lab' },
     // { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
     { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
-    // { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: '#' },
+    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byufrostlab' },
     // { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/byu-frost-lab' },
   ],
