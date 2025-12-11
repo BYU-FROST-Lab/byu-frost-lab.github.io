@@ -1,0 +1,71 @@
+---
+import Layout from '~/layouts/LandingLayout.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import tankImg from '~/assets/images/tank.jpg';
+
+const metadata = {
+  title: 'AUV Testing Facility and Resources',
+};
+---
+
+<Layout metadata={metadata}>
+
+  <header class="max-w-4xl mx-auto px-4 pt-12 pb-6">
+    <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">
+      Testing Facilities
+    </h1>
+    <p class="text-md text-muted max-w-4xl">
+      A state-of-the-art tank facility and resources for frequent on and off campus 
+      in-water testing of AUVs and associated algorithms.
+    </p>
+  </header>
+
+  <!-- Body content aligned with the header -->
+  <section class="px-4 py-12 max-w-4xl mx-auto space-y-24">
+
+    <!-- Section 1: Text Left, Image Right -->
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1">
+        <h2 class="text-3xl font-bold mb-4">On-campus Test-tank Facility</h2>
+        <p class="mb-4">
+          To support on-campus testing of AUVs and associated autonomy, estimation, and 
+          perception algorithms the FRoSt lab maintains a test tank facility consisting of 
+          a 20ft x 30ft x 6ft indoor test tank.
+        </p>
+        <p class="mb-4">
+          To support the operation of the tank, the AUV testing facility includes an operations 
+          platform, overhead hoist, water filtration, and necessary computing systems to perform 
+          on-campus testing of AUV systems.
+        </p>
+        <p>
+          This on-campus facility enables initial and frequent testing of developed systems and 
+          methods in preparation for in-situ testing in lakes, reservoirs, and ocean field trials.
+        </p>
+      </div>
+
+      <!-- Image with more padding -->
+      <div class="flex-1 p-4">
+        <img src={tankImg.src} alt="On-campus test tank" class="rounded-lg shadow-lg" />
+      </div>
+    </div>
+
+    <!-- Section 2: Text Right -->
+    <div class="flex flex-col lg:flex-row-reverse items-center gap-12 mt-12">
+      <div class="flex-1">
+        <h2 class="text-3xl font-bold mb-4">Off-campus Field Testing Resources</h2>
+        <p class="mb-4">
+          In addition to the on-campus test tank facility, the FRoSt lab has access to 
+          multiple university-owned boats that can be used for frequent in-situ testing 
+          in nearby reservoirs and lakes. The boundaries of the state of Utah in particular 
+          include over 600 lakes and reservoirs that can be used for testing.
+        </p>
+        <p>
+          The FRoSt lab additionally plans regular field trials on both the east and 
+          west coasts to support in-ocean testing.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+</Layout>
