@@ -87,6 +87,6 @@ export const footerData = {
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/byu-frost-lab' },
   ],
   footNote: `
-    Built using <a class="text-blue-600 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo Theme</a> · All rights reserved.
+    Built using <a class="text-blue-400 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo Theme</a> · All rights reserved.
   `,
 };
