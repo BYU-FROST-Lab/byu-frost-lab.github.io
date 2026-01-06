@@ -3,9 +3,12 @@ name: "Easton Potokar"
 title: "Master's student"
 group: "graduate_alum"
 photo: "/src/assets/images/people/grad_alum/easton-potokar.jpg"
+grad_date: 2022-09-01
 links:
   - label: "Email"
     url: "mailto:eastonpots@byu.edu"
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/epot/"
 ---
 # About
 Easton Potokar is Master's Student in the Electrical Engineering department and has an undergraduate degree in Mathematics (Applied and Computational Math Emphasis, or ACME, program; graduated April 2020) with an emphasis in signals and systems. He joined the FRoStLab in August 2020.

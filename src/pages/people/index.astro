@@ -81,6 +81,7 @@ function shuffle(arr) {
 
 // Return a randomized/ordered list for a group.
 // For 'graduate' we put PhD students first, then Master's, then others.
+// For alumni groups, sort by grad_date (most recent first), then shuffle those without dates.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
@@ -88,6 +89,13 @@ function getOrderedMembers(group) {
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
     return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
+  }
+  if (group === 'graduate_alum' || group === 'undergraduate_alum') {
+    const withDate = list.filter((p) => p.grad_date);
+    const withoutDate = list.filter((p) => !p.grad_date);
+    // Sort by grad_date descending (most recent first)
+    withDate.sort((a, b) => new Date(b.grad_date).getTime() - new Date(a.grad_date).getTime());
+    return [...withDate, ...shuffle(withoutDate)];
   }
   return shuffle(list);
 }
