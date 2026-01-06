@@ -12,7 +12,16 @@ const research = Object.entries(modules).map(([path, mod]: [string, any]) => {
   const slug = filename.replace(/\.md$/, "");
   return { slug, ...(mod.frontmatter || {}) };
 });
-research.sort((a, b) => a.project_name.localeCompare(b.project_name));
+research.sort((a, b) => {
+  // Sort by start_date descending (newest first)
+  const dateA = new Date(a.start_date || '1900-01-01');
+  const dateB = new Date(b.start_date || '1900-01-01');
+  if (dateB.getTime() !== dateA.getTime()) {
+    return dateB.getTime() - dateA.getTime();
+  }
+  // Then sort alphabetically by project_name
+  return a.project_name.localeCompare(b.project_name);
+});
 
 const metadata = { title: "Research" };
 
@@ -50,7 +59,7 @@ const GROUPS = {
   previous_research: {
     title: "Previous Research",
     intro:
-      "These projects represent our previous research contributions.",
+      "These projects represent our previous research projects.",
   }
 };
 
