@@ -2,7 +2,7 @@
 name: "Braden Meyers"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/braden-meyers.jpg"
+photo: "/src/assets/images/people/grad_curr/braden-meyers.jpg"
 ---
 
 # About

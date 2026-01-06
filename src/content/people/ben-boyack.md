@@ -2,7 +2,7 @@
 name: "Ben Boyack"
 title: "Master's student"
 group: "graduate"
-photo: "/src/assets/images/people/ben-boyack.jpg"
+photo: "/src/assets/images/people/grad_curr/ben-boyack.jpg"
 links:
   - label: "Email"
     url: "mailto:bab272@byu.edu"

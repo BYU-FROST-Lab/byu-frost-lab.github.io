@@ -2,7 +2,7 @@
 name: "Nelson Durrant"
 title: "Master's student"
 group: "graduate"
-photo: "/src/assets/images/people/nelson-durrant.jpg"
+photo: "/src/assets/images/people/grad_curr/nelson-durrant.jpg"
 ---
 
 # About

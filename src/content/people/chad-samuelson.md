@@ -1,8 +1,8 @@
 ---
-name: "Ben Boyack"
+name: "Chad Samuelson"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/chad-samuelson.jpg"
+photo: "/src/assets/images/people/grad_curr/chad-samuelson.jpg"
 links:
   - label: "Linkedin"
     url: "https://www.linkedin.com/in/chad-samuelson-5bab12134/"

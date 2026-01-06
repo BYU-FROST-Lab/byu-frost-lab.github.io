@@ -2,7 +2,7 @@
 name: "Sarahí Ortega"
 title: "Master's student"
 group: "graduate"
-photo: "/src/assets/images/people/sarahí-ortega.jpg"
+photo: "/src/assets/images/people/grad_curr/sarahí-ortega.jpg"
 ---
 
 # About

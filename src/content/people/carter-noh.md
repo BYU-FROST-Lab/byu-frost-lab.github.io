@@ -2,7 +2,7 @@
 name: "Carter Noh"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/carter-noh.jpg"
+photo: "/src/assets/images/people/grad_curr/carter-noh.jpg"
 links:
   - label: "Email"
     url: "mailto:cartern2@byu.edu"
