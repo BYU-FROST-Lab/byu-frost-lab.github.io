@@ -147,8 +147,8 @@ function getOrderedMembers(group) {
                 </div>
                 <div class="p-4 flex flex-col flex-1 relative z-20">
                   <div>
-                    <h3 class="text-lg font-semibold">{p.name}</h3>
-                    <p class="text-sm text-gray-500">{p.title}</p>
+                    <h3 class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-sm font-semibold' : 'text-lg font-semibold'}>{p.name}</h3>
+                    <p class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-xs text-gray-500' : 'text-sm text-gray-500'}>{p.title}</p>
                   </div>
 
                   {p.links && p.links.length ? (
@@ -183,6 +183,7 @@ function getOrderedMembers(group) {
             ))}
           </div>
         </section>
+        </>
       ) : null;
   })}
   </section>
