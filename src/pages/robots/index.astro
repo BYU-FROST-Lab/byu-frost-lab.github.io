@@ -52,7 +52,7 @@ function getImgClass(style) {
 
 // Return grid classes for a group. Students use 5 columns on large screens.
 function getGridClass(group) {
-  if (group === 'robot') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6';
+  if (group === 'robot') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
   return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6';
 }
 
@@ -86,7 +86,7 @@ function getOrderedMembers(group) {
 <PageLayout metadata={metadata}>
   <header class="max-w-4xl mx-auto px-4 pt-12 pb-6">
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Robots</h1>
-    <p class="text-lg text-muted max-w-3xl">We have a number of robots and facilities that we use to test our algorithms, system development, and implementations.</p>
+    <p class="text-lg text-muted max-w-3xl">We have a number of robots that we use to test our algorithms, system development, and implementations.</p>
   </header>
 
   <section class="max-w-4xl mx-auto px-4 py-8">

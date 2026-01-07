@@ -38,8 +38,6 @@ const metadata = { title: `${robot.name} | Robots | FROST Lab` };
         <div class="w-full aspect-square mx-auto md:mx-0 overflow-hidden rounded-lg">
           <img src={robot.photo} alt={robot.name} class="w-full h-full object-cover" />
         </div>
-        <h2 class="mt-4 text-2xl font-bold">{robot.name}</h2>
-        <p class="text-sm text-gray-500 mb-3">{robot.title}</p>
 
         {robot.links && robot.links.length ? (
           <div class="space-y-2">
@@ -72,6 +70,8 @@ const metadata = { title: `${robot.name} | Robots | FROST Lab` };
 
       <main class="md:col-span-2">
         <article class="prose prose-sm dark:prose-invert prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
+          <h1 class="text-4xl font-bold mb-3">{robot.name}</h1>
+          <p class="text-sm text-gray-500 mb-3">{robot.title}</p>
           <Content />
         </article>
       </main>
