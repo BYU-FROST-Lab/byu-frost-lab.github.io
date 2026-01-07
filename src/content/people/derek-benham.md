@@ -2,7 +2,7 @@
 name: "Derek Benham"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/derek-benham.jpg"
+photo: "/src/assets/images/people/grad_curr/derek-benham.jpg"
 links:
   - label: "Personal site"
     url: "https://drbenham.website"

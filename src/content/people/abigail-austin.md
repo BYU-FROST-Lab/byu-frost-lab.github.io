@@ -2,7 +2,7 @@
 name: "Abigail Austin"
 title: "Master's student"
 group: "graduate"
-photo: "/src/assets/images/people/abigail-austin.jpg"
+photo: "/src/assets/images/people/grad_curr/abigail-austin.jpg"
 ---
 # About
 Abigail Austin is a master's student at Brigham Young University studying Computer Engineering with an undergraduate degree in Computer Engineering and a minor in Mathematics. She joined the FRoSt lab in May 2023.

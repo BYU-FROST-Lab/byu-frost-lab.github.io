@@ -53,7 +53,8 @@ function getImgClass(style) {
 // Return grid classes for a group. Students use 5 columns on large screens.
 function getGridClass(group) {
   if (group === 'faculty') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
-  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6';
+  else if (group === 'graduate_alum' || group === 'undergraduate_alum') return 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6';
+  return 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6';
 }
 
 
@@ -61,6 +62,8 @@ const GROUPS = {
   faculty: { title: 'Faculty', intro: 'Our faculty lead research programs and supervise students. They direct our lab’s research, teaching and outreach.' },
   graduate: { title: 'Graduate Students', intro: 'PhD and Master\'s students working on core research projects and thesis-driven work.' },
   undergraduate: { title: 'Undergraduate Students', intro: 'Undergraduates contributing to projects, prototyping, and data work through research opportunities.' },
+  graduate_alum: { title: 'Graduate Alumni'},
+  undergraduate_alum: { title: 'Undergraduate Alumni'},
 };
 
 function membersByGroup(group) {
@@ -79,6 +82,7 @@ function shuffle(arr) {
 
 // Return a randomized/ordered list for a group.
 // For 'graduate' we put PhD students first, then Master's, then others.
+// For alumni groups, sort by grad_date (most recent first), then shuffle those without dates.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
@@ -86,6 +90,13 @@ function getOrderedMembers(group) {
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
     return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
+  }
+  if (group === 'graduate_alum' || group === 'undergraduate_alum') {
+    const withDate = list.filter((p) => p.grad_date);
+    const withoutDate = list.filter((p) => !p.grad_date);
+    // Sort by grad_date descending (most recent first)
+    withDate.sort((a, b) => new Date(b.grad_date).getTime() - new Date(a.grad_date).getTime());
+    return [...withDate, ...shuffle(withoutDate)];
   }
   return shuffle(list);
 }
@@ -102,6 +113,14 @@ function getOrderedMembers(group) {
     {Object.keys(GROUPS).map((g) => {
       const list = getOrderedMembers(g);
       return list.length ? (
+        <>
+        {/* Visual divider before alumni sections */}
+        {g === 'graduate_alum' && (
+          <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12">
+            <h2 class="text-3xl font-bold mb-2 text-center">Alumni</h2>
+            <p class="text-center text-muted mb-12">Former lab members who have graduated and moved on to exciting careers and opportunities.</p>
+          </div>
+        )}
         <section class="mb-12">
           <div class="flex items-baseline justify-between mb-4">
             <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
@@ -128,8 +147,8 @@ function getOrderedMembers(group) {
                 </div>
                 <div class="p-4 flex flex-col flex-1 relative z-20">
                   <div>
-                    <h3 class="text-lg font-semibold">{p.name}</h3>
-                    <p class="text-sm text-gray-500">{p.title}</p>
+                    <h3 class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-sm font-semibold' : 'text-lg font-semibold'}>{p.name}</h3>
+                    <p class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-xs text-gray-500' : 'text-sm text-gray-500'}>{p.title}</p>
                   </div>
 
                   {p.links && p.links.length ? (
@@ -164,6 +183,7 @@ function getOrderedMembers(group) {
             ))}
           </div>
         </section>
+        </>
       ) : null;
   })}
   </section>

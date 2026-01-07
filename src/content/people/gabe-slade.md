@@ -2,7 +2,7 @@
 name: "Gabe Slade"
 title: "Master's student"
 group: "graduate"
-photo: "/src/assets/images/people/gabe-slade.png"
+photo: "/src/assets/images/people/grad_curr/gabe-slade.png"
 ---
 # About
 Gabe Slade is a Master's Student in the Electrical and Computer Engineering department with an undergraduate degree in Mechanical Engineering as well as a minor in Computer Science (graduated April 2025). He joined the FRoSt Lab in May 2025.
