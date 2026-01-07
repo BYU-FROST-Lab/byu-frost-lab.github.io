@@ -3,7 +3,7 @@ project_name: "HoloOcean Underwater Simulator"
 subtext: "Built on Unreal Engine 5, our simulator accurately models sonar, buoyancy, acoustic communications and more."
 group: "current_research"
 photo: "/src/assets/images/research_projects/holo_ocean.jpg"
-start_date: "2025-08-01"
+start_date: "2026-03-01"
 ---
 
 ### Why Develop a Simulator?
