@@ -23,6 +23,7 @@ export interface Props {
 
 const { metadata = {} } = Astro.props;
 const { language, textDirection } = I18N;
+const isProd = Boolean((import.meta as any).env?.PROD);
 ---
 
 <!doctype html>
@@ -34,7 +35,7 @@ const { language, textDirection } = I18N;
     <ApplyColorMode />
     <Metadata {...metadata} />
     <SiteVerification />
-    <Analytics />
+    {isProd && <Analytics />}
 
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
