@@ -6,7 +6,7 @@ photo: "/src/assets/images/people/grad_curr/sarahí-ortega.jpg"
 ---
 
 # About
-Sarahi Ortega is a master’s student in Computer Engineering at Brigham Young University. She completed her undergraduate degree in Computer Engineering with a minor in Mathematics in April 2025 and joined the FRoSt Lab in May 2025.
+Sarahi Ortega is a master’s student in Computer Engineering at Brigham Young University. She completed her undergraduate degree in Computer Engineering with a minor in Mathematics in April 2025 and joined the FROST Lab in May 2025.
 
 Originally from Guayaquil, Ecuador, Sarahi moved to the U.S. in 2022 for college. She enjoys working in areas related to signal processing, computer vision, and robotics. Outside of academics, she loves baking, hiking, and doing nails.
 

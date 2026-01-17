@@ -9,4 +9,4 @@ In collaboration with [Richard Gill's Gill Laboratory](https://biology.byu.edu/g
 
 Our modified Heron completed its first field operation in Moloka’i Hawaii in November 2021, collecting over 50 thousand geotagged images of the coral reef with additional water quality measurements. This data was then fed into a 3D reconstruction pipeline to generate the 3D model of an approximately 40m x 60m section of reef shown below. We will be working with Dr. Gill’s laboratory to support the evaluation of the health of the reef.
 
-Further improvements will include an echo sounder for basic depth estimation, new camera mounts, and a fresh BYU FRoSt lab paint job.
+Further improvements will include an echo sounder for basic depth estimation, new camera mounts, and a fresh BYU FROST lab paint job.
