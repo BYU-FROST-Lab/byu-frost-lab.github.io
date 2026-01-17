@@ -1,4 +1,4 @@
-# BYU FRoSt Lab Website
+# BYU FROST Lab Website
 (Built from the 🚀 [AstroWind](https://astrowind.vercel.app) template with 
 [![Stars](https://img.shields.io/github/stars/arthelokyo/astrowind.svg?style=social&label=stars&maxAge=86400&color=ff69b4)](https://github.com/arthelokyo/astrowind)
 and

@@ -1,31 +1,31 @@
 site:
   name: FROST Lab
-  site: 'https://astrowind.vercel.app'
+  site: 'https://byu-frost-lab.github.io'
   base: '/'
   trailingSlash: false
 
-  googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
+  # googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
 
 # Default SEO metadata
 metadata:
   title:
     default: FROST Lab
     template: '%s — FROST Lab'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+  description: "The FROST Lab at Brigham Young University focuses on research in robotics, automation, and intelligent systems."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: FROST Lab
     images:
-      - url: '~/assets/images/default.png'
-        width: 1200
-        height: 628
+      - url: '~/assets/images/heron_small.jpeg'
+        width: 1280
+        height: 739
     type: website
-  twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
-    cardType: summary_large_image
+  # twitter:
+  #   handle: '@arthelokyo'
+  #   site: '@arthelokyo'
+  #   cardType: summary_large_image
 
 i18n:
   language: en
@@ -33,7 +33,7 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
+    isEnabled: false
     postsPerPage: 6
 
     post:
@@ -70,4 +70,4 @@ analytics:
       partytown: false
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'light:only' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"

@@ -27,18 +27,17 @@ const metadata = {
       {
         variant: 'primary',
         text: 'See our research',
-        href: 'https://github.com/arthelokyo/astrowind',
-        target: '_blank',
+        href: '/research',
+        // target: '_blank',
         icon: 'tabler:robot',
       },
       { text: 'Meet the team', href: '/people' },
     ]}
-    image={{ src: '~/assets/images/hero-image3.jpg', alt: 'AstroWind Hero Image' }}
+    image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
     <Fragment slot="title">
-      FROST Lab
-      <!-- <span class="hidden xl:inline">d websites with</span> -->
-      <!-- <span class="text-accent dark:text-white"> Astro 5.0</span> + Tailwind CSS -->
+      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700;">FROST  </span>
+      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500;"> Lab</span>
     </Fragment>
 
     <Fragment slot="subtitle">
@@ -70,7 +69,13 @@ const metadata = {
         icon: 'tabler:camera',
       },
       {
-        title: 'Robotic Localization, Mapping, and SLAM',
+        title: 'Task and Motion Planning',
+        description:
+          'Planning algorithms that generate safe, feasible motion trajectories and high-level task sequences for autonomous operation.',
+        icon: 'tabler:route',
+      },
+      {
+        title: 'SLAM: Robot Localization and Mapping',
         description:
           'Techniques for determining a robot’s pose and building consistent maps of unknown environments for reliable navigation.',
         icon: 'tabler:map',
@@ -78,19 +83,13 @@ const metadata = {
       {
         title: 'Non-linear State-Estimation',
         description:
-          'Robust filtering and smoothing (EKF/UKF/graph-based) for estimating vehicle and sensor states under noise and uncertainty.',
+          'Robust filtering and smoothing (EKF/UKF/factor-graph-based) for estimating vehicle and sensor states under noise and uncertainty.',
         icon: 'tabler:calculator',
-      },
-      {
-        title: 'Task and Motion Planning',
-        description:
-          'Planning algorithms that generate safe, feasible motion trajectories and high-level task sequences for autonomous operation.',
-        icon: 'tabler:route',
       },
       {
         title: 'Hardware/Software-based Algorithm Acceleration',
         description:
-          'Using optimized implementations, GPU/FPGA acceleration, and system-level co-design to meet real-time constraints in the field.',
+          'Using optimized implementations, GPU/FPGA acceleration, and system-level design to meet real-time constraints in the field.',
         icon: 'tabler:cpu',
       },
       {

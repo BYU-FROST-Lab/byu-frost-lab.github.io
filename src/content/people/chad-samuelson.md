@@ -1,8 +1,8 @@
 ---
-name: "Ben Boyack"
+name: "Chad Samuelson"
 title: "Ph. D. Student"
 group: "graduate"
-photo: "/src/assets/images/people/chad-samuelson.jpg"
+photo: "/src/assets/images/people/grad_curr/chad-samuelson.jpg"
 links:
   - label: "Linkedin"
     url: "https://www.linkedin.com/in/chad-samuelson-5bab12134/"
@@ -10,7 +10,7 @@ links:
     url: "mailto:crsamuelson87@gmail.com"
 ---
 # About
-Chad Samuelson is a PhD Student in the Electrical and Computer Engineering department with an undergraduate degree in Mechanical Engineering as well as a minor in Computer Science (graduated April 2021). He joined the FRoSt Lab in September 2021.
+Chad Samuelson is a PhD Student in the Electrical and Computer Engineering department with an undergraduate degree in Mechanical Engineering as well as a minor in Computer Science (graduated April 2021). He joined the FROST Lab in September 2021.
 
 Chad enjoys working in Machine Learning, Computer Vision, State Estimation, Path Planning, Navigation, and Control Theory. His goal is to become a software engineer for an autonomous vehicle company.
 

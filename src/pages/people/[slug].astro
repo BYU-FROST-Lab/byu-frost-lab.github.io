@@ -30,7 +30,7 @@ const metadata = { title: `${person.name} | People | FROST Lab` };
 ---
 
 <PageLayout metadata={metadata}>
-  <section class="max-w-7xl mx-auto px-4 py-12">
+  <section class="max-w-4xl mx-auto px-4 py-12">
     <a class="text-sm text-blue-600 mb-4 inline-block" href="/people">← Back to people</a>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
@@ -71,7 +71,7 @@ const metadata = { title: `${person.name} | People | FROST Lab` };
       </aside>
 
       <main class="md:col-span-2">
-        <article class="prose dark:prose-invert">
+        <article class="prose prose-sm dark:prose-invert prose-a:text-accent prose-a:no-underline hover:prose-a:underline">
           <Content />
         </article>
       </main>

@@ -3,12 +3,25 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 
-const modules = (import.meta.glob('../../content/people/*.md', { eager: true }) as any);
+const photoImports = ((import.meta as any).glob(
+  '../../assets/images/people/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+) as Record<string, any>);
+
+const modules = ((import.meta as any).glob('../../content/people/*.md', { eager: true }) as any);
+
+function resolvePhoto(photo) {
+  if (!photo) return photo;
+  // Convert frontmatter string paths to the glob key so Astro can serve optimized assets.
+  const key = photo.replace(/^\/?src\//, '../../');
+  return photoImports[key]?.default ?? photo;
+}
+
 const people = Object.entries(modules).map(([path, mod]: [string, any]) => {
   const parts = path.split('/');
   const filename = parts[parts.length - 1];
   const slug = filename.replace(/\.md$/, '');
-  return { slug, ...(mod.frontmatter || {}) };
+  return { slug, ...(mod.frontmatter || {}), photo: resolvePhoto(mod.frontmatter?.photo) };
 });
 people.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -16,7 +29,14 @@ const metadata = { title: 'Lab Members' };
 
 // Set the image style for index cards: 'rect' | 'square' | 'round'
 // Change this value to quickly preview different styles.
-const IMAGE_STYLE = 'square';
+const IMAGE_SIZES = {
+  rect: { width: 1024, height: 192 },
+  square: { width: 480, height: 480 },
+  round: { width: 192, height: 192 },
+} as const;
+
+const IMAGE_STYLE: keyof typeof IMAGE_SIZES = 'square';
+const IMAGE_DIMENSIONS = IMAGE_SIZES[IMAGE_STYLE];
 
 function getImageWrapperClass(style) {
   if (style === 'square') return 'w-full aspect-square bg-gray-100 flex-shrink-0 overflow-hidden';
@@ -33,14 +53,17 @@ function getImgClass(style) {
 // Return grid classes for a group. Students use 5 columns on large screens.
 function getGridClass(group) {
   if (group === 'faculty') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
-  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6';
+  else if (group === 'graduate_alum' || group === 'undergraduate_alum') return 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6';
+  return 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6';
 }
 
 
 const GROUPS = {
   faculty: { title: 'Faculty', intro: 'Our faculty lead research programs and supervise students. They direct our lab’s research, teaching and outreach.' },
-  graduate: { title: 'Graduate Students', intro: 'PhD and Masters students working on core research projects and thesis-driven work.' },
+  graduate: { title: 'Graduate Students', intro: 'PhD and Master\'s students working on core research projects and thesis-driven work.' },
   undergraduate: { title: 'Undergraduate Students', intro: 'Undergraduates contributing to projects, prototyping, and data work through research opportunities.' },
+  graduate_alum: { title: 'Graduate Alumni'},
+  undergraduate_alum: { title: 'Undergraduate Alumni'},
 };
 
 function membersByGroup(group) {
@@ -59,13 +82,21 @@ function shuffle(arr) {
 
 // Return a randomized/ordered list for a group.
 // For 'graduate' we put PhD students first, then Master's, then others.
+// For alumni groups, sort by grad_date (most recent first), then shuffle those without dates.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
-    const phd = list.filter((p) => /ph\.?d/i.test(p.title));
+    const phd = list.filter((p) => /ph\.?\s*d/i.test(p.title));
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
     return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
+  }
+  if (group === 'graduate_alum' || group === 'undergraduate_alum') {
+    const withDate = list.filter((p) => p.grad_date);
+    const withoutDate = list.filter((p) => !p.grad_date);
+    // Sort by grad_date descending (most recent first)
+    withDate.sort((a, b) => new Date(b.grad_date).getTime() - new Date(a.grad_date).getTime());
+    return [...withDate, ...shuffle(withoutDate)];
   }
   return shuffle(list);
 }
@@ -73,15 +104,23 @@ function getOrderedMembers(group) {
 ---
 
 <PageLayout metadata={metadata}>
-  <header class="max-w-6xl mx-auto px-4 pt-12 pb-6">
+  <header class="max-w-4xl mx-auto px-4 pt-12 pb-6">
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Lab Members</h1>
     <p class="text-lg text-muted max-w-3xl">Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering.</p>
   </header>
 
-  <section class="max-w-6xl mx-auto px-4 py-8">
+  <section class="max-w-4xl mx-auto px-4 py-8">
     {Object.keys(GROUPS).map((g) => {
       const list = getOrderedMembers(g);
       return list.length ? (
+        <>
+        {/* Visual divider before alumni sections */}
+        {g === 'graduate_alum' && (
+          <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12">
+            <h2 class="text-3xl font-bold mb-2 text-center">Alumni</h2>
+            <p class="text-center text-muted mb-12">Former lab members who have graduated and moved on to exciting careers and opportunities.</p>
+          </div>
+        )}
         <section class="mb-12">
           <div class="flex items-baseline justify-between mb-4">
             <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
@@ -90,7 +129,7 @@ function getOrderedMembers(group) {
           <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
 
           <div class={getGridClass(g)}>
-            {list.map((p) => (
+            {list.map((p,i) => (
               <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
                 <a href={`/people/${p.slug}`} class="absolute inset-0 z-10" aria-hidden="true"></a>
                 <div class={getImageWrapperClass(IMAGE_STYLE)}>
@@ -100,14 +139,16 @@ function getOrderedMembers(group) {
                     class={getImgClass(IMAGE_STYLE)}
                     widths={[320, 640, 1024]}
                     formats={["avif", "webp", "jpeg"]}
-                    width={IMAGE_STYLE === 'round' ? 192 : IMAGE_STYLE === 'square' ? 480 : 1024}
-                    height={IMAGE_STYLE === 'round' ? 192 : IMAGE_STYLE === 'square' ? 480 : 192}
+                    loading={g === 'faculty' && i < 2 ? 'eager' : 'lazy'}
+                    fetchpriority={g === 'faculty' && i < 2 ? 'high' : 'auto'}
+                    width={IMAGE_DIMENSIONS.width}
+                    height={IMAGE_DIMENSIONS.height}
                   />
                 </div>
                 <div class="p-4 flex flex-col flex-1 relative z-20">
                   <div>
-                    <h3 class="text-lg font-semibold">{p.name}</h3>
-                    <p class="text-sm text-gray-500">{p.title}</p>
+                    <h3 class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-sm font-semibold' : 'text-lg font-semibold'}>{p.name}</h3>
+                    <p class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-xs text-gray-500' : 'text-sm text-gray-500'}>{p.title}</p>
                   </div>
 
                   {p.links && p.links.length ? (
@@ -142,6 +183,7 @@ function getOrderedMembers(group) {
             ))}
           </div>
         </section>
+        </>
       ) : null;
   })}
   </section>

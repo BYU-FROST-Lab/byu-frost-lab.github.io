@@ -17,39 +17,6 @@ export const headerData = {
       // ],
     },
     {
-      text: 'Robots',
-      links: [
-        {
-          text: 'Features (Anchor Link)',
-          href: getPermalink('/#features'),
-        },
-        {
-          text: 'Services',
-          href: getPermalink('/services'),
-        },
-        {
-          text: 'Pricing',
-          href: getPermalink('/pricing'),
-        },
-        {
-          text: 'About us',
-          href: getPermalink('/about'),
-        },
-        {
-          text: 'Contact',
-          href: getPermalink('/contact'),
-        },
-        {
-          text: 'Terms',
-          href: getPermalink('/terms'),
-        },
-        {
-          text: 'Privacy policy',
-          href: getPermalink('/privacy'),
-        },
-      ],
-    },
-    {
       text: 'Lab Members',
       href: getPermalink('/people'),
     },
@@ -58,97 +25,68 @@ export const headerData = {
       href: getPermalink('/publications'),
     },
     {
+      text: 'Robots',
+      href: getPermalink('/robots'),
+    },
+    {
       text: 'Facilities',
-      links: [
-        {
-          text: 'Lead Generation',
-          href: getPermalink('/landing/lead-generation'),
-        },
-        {
-          text: 'Long-form Sales',
-          href: getPermalink('/landing/sales'),
-        },
-        {
-          text: 'Click-Through',
-          href: getPermalink('/landing/click-through'),
-        },
-        {
-          text: 'Product Details (or Services)',
-          href: getPermalink('/landing/product'),
-        },
-        {
-          text: 'Coming Soon or Pre-Launch',
-          href: getPermalink('/landing/pre-launch'),
-        },
-        {
-          text: 'Subscription',
-          href: getPermalink('/landing/subscription'),
-        },
-      ],
+      href: getPermalink('/facilities'),
     },
   ],
-  actions: [{ text: 'Get Involved', href: 'https://github.com/arthelokyo/astrowind', target: '_blank' }],
+  actions: [{ text: 'Get Involved', href: getPermalink('/get-involved')}],
 };
 
 export const footerData = {
   links: [
     {
-      title: 'Product',
+      title: 'FROST Lab Links',
       links: [
-        { text: 'Features', href: '#' },
-        { text: 'Security', href: '#' },
-        { text: 'Team', href: '#' },
-        { text: 'Enterprise', href: '#' },
-        { text: 'Customer stories', href: '#' },
-        { text: 'Pricing', href: '#' },
-        { text: 'Resources', href: '#' },
+        { text: 'People', href: getPermalink('/people') },
+        { text: 'Research', href: getPermalink('/research') },
+        { text: 'Publications', href: getPermalink('/publications') },
+        { text: 'Robots', href: getPermalink('/robots') },
+        { text: 'Facilities', href: getPermalink('/facilities') },
+        { text: 'Get Involved', href: getPermalink('/get-involved') },
       ],
     },
     {
-      title: 'Platform',
+      title: 'Related Webpages',
       links: [
-        { text: 'Developer API', href: '#' },
-        { text: 'Partners', href: '#' },
-        { text: 'Atom', href: '#' },
-        { text: 'Electron', href: '#' },
-        { text: 'AstroWind Desktop', href: '#' },
+        { text: 'BYU Homepage', href: 'https://byu.edu/' },
+        { text: 'BYU Robotics REU', href: 'https://robotics.byu.edu/' },
+        { text: 'BYU ECE', href: 'https://ece.byu.edu/' },
+        { text: 'BYU Mech. Eng.', href: 'https://www.me.byu.edu/' },
       ],
     },
+    // {
+    //   title: 'Social Media',
+    //   links: [
+    //     { text: 'LinkedIn', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
+    //     { text: 'GitHub', href: 'https://github.com/byu-frost-lab' },
+    //     { text: 'Twitter', href: 'https://x.com/byu-frost-lab' },
+    //     { text: 'YouTube', href: 'https://www.youtube.com/@byufrostlab' },
+    //   ],
+    // },
     {
-      title: 'Support',
+      title: 'Resources',
       links: [
-        { text: 'Docs', href: '#' },
-        { text: 'Community Forum', href: '#' },
-        { text: 'Professional Services', href: '#' },
-        { text: 'Skills', href: '#' },
-        { text: 'Status', href: '#' },
-      ],
-    },
-    {
-      title: 'Company',
-      links: [
-        { text: 'About', href: '#' },
-        { text: 'Blog', href: '#' },
-        { text: 'Careers', href: '#' },
-        { text: 'Press', href: '#' },
-        { text: 'Inclusion', href: '#' },
-        { text: 'Social Impact', href: '#' },
-        { text: 'Shop', href: '#' },
+        { text: 'Office of Belonging', href: 'https://belonging.byu.edu/' },
+        { text: 'Student Development', href: 'https://sds.byu.edu' },
       ],
     },
   ],
   secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy Policy', href: getPermalink('/privacy') },
+    { text: 'Brigham Young University', href: 'https://www.byu.edu/' },
+    // { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { ariaLabel: 'X', icon: 'tabler:brand-x', href: '#' },
-    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
-    { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: '#' },
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/arthelokyo/astrowind' },
+    // { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu-frost-lab' },
+    // { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
+    // { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byufrostlab' },
+    // { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
+    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/byu-frost-lab' },
   ],
   footNote: `
-    Made by <a class="text-blue-600 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo</a> · All rights reserved.
+    Built using <a class="text-blue-400 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo Theme</a> · All rights reserved.
   `,
 };

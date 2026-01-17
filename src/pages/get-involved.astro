@@ -1,0 +1,205 @@
+---
+import PageLayout from '~/layouts/PageLayout.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Features from '~/components/widgets/Features.astro';
+import Content from '~/components/widgets/Content.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = { title: 'Get Involved' };
+---
+
+<PageLayout metadata={metadata}>
+  <header class="max-w-3xl mx-auto px-4 pt-12 pb-6">
+    <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Get Involved</h1>
+    <p class="text-lg text-muted max-w-3xl">
+      Interested in joining the FROST Lab? We welcome both undergraduate and graduate students eager to contribute to cutting-edge research in field robotics, perception, and autonomous systems.
+    </p>
+  </header>
+
+  <!-- Table of Contents -->
+  <nav class="max-w-2xl mx-auto px-4 py-8 bg-slate-50 dark:bg-slate-900 rounded-lg">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-muted mb-4">On this page</h2>
+    <ul class="space-y-2 text-sm">
+      <li><a href="#byu-undergrad-section" class="text-accent hover:underline">For BYU Undergraduate Students</a></li>
+      <li><a href="#grad-section" class="text-accent hover:underline">For Graduate Students</a></li>
+      <li><a href="#non-byu-section" class="text-accent hover:underline">For Non-BYU Undergraduate Students</a></li>
+      <li><a href="#questions-section" class="text-accent hover:underline">Questions? Let's Chat</a></li>
+    </ul>
+  </nav>
+
+  <section class="max-w-3xl mx-auto px-4 py-8 space-y-6">
+    <!-- Undergraduate Students Section -->
+    <section id="byu-undergrad-section" class="space-y-6 rounded-lg px-5 py-6 md:px-6 md:py-7 bg-white dark:bg-slate-900/10">
+      <h2 class="text-3xl font-semibold mb-4 text-accent">For BYU Undergraduate Students</h2>
+      <p class="text-muted max-w-3xl mb-5">
+        Undergraduate research is a fantastic way to gain hands-on experience in robotics and engineering. If you are a BYU student, there are several structured avenues to join the FROST Lab.
+      </p>
+
+      <div class="grid gap-4 sm:grid-cols-2 mb-6">
+        <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
+          <h3 class="font-semibold mb-2">IMMERSE (ECE)</h3>
+          <p class="text-sm text-muted">Apply through the Electrical and Computer Engineering IMMERSE program for immersive summer research with mentorship from faculty and graduate students.</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
+          <h3 class="font-semibold mb-2">ECE 497R / ME 497R</h3>
+          <p class="text-sm text-muted">Enrolling in a 497R allows you to earn credit while contributing to FROST Lab projects.</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 border border-slate-200 dark:border-slate-800">
+          <h3 class="font-semibold mb-2">Paid Research Positions</h3>
+          <p class="text-sm text-muted">Paid opportunities to work on FROST Lab projects. Positions vary by term and project availability.</p>
+        </div>
+        <!-- Clubs, ME undergrad program. volunteering? -->
+      </div>
+
+      <p class="text-muted mb-5">
+        Not sure where to start? Reach out to a graduate student working on a project that interests you, or contact one of the FROST Lab professors to discuss fit and available openings.
+      </p>
+
+      <!-- <Steps
+        title="Getting Started as a BYU Undergraduate"
+        items={[
+          {
+            title: 'Pick an Avenue',
+            description:
+              `Decide whether IMMERSE or 497R is the right path this term based on your goals (summer research vs. for-credit research).`,
+            icon: 'tabler:route',
+          },
+          {
+            title: 'Meet with Mentors',
+            description:
+              `Set up a quick chat with a graduate student or professor to understand current projects, expectations, and timelines.`,
+            icon: 'tabler:users',
+          },
+          {
+            title: 'Apply or Enroll',
+            description:
+              `Submit your IMMERSE application or enroll in 497R. Share your interests, skills, and schedule so we can match you to the right effort.`,
+            icon: 'tabler:clipboard-check',
+          },
+          {
+            title: 'Start Contributing',
+            description:
+              `Begin with scoped tasks—debugging code, collecting data, building prototypes, or running experiments. Expand scope as you gain context.`,
+            icon: 'tabler:hammer',
+          },
+          {
+            title: 'Present and Document',
+            description:
+              `Share progress in lab meetings, document findings, and prepare posters or reports that strengthen your portfolio.`,
+            icon: 'tabler:presentation',
+          },
+        ]}
+      /> -->
+
+      <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-6">
+        <h3 class="text-xl font-semibold mb-4">What We Look For</h3>
+        <ul class="space-y-3 text-muted">
+          <li class="flex items-start">
+            <span class="text-accent mr-3 font-bold">•</span>
+            <span><strong>Curiosity:</strong> Genuine interest in robotics, research, engineering, or the scientific method.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-accent mr-3 font-bold">•</span>
+            <span><strong>Reliability:</strong> Commitment to attending meetings and following through on tasks.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-accent mr-3 font-bold">•</span>
+            <span><strong>Problem-Solving:</strong> Willingness to learn and tackle challenges creatively.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-accent mr-3 font-bold">•</span>
+            <span><strong>Teamwork:</strong> Ability to collaborate with peers, graduate students, and faculty.</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-accent mr-3 font-bold">•</span>
+            <span><strong>Prior Experience:</strong> Not required—we mentor students at all levels. Coursework in robotics, programming, or controls is helpful but not necessary.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-6 rounded">
+        <h3 class="font-semibold mb-2">💡 Quick Wins for New Undergraduates</h3>
+        <ul class="space-y-2 text-sm text-muted">
+          <li>• Help test and debug existing robot software</li>
+          <li>• Assist with data collection for ongoing projects</li>
+          <li>• Build simple mechanical or electrical prototypes</li>
+          <li>• Learn version control (Git) and contribute to documentation</li>
+          <li>• Shadow graduate students on deployment missions</li>
+        </ul>
+      </div> -->
+    </section>
+
+    <!-- Graduate Students Section -->
+    <section id="grad-section" class="space-y-3 rounded-lg px-5 py-6 md:px-6 md:py-7 bg-blue-50 dark:bg-blue-900/20">
+      <h2 class="text-3xl font-semibold text-accent">For Graduate Students</h2>
+      <p class="text-muted max-w-3xl">
+        The FROST Lab is an excellent environment for graduate research. We support both MS thesis projects and PhD dissertations across robotics, perception, autonomy, and systems engineering.
+      </p>
+
+      <Steps
+        title="Joining the Lab as a Graduate Student"
+        classes={{
+          container: '!py-2 md:!py-3 !px-0',
+          headline: {
+            container: '!mb-3 text-left rtl:text-right',
+            title: 'text-2xl md:text-3xl',
+            subtitle: 'text-base text-muted',
+          },
+        }}
+        items={[
+          {
+            title: 'Contact Faculty Directly',
+            description:
+              `Email professors whose research aligns with your interests. Share your CV, research statement, and specific projects or topics that excite you.`,
+            icon: 'tabler:mail',
+          },
+          {
+            title: 'Discuss Research Fit',
+            description:
+              `Have a conversation about potential thesis/dissertation topics, available funding, timeline, and lab culture. Ensure your goals and interests align with faculty expectations and ongoing research directions.`,
+            icon: 'tabler:users',
+          },
+          {
+            title: 'Apply to BYU Graduate Programs',
+            description:
+              `Once you've identified an advisor and discussed research, apply to the relevant BYU graduate program at <a href="https://gradstudies.byu.edu" target="_blank" rel="noreferrer" class="text-accent hover:underline">gradstudies.byu.edu</a>. Application deadlines are January 15 for Fall admission and August 15 for Winter admission.`,
+            icon: 'tabler:clipboard-check',
+          },
+        ]}
+      />
+    </section>
+
+    <!-- Non-BYU Undergraduate Students Section -->
+    <section id="non-byu-section" class="space-y-4 rounded-lg px-5 py-6 md:px-6 md:py-7 bg-white dark:bg-slate-900/10">
+      <h2 class="text-3xl font-semibold text-accent">For Non-BYU Undergraduate Students</h2>
+      <p class="text-muted max-w-3xl">
+        Interested in spending a summer with the FROST Lab? The best pathway for non-BYU students is the Robotics Pioneers REU Summer Program hosted at BYU.
+      </p>
+
+      <div class="bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 p-6 rounded">
+        <h3 class="font-semibold mb-2">Robotics Pioneers REU</h3>
+        <p class="text-muted mb-3">A paid, 10-week immersive research experience for undergraduate students outside of BYU.</p>
+        <a
+          class="inline-flex items-center text-emerald-700 dark:text-emerald-200 font-semibold hover:underline"
+          href="https://robotics.byu.edu/reu"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Apply at robotics.byu.edu/reu
+          <span aria-hidden="true" class="ml-2">→</span>
+        </a>
+      </div>
+
+      <p class="text-muted">If you have questions about fit or projects, reach out to a lab faculty member—let us know your interests and prior experience so we can advise on the application.</p>
+    </section>
+
+    <!-- General Information Section -->
+    <section id="questions-section" class="space-y-3 rounded-lg px-5 py-6 md:px-6 md:py-7 bg-blue-50 dark:bg-blue-900/20">
+      <h2 class="text-3xl font-semibold text-accent">Questions? Let's Chat</h2>
+      <p class="text-muted">
+        The best way to learn about opportunities in the FROST Lab is to reach out directly. Visit our <a href="/people" class="text-accent hover:underline">People</a> page to find contact information for faculty and graduate students, or check out our <a href="/publications" class="text-accent hover:underline">Publications</a> to see the kinds of problems we solve.
+      </p>
+      <p class="text-muted">Whether you're a freshman curious about robotics or a prospective graduate student with a specific research vision, don't hesitate to reach out!</p>
+    </section>
+  </section>
+</PageLayout>
