@@ -83,22 +83,30 @@ function shuffle(arr) {
 // Return a randomized/ordered list for a group.
 // For 'graduate' we put PhD students first, then Master's, then others.
 // For alumni groups, sort by grad_date (most recent first), then shuffle those without dates.
+// NOTE: Server-side shuffle doesn't work in production (SSG). Use data-shuffle attribute for client-side randomization.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
     const phd = list.filter((p) => /ph\.?\s*d/i.test(p.title));
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
-    return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
+    // Return unshuffled - client will shuffle within subgroups
+    // Tag each with subgroup for client-side logic
+    return [
+      ...phd.map(p => ({ ...p, _subgroup: 'phd' })),
+      ...masters.map(p => ({ ...p, _subgroup: 'masters' })),
+      ...others.map(p => ({ ...p, _subgroup: 'others' }))
+    ];
   }
   if (group === 'graduate_alum' || group === 'undergraduate_alum') {
     const withDate = list.filter((p) => p.grad_date);
     const withoutDate = list.filter((p) => !p.grad_date);
     // Sort by grad_date descending (most recent first)
     withDate.sort((a, b) => new Date(b.grad_date).getTime() - new Date(a.grad_date).getTime());
-    return [...withDate, ...shuffle(withoutDate)];
+    return [...withDate, ...withoutDate];
   }
-  return shuffle(list);
+  // Return unshuffled - client will shuffle
+  return list;
 }
 
 ---
@@ -108,6 +116,59 @@ function getOrderedMembers(group) {
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Lab Members</h1>
     <p class="text-lg text-muted max-w-3xl">Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering.</p>
   </header>
+
+  <script>
+    // Client-side shuffle to randomize order on each page load
+    function shuffleArray<T>(arr: T[]): T[] {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function shuffleChildren(container: HTMLElement) {
+      const items = Array.from(container.children) as HTMLElement[];
+      const shuffled = shuffleArray(items);
+      shuffled.forEach(item => container.appendChild(item));
+    }
+
+    function shuffleWithinSubgroups(container: HTMLElement) {
+      const items = Array.from(container.children) as HTMLElement[];
+      
+      // Group by subgroup attribute
+      const subgroups = new Map<string, HTMLElement[]>();
+      items.forEach(item => {
+        const subgroup = item.dataset.subgroup || 'default';
+        if (!subgroups.has(subgroup)) {
+          subgroups.set(subgroup, []);
+        }
+        subgroups.get(subgroup)!.push(item);
+      });
+
+      // Shuffle within each subgroup and append in order
+      const subgroupOrder = ['phd', 'masters', 'others', 'default'];
+      subgroupOrder.forEach(key => {
+        const group = subgroups.get(key);
+        if (group) {
+          const shuffled = shuffleArray(group);
+          shuffled.forEach(item => container.appendChild(item));
+        }
+      });
+    }
+
+    // Shuffle grids that should be randomized
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-shuffle="true"]').forEach((grid) => {
+        shuffleChildren(grid as HTMLElement);
+      });
+      
+      document.querySelectorAll('[data-shuffle="subgroups"]').forEach((grid) => {
+        shuffleWithinSubgroups(grid as HTMLElement);
+      });
+    });
+  </script>
 
   <section class="max-w-4xl mx-auto px-4 py-8">
     {Object.keys(GROUPS).map((g) => {
@@ -128,16 +189,16 @@ function getOrderedMembers(group) {
           </div>
           <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
 
-          <div class={getGridClass(g)}>
+          <div class={getGridClass(g)} data-shuffle={g === 'graduate' ? 'subgroups' : (g !== 'graduate_alum' && g !== 'undergraduate_alum' ? 'true' : 'false')}>
             {list.map((p,i) => (
-              <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
+              <article class={`bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative ${g === 'faculty' ? 'motion-safe:md:animate-fade' : 'intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter'}`} style={g === 'faculty' ? `animation-delay: ${i * 100}ms` : undefined} data-subgroup={p._subgroup}>
                 <a href={`/people/${p.slug}`} class="absolute inset-0 z-10" aria-hidden="true"></a>
                 <div class={getImageWrapperClass(IMAGE_STYLE)}>
                   <Image
                     src={p.photo}
                     alt={p.name}
                     class={getImgClass(IMAGE_STYLE)}
-                    widths={[320, 640, 1024]}
+                    widths={[160, 320, 480]}
                     formats={["avif", "webp", "jpeg"]}
                     loading={g === 'faculty' && i < 2 ? 'eager' : 'lazy'}
                     fetchpriority={g === 'faculty' && i < 2 ? 'high' : 'auto'}
