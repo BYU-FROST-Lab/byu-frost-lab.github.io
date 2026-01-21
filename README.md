@@ -4,24 +4,13 @@
 and
 [![Forks](https://img.shields.io/github/forks/arthelokyo/astrowind.svg?style=social&label=forks&maxAge=86400&color=ff69b4)](https://github.com/arthelokyo/astrowind))
 
-<br>
 
-<details open>
-<summary>Table of Contents</summary>
 
-- [Getting started](#getting-started)
-  - [Project structure](#project-structure)
-  - [Commands](#commands)
-  - [Deploy](#deploy)
-- [Contributing](#contributing)
-- [Acknowledgements](#acknowledgements)
-- [License](#license)
+## Adding Your Profile
 
-</details>
+Follow the full instructions in our lab GitBook [here](https://app.gitbook.com/o/1ESwthWZHNPVSuEtOXjQ/s/o7usPR5Ef8jWOkNfognF/the-basics/welcome) to add your profile to the lab webpage.
 
-<br>
-
-## Getting started
+## Building Locally
 
 You can run the website locally with
 ```
@@ -115,34 +104,6 @@ To customize Font families, Colors or more Elements refer to the following files
 
 - `src/components/CustomStyles.astro`
 - `src/assets/styles/tailwind.css`
-
-### Deploy
-
-#### Deploy to production (manual)
-
-You can create an optimized production build with:
-
-```shell
-npm run build
-```
-
-Now, your website is ready to be deployed. All generated files are located at
-`dist` folder, which you can deploy the folder to any hosting service you
-prefer.
-
-#### Deploy to Netlify
-
-Clone this repository on your own GitHub account and deploy it to Netlify:
-
-[![Netlify Deploy button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/arthelokyo/astrowind)
-
-#### Deploy to Vercel
-
-Clone this repository on your own GitHub account and deploy to Vercel:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farthelokyo%2Fastrowind)
-
-<br>
 
 
 ## Acknowledgements
