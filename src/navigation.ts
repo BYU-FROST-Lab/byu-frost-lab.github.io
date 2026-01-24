@@ -1,4 +1,4 @@
-import { getPermalink} from './utils/permalinks';
+import { getAsset, getPermalink } from './utils/permalinks';
 
 export const headerData = {
   links: [
@@ -33,7 +33,7 @@ export const headerData = {
       href: getPermalink('/facilities'),
     },
   ],
-  actions: [{ text: 'Get Involved', href: getPermalink('/get-involved')}],
+  actions: [{ text: 'Get Involved', href: getPermalink('/get-involved') }],
 };
 
 export const footerData = {
@@ -80,10 +80,10 @@ export const footerData = {
     // { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    // { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu-frost-lab' },
-    // { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
-    // { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byufrostlab' },
-    // { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
+    { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu-frost-lab' },
+    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
+    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byufrostlab' },
+    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/byu-frost-lab' },
   ],
   footNote: `
