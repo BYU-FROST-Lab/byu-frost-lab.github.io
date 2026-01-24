@@ -1,0 +1,66 @@
+name: Enforce Website Style
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check-frost:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare changed files list
+        id: changed
+        run: |
+          set -euo pipefail
+
+          # If PR context exists, list files changed vs base; otherwise list all tracked files
+          if [ -n "${{ github.event.pull_request.number || '' }}" ]; then
+            git fetch origin ${{ github.base_ref }} --depth=1 || true
+            git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt || true
+          else
+            git ls-files > changed_files.txt
+          fi
+
+          # Expose as output (newline-separated)
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          cat changed_files.txt || true
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Fail if any added lines contain FRoSt
+        run: |
+          set -euo pipefail
+
+          # Ensure we have the base to diff against
+          git fetch origin "${{ github.base_ref }}" --depth=1 || true
+
+          echo "Showing changed files vs origin/${{ github.base_ref }}:"
+          git diff --name-only origin/${{ github.base_ref }}...HEAD || true
+
+          echo "Searching added lines in the unified diff for 'FRoSt'..."
+          # Use a single unified diff and match lines that start with '+' but not '+++' (file headers)
+          git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+            | awk '/^\+[^+]/ { print NR ":" $0 }' \
+            | grep --line-number --text 'FRoSt' || true
+
+          # If any added lines contain FRoSt, fail and print those lines
+          if git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+               | awk '/^\+[^+]/ { print NR ":" $0 }' \
+               | grep --text -q 'FRoSt'; then
+            echo "::error::Found invalid casing 'FRoSt' in added/modified lines. Use 'FROST' instead."
+            # reprint the matches for logs
+            git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+              | awk '/^\+[^+]/ { print NR ":" $0 }' \
+              | grep --text 'FRoSt' || true
+            exit 1
+          fi
+
+          echo "No invalid casing found in added lines."
