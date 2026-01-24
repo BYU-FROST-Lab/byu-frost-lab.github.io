@@ -35,49 +35,32 @@ jobs:
           cat changed_files.txt || true
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Fail if any added/modified lines contain FRoSt
+      - name: Fail if any added lines contain FRoSt
         run: |
           set -euo pipefail
-          echo "Scanning changed files for 'FRoSt' (only added/modified lines)..."
-          printf '%s\n' "${{ steps.changed.outputs.changed_files }}" | sed '/^$/d' > files_to_scan.txt || true
 
-          if [ ! -s files_to_scan.txt ]; then
-            echo "No changed files detected; nothing to scan."
-            exit 0
-          fi
+          # Ensure we have the base to diff against
+          git fetch origin "${{ github.base_ref }}" --depth=1 || true
 
-          found=false
+          echo "Showing changed files vs origin/${{ github.base_ref }}:"
+          git diff --name-only origin/${{ github.base_ref }}...HEAD || true
 
-          # For each changed file, show added lines (+) from git diff and search them.
-          while IFS= read -r f; do
-            # skip if not a file in the workspace (deleted or submodule)
-            [ -f "$f" ] || continue
+          echo "Searching added lines in the unified diff for 'FRoSt'..."
+          # Use a single unified diff and match lines that start with '+' but not '+++' (file headers)
+          git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+            | awk '/^\+[^+]/ { print NR ":" $0 }' \
+            | grep --line-number --text 'FRoSt' || true
 
-            # skip binary files (grep -I treats binary as binary and suppresses matches)
-            if git diff --no-index -- "$f" "$f" 2>/dev/null | grep -Iq .; then
-              # Get added lines only; use -U0 to limit context. When not in PR context diff against empty fails; guard it.
-              if [ -n "${{ github.event.pull_request.number || '' }}" ]; then
-                git fetch origin ${{ github.base_ref }} --depth=1 || true
-                # produce unified diff of this file between base and head and search for added lines containing FRoSt
-                if git diff --unified=0 origin/${{ github.base_ref }} -- "$f" | grep -n '^\+[^+].*FRoSt' >/dev/null 2>&1; then
-                  echo "Invalid casing found in: $f"
-                  git diff --unified=0 origin/${{ github.base_ref }} -- "$f" | grep -n '^\+[^+].*FRoSt' || true
-                  found=true
-                fi
-              else
-                # workflow_dispatch / testing: search added lines relative to working tree
-                if git diff --unified=0 --cached -- "$f" | grep -n '^\+[^+].*FRoSt' >/dev/null 2>&1; then
-                  echo "Invalid casing found (staged) in: $f"
-                  git diff --unified=0 --cached -- "$f" | grep -n '^\+[^+].*FRoSt' || true
-                  found=true
-                fi
-              fi
-            fi
-          done < files_to_scan.txt
-
-          if [ "$found" = true ]; then
-            echo "::error::Found invalid casing 'FRoSt'. Use 'FROST' instead."
+          # If any added lines contain FRoSt, fail and print those lines
+          if git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+               | awk '/^\+[^+]/ { print NR ":" $0 }' \
+               | grep --text -q 'FRoSt'; then
+            echo "::error::Found invalid casing 'FRoSt' in added/modified lines. Use 'FROST' instead."
+            # reprint the matches for logs
+            git diff --unified=0 origin/${{ github.base_ref }}...HEAD \
+              | awk '/^\+[^+]/ { print NR ":" $0 }' \
+              | grep --text 'FRoSt' || true
             exit 1
           fi
 
-          echo "No invalid casing found."
+          echo "No invalid casing found in added lines."
