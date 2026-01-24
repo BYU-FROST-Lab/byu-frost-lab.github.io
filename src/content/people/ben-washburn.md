@@ -10,7 +10,7 @@ photo: "/src/assets/images/people/undergrad_curr/ben-washburn.jpg"
 
 #  About
 
-Ben Washburn is an undergraduate student studying Electrical Engineering at Brigham Young University. He joined the Field Robotics Systems and Technology Laboratory (FRoSt Lab) in 2025.
+Ben Washburn is an undergraduate student studying Electrical Engineering at Brigham Young University. He joined the Field Robotic Systems Lab (FROST Lab) in 2025.
 
 Originally from Ridgecrest, California, Ben is passionate about developing autonomous systems that can operate effectively in complex, real-world environments. Outside the lab, he enjoys running, hiking, and playing frisbee.
 
