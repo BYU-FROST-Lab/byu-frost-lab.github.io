@@ -18,6 +18,6 @@ Hannah Spigarelli is an undergraduate at Brigham Young University, studying Comp
 From Northern Virginia, Hannah enjoys rock climbing, canyoneering, woodworking, and reading. She plans to one day bikepack across Europe. She currently acts as president of BYU's Women in Computer Science club.
 
 # Research
-Hannah joined the FRoSt lab in August 2025. She is currently working on a new baseline dataset that will act as an updated replacement for the KTH and MIT campus dataset. This dataset contains floorplans scrapped from OpenStreetMap's extensive worldwide data. 
+Hannah joined the FROST Lab in August 2025. She is currently working on a new baseline dataset that will act as an updated replacement for the KTH and MIT campus dataset. This dataset contains floorplans scrapped from OpenStreetMap's extensive worldwide data. 
 
 Hannah has also done a significant amount of autonomous navigation and computer vision work with the BYU Mars Rover team. 
