@@ -10,6 +10,9 @@ on:
     branches: [ main ]
   # Manual runs
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # This runs the workflow every day at 00:00 UTC to shuffle card orders
+
 
 permissions:
   contents: read
@@ -36,8 +39,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Only deploy when this workflow was triggered by a push to main
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    # Deploy on push to main, manual dispatch, and scheduled runs
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
