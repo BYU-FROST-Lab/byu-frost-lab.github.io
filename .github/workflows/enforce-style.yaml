@@ -1,0 +1,83 @@
+name: Enforce Website Style
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check-frost:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare changed files list
+        id: changed
+        run: |
+          set -euo pipefail
+
+          # If PR context exists, list files changed vs base; otherwise list all tracked files
+          if [ -n "${{ github.event.pull_request.number || '' }}" ]; then
+            git fetch origin ${{ github.base_ref }} --depth=1 || true
+            git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt || true
+          else
+            git ls-files > changed_files.txt
+          fi
+
+          # Expose as output (newline-separated)
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          cat changed_files.txt || true
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Fail if any added/modified lines contain FRoSt
+        run: |
+          set -euo pipefail
+          echo "Scanning changed files for 'FRoSt' (only added/modified lines)..."
+          printf '%s\n' "${{ steps.changed.outputs.changed_files }}" | sed '/^$/d' > files_to_scan.txt || true
+
+          if [ ! -s files_to_scan.txt ]; then
+            echo "No changed files detected; nothing to scan."
+            exit 0
+          fi
+
+          found=false
+
+          # For each changed file, show added lines (+) from git diff and search them.
+          while IFS= read -r f; do
+            # skip if not a file in the workspace (deleted or submodule)
+            [ -f "$f" ] || continue
+
+            # skip binary files (grep -I treats binary as binary and suppresses matches)
+            if git diff --no-index -- "$f" "$f" 2>/dev/null | grep -Iq .; then
+              # Get added lines only; use -U0 to limit context. When not in PR context diff against empty fails; guard it.
+              if [ -n "${{ github.event.pull_request.number || '' }}" ]; then
+                git fetch origin ${{ github.base_ref }} --depth=1 || true
+                # produce unified diff of this file between base and head and search for added lines containing FRoSt
+                if git diff --unified=0 origin/${{ github.base_ref }} -- "$f" | grep -n '^\+[^+].*FRoSt' >/dev/null 2>&1; then
+                  echo "Invalid casing found in: $f"
+                  git diff --unified=0 origin/${{ github.base_ref }} -- "$f" | grep -n '^\+[^+].*FRoSt' || true
+                  found=true
+                fi
+              else
+                # workflow_dispatch / testing: search added lines relative to working tree
+                if git diff --unified=0 --cached -- "$f" | grep -n '^\+[^+].*FRoSt' >/dev/null 2>&1; then
+                  echo "Invalid casing found (staged) in: $f"
+                  git diff --unified=0 --cached -- "$f" | grep -n '^\+[^+].*FRoSt' || true
+                  found=true
+                fi
+              fi
+            fi
+          done < files_to_scan.txt
+
+          if [ "$found" = true ]; then
+            echo "::error::Found invalid casing 'FRoSt'. Use 'FROST' instead."
+            exit 1
+          fi
+
+          echo "No invalid casing found."
