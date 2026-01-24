@@ -1,14 +1,16 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
+  # Deploys happen on pushes to main
   push:
     branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+  # Validate PRs that target main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+  # Manual runs
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
   contents: read
   pages: write
@@ -18,9 +20,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v5
-      - name: Install, build, and upload your site
+
+      - name: Install, build, and upload site (Astro)
         uses: withastro/action@v5
         # with:
           # path: . # The root location of your Astro project inside the repository. (optional)
@@ -33,6 +36,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Only deploy when this workflow was triggered by a push to main
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -40,4 +45,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        
