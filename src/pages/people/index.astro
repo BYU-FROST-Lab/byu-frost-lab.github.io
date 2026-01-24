@@ -192,7 +192,7 @@ function getOrderedMembers(group) {
           <div class={getGridClass(g)} data-shuffle={g === 'graduate' ? 'subgroups' : (g !== 'graduate_alum' && g !== 'undergraduate_alum' ? 'true' : 'false')}>
             {list.map((p,i) => (
               <article class={`bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative ${g === 'faculty' ? 'motion-safe:md:animate-fade' : 'intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter'}`} style={g === 'faculty' ? `animation-delay: ${i * 100}ms` : undefined} data-subgroup={p._subgroup}>
-                <a href={`/people/${p.slug}`} class="absolute inset-0 z-10" aria-hidden="true"></a>
+                <a href={`/people/${p.slug}`} class="absolute inset-0 z-10" aria-label={p.name}></a>
                 <div class={getImageWrapperClass(IMAGE_STYLE)}>
                   <Image
                     src={p.photo}
@@ -206,7 +206,7 @@ function getOrderedMembers(group) {
                     height={IMAGE_DIMENSIONS.height}
                   />
                 </div>
-                <div class="p-4 flex flex-col flex-1 relative z-20">
+                <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
                   <div>
                     <h3 class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-sm font-semibold' : 'text-lg font-semibold'}>{p.name}</h3>
                     <p class={g === 'graduate_alum' || g === 'undergraduate_alum' ? 'text-xs text-gray-500' : 'text-sm text-gray-500'}>{p.title}</p>
@@ -229,7 +229,7 @@ function getOrderedMembers(group) {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded"
+                            class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
                             title={l.label}
                             aria-label={l.label}
                           >
