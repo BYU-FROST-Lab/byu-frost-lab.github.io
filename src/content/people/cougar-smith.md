@@ -10,7 +10,7 @@ photo: "/src/assets/images/people/default.jpg"
 
 #  About
 
-Cougar is from Seattle, WA and is studying electrical engineering. He started working in the FRoSt lab during April of 2025. During the warmer months Cougar enjoys hiking, cliff diving, and playing sports with friends and during winter he enjoys snowboarding. He also likes to read, cook, and play video and board games.
+Cougar is from Seattle, WA and is studying electrical engineering. He started working in the FROST lab during April of 2025. During the warmer months Cougar enjoys hiking, cliff diving, and playing sports with friends and during winter he enjoys snowboarding. He also likes to read, cook, and play video and board games.
 
 
 # Research

@@ -109,7 +109,7 @@ function getOrderedMembers(group) {
                     src={p.photo}
                     alt={p.name}
                     class={getImgClass(IMAGE_STYLE)}
-                    widths={[320, 640, 1024]}
+                    widths={[160, 320, 480]}
                     formats={["avif", "webp", "jpeg"]}
                     loading={g === 'robot' && i < 2 ? 'eager' : 'lazy'}
                     fetchpriority={g === 'robot' && i < 2 ? 'high' : 'auto'}
@@ -152,7 +152,7 @@ function getOrderedMembers(group) {
                   ) : null}
                 </div>
               </article>
-            ))}
+              ))}
           </div>
         </section>
       ) : null;

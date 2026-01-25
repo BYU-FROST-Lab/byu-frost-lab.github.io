@@ -9,5 +9,5 @@ links:
 ---
 
 
-Austin Brown is an undergraduate in Mechanical Engineering at BYU. His interests are robotics and 3D printing technology. He joined the FRoSt Lab April 2021
+Austin Brown is an undergraduate in Mechanical Engineering at BYU. His interests are robotics and 3D printing technology. He joined the FROST Lab April 2021
 

@@ -1,7 +1,7 @@
 ---
 name: "Ryan Anderson"
 title: "Ph. D. student"
-group: "graduate_alum"
+group: "other"
 photo: "/src/assets/images/people/grad_alum/ryan-anderson.png"
 links:
   - label: "Email"

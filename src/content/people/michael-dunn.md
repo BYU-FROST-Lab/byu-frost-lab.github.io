@@ -11,7 +11,7 @@ links:
 
 # About
 
-Michael Dunn is an undergraduate student at BYU-Idaho studying Electrical Engineering. He's joined the FRoSt Lab as part of the Immerse-X summer 2024 program.
+Michael Dunn is an undergraduate student at BYU-Idaho studying Electrical Engineering. He's joined the FROST Lab as part of the Immerse-X summer 2024 program.
 
 Michael is interested in bionic prosthetics.
 

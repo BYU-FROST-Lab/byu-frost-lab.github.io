@@ -1,6 +1,19 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+
+const photoImports = ((import.meta as any).glob(
+  '../../assets/images/people/**/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+) as Record<string, any>);
+
+function resolvePhoto(photo) {
+  if (!photo) return photo;
+  // Convert frontmatter string paths to the glob key so Astro can serve optimized assets.
+  const key = photo.replace(/^\/?\bsrc\//, '../../');
+  return photoImports[key]?.default ?? photo;
+}
 
 export async function getStaticPaths() {
   const modules = (import.meta.glob('../../content/people/*.md', { eager: true }) as any);
@@ -17,7 +30,7 @@ const people = Object.entries(modules).map(([path, mod]: [string, any]) => {
   const parts = path.split('/');
   const filename = parts[parts.length - 1];
   const slug = filename.replace(/\.md$/, '');
-  return { slug, ...(mod.frontmatter || {}), Content: (mod as any).default };
+  return { slug, ...(mod.frontmatter || {}), photo: resolvePhoto(mod.frontmatter?.photo), Content: (mod as any).default };
 });
 
 const { slug } = Astro.params;
@@ -36,7 +49,15 @@ const metadata = { title: `${person.name} | People | FROST Lab` };
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
       <aside class="md:col-span-1">
         <div class="w-full aspect-square mx-auto md:mx-0 overflow-hidden rounded-lg">
-          <img src={person.photo} alt={person.name} class="w-full h-full object-cover" />
+          <Image
+            src={person.photo}
+            alt={person.name}
+            class="w-full h-full object-cover"
+            widths={[320, 640, 1024]}
+            formats={['avif', 'webp', 'jpeg']}
+            width={480}
+            height={480}
+          />
         </div>
         <h2 class="mt-4 text-2xl font-bold">{person.name}</h2>
         <p class="text-sm text-gray-500 mb-3">{person.title}</p>

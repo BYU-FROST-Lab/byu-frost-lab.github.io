@@ -3,14 +3,27 @@ import PageLayout from "~/layouts/PageLayout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
+const photoImports = ((import.meta as any).glob(
+  '../../assets/images/research_projects/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+) as Record<string, any>);
+
 const modules = import.meta.glob("../../content/research_projects/*.md", {
   eager: true,
 }) as any;
+
+function resolvePhoto(photo) {
+  if (!photo) return photo;
+  // Convert frontmatter string paths to the glob key so Astro can serve optimized assets.
+  const key = photo.replace(/^\/?src\//, '../../');
+  return photoImports[key]?.default ?? photo;
+}
+
 const research = Object.entries(modules).map(([path, mod]: [string, any]) => {
   const parts = path.split("/");
   const filename = parts[parts.length - 1];
   const slug = filename.replace(/\.md$/, "");
-  return { slug, ...(mod.frontmatter || {}) };
+  return { slug, ...(mod.frontmatter || {}), photo: resolvePhoto(mod.frontmatter?.photo) };
 });
 research.sort((a, b) => {
   // Sort by start_date descending (newest first)
@@ -72,7 +85,7 @@ function projectsByGroup(group) {
   <header class="max-w-6xl mx-auto px-4 pt-12 pb-6">
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Research</h1>
     <p class="text-lg text-muted max-w-3xl">
-      The Field Robotic Systems Lab (FRoSt Lab) at Brigham Young
+      The Field Robotic Systems Lab (FROST Lab) at Brigham Young
       University is focused on enabling the development of <em><strong>robust and reliable</strong></em> field-robotic
       systems that are able to <em><strong>consistently</strong> perceive, navigate,</em> and <em>perform work</em>
       in complex unstructured <em><strong>real-world</strong></em> environments.
@@ -103,14 +116,14 @@ function projectsByGroup(group) {
                       src={p.photo}
                       alt={p.project_name}
                       class={getImgClass(IMAGE_STYLE)}
-                      widths={[320, 640, 1024]}
+                      widths={[160, 320, 480]}
                       formats={["avif", "webp", "jpeg"]}
                       width={
                         IMAGE_STYLE === "round"
                           ? 192
                           : IMAGE_STYLE === "square"
                             ? 480
-                            : 1024
+                            : 640
                       }
                       height={
                         IMAGE_STYLE === "round"

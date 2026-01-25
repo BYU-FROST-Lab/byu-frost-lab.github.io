@@ -11,7 +11,7 @@ links:
     url: "https://www.linkedin.com/in/epot/"
 ---
 # About
-Easton Potokar is Master's Student in the Electrical Engineering department and has an undergraduate degree in Mathematics (Applied and Computational Math Emphasis, or ACME, program; graduated April 2020) with an emphasis in signals and systems. He joined the FRoStLab in August 2020.
+Easton Potokar is Master's Student in the Electrical Engineering department and has an undergraduate degree in Mathematics (Applied and Computational Math Emphasis, or ACME, program; graduated April 2020) with an emphasis in signals and systems. He joined the FROST Lab in August 2020.
 
 From Ogden, Utah, Easton has interests in algorithms, machine learning, state estimation, and applications of these in the real world. In his free time Easton enjoys numerous personal projects including running a 3D printing business, operating his self-made CNC and laser engraver, and spending time with his wife and two daughters.
 

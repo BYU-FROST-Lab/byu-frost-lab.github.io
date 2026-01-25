@@ -10,7 +10,7 @@ links:
 
 # About
 
-Clayton Smith is an undergraduate in Computer Engineering. He joined the FRoSt Lab in September 2023. Clayton is interested in studying Machine Learning algorithms for robotics.
+Clayton Smith is an undergraduate in Computer Engineering. He joined the FROST Lab in September 2023. Clayton is interested in studying Machine Learning algorithms for robotics.
 
 
 # Research

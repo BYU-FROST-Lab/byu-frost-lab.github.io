@@ -2,15 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero3 from '~/components/widgets/Hero3.astro';
-import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import Steps from '~/components/widgets/Steps.astro';
-import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
   title: 'Home | FROST Lab',
@@ -36,9 +28,8 @@ const metadata = {
     image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
     <Fragment slot="title">
-      FROST Lab
-      <!-- <span class="hidden xl:inline">d websites with</span> -->
-      <!-- <span class="text-accent dark:text-white"> Astro 5.0</span> + Tailwind CSS -->
+      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700;">FROST  </span>
+      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500;"> Lab</span>
     </Fragment>
 
     <Fragment slot="subtitle">
@@ -61,7 +52,7 @@ const metadata = {
     id="features"
     tagline="Our Vision"
     title="What is the FROST Lab?"
-  subtitle="The Field Robotic Systems Lab (FRoSt Lab) at Brigham Young University is focused on enabling the development of <strong>robust and reliable</strong> field-robotic systems that are able to <strong>consistently</strong> <em>perceive, navigate, and perform work</em> in complex unstructured real-world environments."
+  subtitle="The Field Robotic Systems Lab (FROST Lab) at Brigham Young University is focused on enabling the development of <strong>robust and reliable</strong> field-robotic systems that are able to <strong>consistently</strong> <em>perceive, navigate, and perform work</em> in complex unstructured real-world environments."
     items={[
       {
         title: 'Robotic Perception',

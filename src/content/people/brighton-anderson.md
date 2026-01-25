@@ -10,7 +10,7 @@ links:
 
 # About
 
-Brighton Anderson is an undergraduate student studying Copmuter Engineering. He started in the FRoSt Lab in May 2024.
+Brighton Anderson is an undergraduate student studying Copmuter Engineering. He started in the FROST Lab in May 2024.
 
 Brighton is interested in robotics and computer vision.
 

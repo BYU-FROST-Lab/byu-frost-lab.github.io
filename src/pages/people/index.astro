@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 
 const photoImports = ((import.meta as any).glob(
-  '../../assets/images/people/*.{jpg,jpeg,png,webp,avif}',
+  '../../assets/images/people/**/*.{jpg,jpeg,png,webp,avif}',
   { eager: true },
 ) as Record<string, any>);
 
@@ -80,24 +80,30 @@ function shuffle(arr) {
   return a;
 }
 
-// Return a randomized/ordered list for a group.
-// For 'graduate' we put PhD students first, then Master's, then others.
-// For alumni groups, sort by grad_date (most recent first), then shuffle those without dates.
+// Return a shuffled/ordered list for a group.
+// For 'graduate' we put PhD students first, then Master's, then others, with shuffling within each.
+// For alumni groups, sort by grad_date (most recent first).
+// All other groups are shuffled.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   if (group === 'graduate') {
     const phd = list.filter((p) => /ph\.?\s*d/i.test(p.title));
     const masters = list.filter((p) => /master|m\.?s|msc|master's/i.test(p.title) && !/ph\.?d/i.test(p.title));
     const others = list.filter((p) => !phd.includes(p) && !masters.includes(p));
-    return [...shuffle(phd), ...shuffle(masters), ...shuffle(others)];
+    return [
+      ...shuffle(phd).map(p => ({ ...p, _subgroup: 'phd' })),
+      ...shuffle(masters).map(p => ({ ...p, _subgroup: 'masters' })),
+      ...shuffle(others).map(p => ({ ...p, _subgroup: 'others' }))
+    ];
   }
   if (group === 'graduate_alum' || group === 'undergraduate_alum') {
     const withDate = list.filter((p) => p.grad_date);
     const withoutDate = list.filter((p) => !p.grad_date);
     // Sort by grad_date descending (most recent first)
     withDate.sort((a, b) => new Date(b.grad_date).getTime() - new Date(a.grad_date).getTime());
-    return [...withDate, ...shuffle(withoutDate)];
+    return [...withDate, ...withoutDate];
   }
+  // Shuffle all other groups (faculty, undergraduates)
   return shuffle(list);
 }
 
@@ -108,6 +114,8 @@ function getOrderedMembers(group) {
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Lab Members</h1>
     <p class="text-lg text-muted max-w-3xl">Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering.</p>
   </header>
+
+
 
   <section class="max-w-4xl mx-auto px-4 py-8">
     {Object.keys(GROUPS).map((g) => {
@@ -130,14 +138,14 @@ function getOrderedMembers(group) {
 
           <div class={getGridClass(g)}>
             {list.map((p,i) => (
-              <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
+              <article class={`bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative ${g === 'faculty' ? 'motion-safe:md:animate-fade' : 'intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter'}`} style={g === 'faculty' ? `animation-delay: ${i * 100}ms` : undefined} data-subgroup={p._subgroup}>
                 <a href={`/people/${p.slug}`} class="absolute inset-0 z-10" aria-hidden="true"></a>
                 <div class={getImageWrapperClass(IMAGE_STYLE)}>
                   <Image
                     src={p.photo}
                     alt={p.name}
                     class={getImgClass(IMAGE_STYLE)}
-                    widths={[320, 640, 1024]}
+                    widths={[160, 320, 480]}
                     formats={["avif", "webp", "jpeg"]}
                     loading={g === 'faculty' && i < 2 ? 'eager' : 'lazy'}
                     fetchpriority={g === 'faculty' && i < 2 ? 'high' : 'auto'}

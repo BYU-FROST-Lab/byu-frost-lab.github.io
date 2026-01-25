@@ -5,7 +5,7 @@ group: "graduate"
 photo: "/src/assets/images/people/grad_curr/abigail-austin.jpg"
 ---
 # About
-Abigail Austin is a master's student at Brigham Young University studying Computer Engineering with an undergraduate degree in Computer Engineering and a minor in Mathematics. She joined the FRoSt lab in May 2023.
+Abigail Austin is a master's student at Brigham Young University studying Computer Engineering with an undergraduate degree in Computer Engineering and a minor in Mathematics. She joined the FROST lab in May 2023.
 
 From Tucson, Arizona, Abi enjoys video games, D&D, and anything nerdy. She is also interested in robotics and video game design.
 

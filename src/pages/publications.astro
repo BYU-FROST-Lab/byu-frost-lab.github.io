@@ -5,6 +5,20 @@ import moonRaw from '../data/bib/moon.bib?raw';
 import mangelsonRaw from '../data/bib/mangelson.bib?raw';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+
+// Preload any publication images referenced in bib files so they resolve in production builds.
+// Use astro:assets metadata so we can render via <Image /> for optimized output.
+const publicationImages = import.meta.glob('../assets/images/publications/*.{png,jpg,jpeg,webp,avif,gif}', {
+  eager: true,
+  import: 'default',
+});
+
+const PUBLICATIONS_BASE = 'assets/images/publications/';
+
+const publicationImageMap = new Map(
+  Object.entries(publicationImages).map(([key, value]) => [normalizeImageKey(key), value])
+);
 
 // Parse bib files and exclude any `@manual` entries (these are typically non-published manuals)
 const entries: BibEntry[] = [...parseBib(moonRaw), ...parseBib(mangelsonRaw)].filter((e) => {
@@ -23,6 +37,28 @@ entries.sort((a, b) => {
 const grouped = groupByYear(entries);
 const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
 const metadata = { title: 'Publications' };
+
+function normalizeImageKey(raw: string) {
+  let out = raw.trim();
+  out = out.replace(/^~?\//, '');
+  out = out.replace(/^(\.\/)+/, '');
+  out = out.replace(/^(\.\.\/)+/, '');
+  out = out.replace(/^src\//, '');
+  out = out.replace(/^public\//, '');
+  return out;
+}
+
+// Resolve to assets/images/publications/<file>. Accepts bib values like
+// "publications/foo.png" or just "foo.png".
+function resolvePublicationImage(raw?: string) {
+  if (!raw) return '';
+  const normalized = normalizeImageKey(raw)
+    .replace(/^assets\/?images\/?publications\//, '')
+    .replace(/^images\/?publications\//, '')
+    .replace(/^publications\//, '');
+  const canonical = `${PUBLICATIONS_BASE}${normalized}`;
+  return publicationImageMap.get(canonical) || '';
+}
 
 function sanitizeBib(bib?: string) {
   if (!bib) return '';
@@ -56,12 +92,20 @@ function sanitizeBib(bib?: string) {
         <div class="space-y-2">
           {grouped[year].map((entry) => {
             const id = (entry.citationKey || entry.id || Math.random().toString(36).slice(2)).replace(/[^a-zA-Z0-9_-]/g, '-');
+            const imageSrc = resolvePublicationImage(entry.fields.image);
             return (
               <div class="mb-2">
                 <article class="flex items-stretch border rounded overflow-hidden">
-                {entry.fields.image ? (
+                {imageSrc ? (
                   <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
-                    <img loading="lazy" src={entry.fields.image} alt={entry.fields.title || entry.citationKey} class="w-full h-full object-cover block" />
+                    <Image
+                      src={imageSrc}
+                      alt={entry.fields.title || entry.citationKey}
+                      widths={[80, 96, 120, 160]}
+                      sizes="(min-width: 768px) 96px, 80px"
+                      class="w-full h-full object-cover block"
+                      loading="lazy"
+                    />
                   </div>
                 ) : null}
 

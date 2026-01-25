@@ -10,7 +10,7 @@ links:
 
 #  About
 
-Maddie is an undergraduate student in Computer Engineering, with plans to pursue a Master’s degree. She joined the FRoSt Lab in September 2024 as a Sophomore. In addition to the FRoSt Lab, she works for Utah Underwater Robotics (UUR).
+Maddie is an undergraduate student in Computer Engineering, with plans to pursue a Master’s degree. She joined the FROST Lab in September 2024 as a Sophomore. In addition to the FROST Lab, she works for Utah Underwater Robotics (UUR).
 
 While originally drawn to photography and other arts, she has become increasingly interested in the programming side of image processing and scientific visualization. Beyond her academics, Maddie enjoys baking, video games, music, and napping with her cat.
 

@@ -10,7 +10,7 @@ links:
 
 #  About
 
-Seth Knoop is an undergraduate student in the Electrical and Computer Engineering department, on track to earn his bachelor's degree in April 2026. He joined the FRoSt lab as a third-year student in May 2025.
+Seth Knoop is an undergraduate student in the Electrical and Computer Engineering department, on track to earn his bachelor's degree in April 2026. He joined the FROST Lab as a third-year student in May 2025.
 
 His academic interests span circuitry, coding, and controls, with plans to pursue a Master’s degree and eventually a PhD.
 
