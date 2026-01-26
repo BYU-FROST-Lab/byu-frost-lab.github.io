@@ -10,8 +10,9 @@ on:
     branches: [ main ]
   # Manual runs
   workflow_dispatch:
+  # Scheduled runs
   schedule:
-    - cron: '0 0 * * *' # This runs the workflow every day at 00:00 UTC to shuffle card orders
+    - cron: '35 7 * * *' # This runs the workflow every day at 07:35 UTC to shuffle card orders
 
 
 permissions:
