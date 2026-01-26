@@ -109,7 +109,7 @@ function projectsByGroup(group) {
                   <a
                     href={`/research/${p.slug}`}
                     class="absolute inset-0 z-10"
-                    aria-hidden="true"
+                    aria-label={p.project_name}
                   />
                   <div class={getImageWrapperClass(IMAGE_STYLE)}>
                     <Image
@@ -134,7 +134,7 @@ function projectsByGroup(group) {
                       }
                     />
                   </div>
-                  <div class="p-4 flex flex-col flex-1 relative z-20">
+                  <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
                     <div>
                       <h3 class="text-lg font-semibold">{p.project_name}</h3>
                       <p class="text-sm text-gray-500">{p.subtext}</p>
