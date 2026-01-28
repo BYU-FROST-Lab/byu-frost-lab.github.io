@@ -1,6 +1,6 @@
 ---
 name: "Elijah Pettitt"
-title: "Masters Student"
+title: "Master's Student"
 group: "graduate"
 photo: "/src/assets/images/people/grad_curr/elijah-pettitt.jpg"
 links:
