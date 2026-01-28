@@ -1,6 +1,6 @@
 ---
 name: "Porter Mathews"
-title: "Volunteer Research Assistant"
+title: "Research Assistant"
 group: "undergraduate"
 photo: "/src/assets/images/people/undergrad_curr/porter-mathews.jpg"
 links:
