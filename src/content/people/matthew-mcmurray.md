@@ -3,6 +3,10 @@ name: "Matthew McMurray"
 title: "Research Assistant"
 group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/matthew-mcmurray.jpeg"
+grad_date: 2025-04-01
+links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/matthew-mcmurray-electric/"
 ---
 
 
