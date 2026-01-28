@@ -3,6 +3,10 @@ name: "Ethan Smith"
 title: "Research Assistant"
 group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/ethan-smith.jpg"
+grad_date: 2024-08-01
+links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/ethan-smith-496a761a7/"
 ---
 
 

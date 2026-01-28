@@ -3,6 +3,10 @@ name: "Madeline Dutton"
 title: "Research Assistant"
 group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/madeline-dutton.jpg"
+grad_date: 2024-04-01
+links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/madelineadutton/"
 ---
 
 

@@ -6,6 +6,8 @@ photo: "/src/assets/images/people/undergrad_alum/aaron-newman.jpg"
 links:
   - label: "Email"
     url: "mailto:newmanaaronj@gmail.com"
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/aaron-newman-368bb21a2/"
 ---
 
 

@@ -3,6 +3,9 @@ name: "Bryton Smith"
 title: "Research Assistant"
 group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/bryton-smith.jpg"
+links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/bryton-smith/"
 ---
 
 

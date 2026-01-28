@@ -3,6 +3,9 @@ name: "Matthew Mella"
 title: "Research Assistant"
 group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/matthew-mella.jpg"
+links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/mattmella/"
 ---
 
 
