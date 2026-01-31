@@ -3,6 +3,9 @@ name: "Braden Meyers"
 title: "Ph. D. Student"
 group: "graduate"
 photo: "/src/assets/images/people/grad_curr/braden-meyers.jpg"
+links:
+  - label: "Email"
+    url: "mailto:braden.j.meyers@gmail.com"
 ---
 
 # About
