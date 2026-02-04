@@ -2,7 +2,7 @@
 name: "Wesley Wardle"
 title: "Research Assistant"
 group: "undergraduate"
-photo: "/src/assets/images/people/undergrad_curr/wesley-wardle.png"
+photo: "/src/assets/images/people/undergrad_curr/wesley-wardle.jpg"
 links:
   - label: "Personal site"
     url: "https://drbenham.website"
