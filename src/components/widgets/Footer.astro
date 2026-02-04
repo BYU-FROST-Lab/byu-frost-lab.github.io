@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { SITE } from 'astrowind:config';
+import Image from '~/components/common/Image.astro';
 import { getHomePermalink } from '~/utils/permalinks';
 
 interface Link {
@@ -33,9 +34,12 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '', theme 
   >
     <div class="grid grid-cols-12 gap-4 gap-y-8 sm:gap-8 py-8 md:py-12">
       <div class="col-span-12 lg:col-span-4">
-        <div class="mb-2">
+        <!-- <div class="mb-2">
           <a class="inline-block font-bold text-xl" href={getHomePermalink()}>{SITE?.name}</a>
-        </div>
+        </div> -->
+        <a class="flex items-left mb-3" href={getHomePermalink()}>
+            <Image src="~/assets/images/Frost8.svg" alt={SITE?.name ?? 'Logo'} width="214" height="36" layout="fixed" style="object-fit: contain;" class="inline-block align-middle" />
+        </a>
         <div class="text-sm text-muted flex gap-1">
           {
             secondaryLinks.map(({ text, href }, index) => (
