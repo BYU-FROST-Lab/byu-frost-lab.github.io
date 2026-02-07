@@ -98,6 +98,10 @@ If running the stack natively, you can run these commands from the root of the p
 
 <br>
 
+### Linting
+docker compose run --rm astrowind npm run check:eslint
+
+
 #### Customize Design
 
 To customize Font families, Colors or more Elements refer to the following files:

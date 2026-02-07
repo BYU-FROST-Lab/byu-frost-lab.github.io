@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287.74 57.38">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #bdd6e6;
+      }
+
+      .cls-2 {
+        fill: #44693d;
+      }
+
+      .cls-3 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: #262626;
+        font-family: Futura-Bold, Futura;
+        font-weight: 700;
+      }
+
+      .cls-4, .cls-7 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-8 {
+        fill: #002e5d;
+      }
+
+      .cls-9 {
+        font-size: 40px;
+      }
+
+      .cls-7 {
+        fill: #6e6c6d;
+        font-family: Futura-Medium, Futura;
+        font-weight: 500;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-1" d="M19.06,7.08l5.14,2.97v5.94s-5.14-2.97-5.14-2.97v-5.94M14.98,0v15.38l13.32,7.69V7.69S14.98,0,14.98,0h0Z"/>
+      <path class="cls-2" d="M13.32,23.22l5.14,2.97-5.14,2.97-5.14-2.97,5.14-2.97M13.32,18.5L0,26.19l13.32,7.69,13.32-7.69-13.32-7.69h0Z"/>
+      <path class="cls-2" d="M46.8,23.22l5.14,2.97-5.14,2.97-5.14-2.97,5.14-2.97M46.8,18.5l-13.32,7.69,13.32,7.69,13.32-7.69-13.32-7.69h0Z"/>
+      <path class="cls-8" d="M36.15,36.6l5.14,2.97v5.94l-5.14-2.97v-5.94M32.07,29.52v15.38s13.32,7.69,13.32,7.69v-15.38l-13.32-7.69h0Z"/>
+      <path class="cls-1" d="M41.24,7.18v5.8l-5.03,2.9v-5.8s5.03-2.9,5.03-2.9M45.32.1l-13.2,7.62v15.24s13.2-7.62,13.2-7.62V.1h0Z"/>
+      <path class="cls-8" d="M24.2,36.6v5.94l-5.14,2.97v-5.94l5.14-2.97M28.29,29.52l-13.32,7.69v15.38l13.32-7.69v-15.38h0Z"/>
+    </g>
+    <text class="cls-9" transform="translate(75.28 43.62)"><tspan class="cls-4" x="0" y="0">F</tspan><tspan class="cls-6" x="21.48" y="0">R</tspan><tspan class="cls-4" x="48.8" y="0">O</tspan><tspan class="cls-5" x="85.32" y="0">S</tspan><tspan class="cls-3" x="110.88" y="0">T </tspan><tspan class="cls-7" x="144.88" y="0">Lab</tspan></text>
+  </g>
+</svg>
