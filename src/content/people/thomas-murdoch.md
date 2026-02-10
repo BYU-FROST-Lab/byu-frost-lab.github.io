@@ -1,6 +1,6 @@
 ---
 name: "Thomas Murdoch"
-title: "undergraduate student"
+title: "Undergraduate Student"
 group: "undergraduate"
 photo: "src/assets/images/people/undergrad_curr/thomas-murdoch.jpg"
 links:
