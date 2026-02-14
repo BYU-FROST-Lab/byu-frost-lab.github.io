@@ -3,10 +3,12 @@ name: "Eli Gaskin"
 title: "Research Assistant"
 group: "undergraduate"
 photo: "/src/assets/images/people/undergrad_alum/eli-gaskin.jpg"
-grad_date: 2026-01-01
+grad_date: 2026-02-01
 links:
   - label: "LinkedIn"
-    url: "https://www.linkedin.com/in/eli-gaskin-b86803375/"
+    url: "linkedin.com/in/eli-gaskin"
+  - label: "Email"
+    url: "mailto:egaskin2@byu.com"
 ---
 
 # About
