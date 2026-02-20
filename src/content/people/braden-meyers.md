@@ -6,6 +6,8 @@ photo: "/src/assets/images/people/grad_curr/braden-meyers.jpg"
 links:
   - label: "Email"
     url: "mailto:braden.j.meyers@gmail.com"
+  - label: "LinkedIn"
+    url: "https://linkedin.com/in/braden-meyers262"
 ---
 
 # About
