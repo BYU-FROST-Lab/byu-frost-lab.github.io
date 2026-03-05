@@ -1,1 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1036)"><rect width="1000" height="1000" fill="#002e5d"></rect><g transform="matrix(2.579694121982679,0,0,2.579694121982679,157.7132854247282,150)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="265.37" height="271.35"><svg id="Layer_1_copy" data-name="Layer 1 copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265.37 271.35"><defs><style>.cls-1{fill:#fff;}</style><clipPath id="SvgjsClipPath1036"><rect width="1000" height="1000" x="0" y="0" rx="250" ry="250"></rect></clipPath></defs><g id="BYU_Block_Y_Navy" data-name="BYU Block Y Navy"><polygon class="cls-1" points="146.25 44.38 146.25 75.02 157.29 75.02 133.12 122.04 108.95 75.02 119.99 75.02 119.99 44.38 54.34 44.38 54.34 75.49 66.98 75.49 111.12 155.63 111.12 206.97 97.31 206.97 97.31 237.94 168.94 237.94 168.94 206.97 155.13 206.97 155.13 155.63 199.26 75.49 211.9 75.49 211.9 44.38 146.25 44.38"></polygon><polygon class="cls-1" points="175 233.03 176.91 233.03 176.91 237.94 178.07 237.94 178.07 233.03 179.95 233.03 179.95 232.06 175 232.06 175 233.03"></polygon><path class="cls-1" d="M185.34,232.06l-1,2.89c-.13.43-.27.94-.42,1.47h0c-.15-.6-.28-1-.42-1.49l-1-2.87h-1.77l-.43,5.88h1.14l.2-3.47c0-.53.05-1.09.05-1.64h.06c.14.53.32,1.23.42,1.67l1.06,3.36h1.21l1.06-3.26c.18-.54.34-1.24.48-1.77h.08c0,.63,0,1.2.06,1.64l.2,3.47h1.18l-.47-5.88Z"></path></g></svg></svg></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(16.321201240411295,0,0,16.321201240411295,-5.684341886080802e-14,62.67341276317933)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="61.27" height="53.59"><svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.27 53.59">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #bdd6e6;
+      }
+
+      .cls-2 {
+        fill: #44693d;
+      }
+
+      .cls-3 {
+        fill: #002e5d;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <path class="cls-1" d="M19.51,7.36l5.07,2.93v5.86l-5.07-2.93v-5.86M15.26,0v15.67l13.57,7.84V7.84L15.26,0h0Z"></path>
+    <path class="cls-2" d="M13.57,23.76l5.07,2.93-5.07,2.93-5.07-2.93,5.07-2.93M13.57,18.86L0,26.69l13.57,7.84,13.57-7.84-13.57-7.84h0Z"></path>
+    <path class="cls-2" d="M47.7,23.76l5.07,2.93-5.07,2.93-5.07-2.93,5.07-2.93M47.7,18.86l-13.57,7.84,13.57,7.84,13.57-7.84-13.57-7.84h0Z"></path>
+    <path class="cls-3" d="M36.93,37.45l5.07,2.93v5.86l-5.07-2.93v-5.86M32.68,30.09v15.67l13.57,7.84v-15.67l-13.57-7.84h0Z"></path>
+    <path class="cls-1" d="M41.95,7.46v5.72l-4.95,2.86v-5.72l4.95-2.86M46.2.1l-13.45,7.77v15.54l13.45-7.77V.1h0Z"></path>
+    <path class="cls-3" d="M24.58,37.45v5.86l-5.07,2.93v-5.86l5.07-2.93M28.83,30.09l-13.57,7.84v15.67l13.57-7.84v-15.67h0Z"></path>
+  </g>
+</svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1027)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(16.321201240411295,0,0,16.321201240411295,-5.684341886080802e-14,62.67341276317933)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="61.27" height="53.59"><svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.27 53.59">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #bdd6e6;
+      }
+
+      .cls-2 {
+        fill: #44693d;
+      }
+
+      .cls-3 {
+        fill: #002e5d;
+      }
+    </style>
+  <clipPath id="SvgjsClipPath1027"><rect width="1000" height="1000" x="0" y="0" rx="200" ry="200"></rect></clipPath></defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <path class="cls-1" d="M19.51,7.36l5.07,2.93v5.86l-5.07-2.93v-5.86M15.26,0v15.67l13.57,7.84V7.84L15.26,0h0Z"></path>
+    <path class="cls-2" d="M13.57,23.76l5.07,2.93-5.07,2.93-5.07-2.93,5.07-2.93M13.57,18.86L0,26.69l13.57,7.84,13.57-7.84-13.57-7.84h0Z"></path>
+    <path class="cls-2" d="M47.7,23.76l5.07,2.93-5.07,2.93-5.07-2.93,5.07-2.93M47.7,18.86l-13.57,7.84,13.57,7.84,13.57-7.84-13.57-7.84h0Z"></path>
+    <path class="cls-3" d="M36.93,37.45l5.07,2.93v5.86l-5.07-2.93v-5.86M32.68,30.09v15.67l13.57,7.84v-15.67l-13.57-7.84h0Z"></path>
+    <path class="cls-1" d="M41.95,7.46v5.72l-4.95,2.86v-5.72l4.95-2.86M46.2.1l-13.45,7.77v15.54l13.45-7.77V.1h0Z"></path>
+    <path class="cls-3" d="M24.58,37.45v5.86l-5.07,2.93v-5.86l5.07-2.93M28.83,30.09l-13.57,7.84v15.67l13.57-7.84v-15.67h0Z"></path>
+  </g>
+</svg></svg></g></g></svg></g></svg>

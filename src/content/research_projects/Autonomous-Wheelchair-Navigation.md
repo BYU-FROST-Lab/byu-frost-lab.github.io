@@ -1,6 +1,6 @@
 ---
 project_name: "Autonomous Wheelchair Navigation"
-subtext: "By leveraging techniques from autonomous driving, we are developing an autonomous all-terrain stairclimbing wheelchair that can enable those with limited control to experience the outdoors and travel to locations not previously accessible to them."
+subtext: "Using autonomous driving techniques, we are developing an autonomous all-terrain stair-climbing wheelchair that enables people with limited control to access outdoor and previously inaccessible locations."
 group: "previous_research"
 photo: "/src/assets/images/research_projects/autonomous-wheelchair.jpeg"
 start_date: "2018-08-01"

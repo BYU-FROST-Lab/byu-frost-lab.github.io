@@ -1,6 +1,6 @@
 ---
-project_name: "Multi-agent Communication-constrained Underwater Mapping"
-subtext: "Enabling multiple underwater vehicles to collaboratively map or search environments while taking into account the strict communication constraints inherent to the underwater domain."
+project_name: "Multi-agent Comm-Constrained Underwater Mapping"
+subtext: "Collaborative mapping or search by multiple underwater vehicles under strict communication constraints inherent to the underwater domain."
 group: "previous_research"
 photo: "/src/assets/images/research_projects/multi-agent-coordination.jpeg"
 start_date: "2017-08-01"
