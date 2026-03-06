@@ -1,0 +1,98 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
+
+const {
+  href,
+  title,
+  subtitle,
+  image,
+  imageAlt,
+  imageStyle = DEFAULT_CARD_IMAGE_STYLE,
+  imageDimensions,
+  widths = [160, 320, 480],
+  priority = false,
+  links = [],
+  cardClass = '',
+  titleClass = 'text-lg font-semibold',
+  subtitleClass = 'text-sm text-gray-500',
+  wrapperClass,
+  imgClass,
+  cardStyle,
+  dataSubgroup,
+} = Astro.props;
+
+const resolvedDimensions = imageDimensions || CARD_IMAGE_SIZES[imageStyle] || CARD_IMAGE_SIZES.square;
+
+function getImageWrapperClass(style) {
+  if (style === 'square') return 'w-full aspect-square bg-gray-100 flex-shrink-0 overflow-hidden';
+  if (style === 'round') return 'w-48 h-48 mx-auto md:mx-0 overflow-hidden rounded-full';
+  return 'h-48 bg-gray-100 flex-shrink-0 overflow-hidden';
+}
+
+function getImgClass(style) {
+  if (style === 'round') return 'w-full h-full object-cover';
+  return 'w-full h-full object-cover';
+}
+
+function getIconName(url, label) {
+  if (url.includes('github.com') || label.includes('github')) return 'tabler:brand-github';
+  if (url.includes('linkedin.com') || label.includes('linkedin')) return 'tabler:brand-linkedin';
+  if (url.includes('x.com') || url.includes('twitter.com') || label.includes('twitter') || label === 'x')
+    return 'tabler:brand-x';
+  if (url.startsWith('mailto:') || label.includes('email')) return 'tabler:mail';
+  if (label.includes('cv') || label.includes('resume')) return 'tabler:file-cv';
+  return 'tabler:globe';
+}
+---
+
+<article
+  class={`bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative ${cardClass}`}
+  style={cardStyle}
+  data-subgroup={dataSubgroup}
+>
+  {href ? <a href={href} class="absolute inset-0 z-10" aria-label={title}></a> : null}
+  <div class={wrapperClass || getImageWrapperClass(imageStyle)}>
+    {image ? (
+      <Image
+        src={image}
+        alt={imageAlt || title}
+        class={imgClass || getImgClass(imageStyle)}
+        widths={widths}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : 'auto'}
+        width={resolvedDimensions.width}
+        height={resolvedDimensions.height}
+      />
+    ) : null}
+  </div>
+  <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
+    <div>
+      {title ? <h3 class={titleClass}>{title}</h3> : null}
+      {subtitle ? <p class={subtitleClass}>{subtitle}</p> : null}
+    </div>
+
+    {links && links.length ? (
+      <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
+        {links.map((link) => {
+          const url = link.url || '';
+          const label = (link.label || '').toLowerCase();
+          const iconName = getIconName(url, label);
+          return (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
+              title={link.label}
+              aria-label={link.label}
+            >
+              <Icon name={iconName} class="w-5 h-5" />
+            </a>
+          );
+        })}
+      </div>
+    ) : null}
+  </div>
+</article>
