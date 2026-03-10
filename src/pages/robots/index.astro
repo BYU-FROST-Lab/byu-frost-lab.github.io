@@ -12,7 +12,6 @@ const modules = ((import.meta as any).glob('../../content/robots/*.md', { eager:
 
 function resolvePhoto(photo) {
   if (!photo) return photo;
-  // Convert frontmatter string paths to the glob key so Astro can serve optimized assets.
   const key = photo.replace(/^\/?src\//, '../../');
   return photoImports[key]?.default ?? photo;
 }
@@ -27,8 +26,7 @@ robots.sort((a, b) => a.name.localeCompare(b.name));
 
 const metadata = { title: 'Robots' };
 
-// Set the image style for index cards: 'rect' | 'square' | 'round'
-// Change this value to quickly preview different styles.
+// --- IMAGE STYLES ---
 const IMAGE_SIZES = {
   rect: { width: 1024, height: 192 },
   square: { width: 480, height: 480 },
@@ -41,31 +39,36 @@ const IMAGE_DIMENSIONS = IMAGE_SIZES[IMAGE_STYLE];
 function getImageWrapperClass(style) {
   if (style === 'square') return 'w-full aspect-square bg-gray-100 flex-shrink-0 overflow-hidden';
   if (style === 'round') return 'w-48 h-48 mx-auto md:mx-0 overflow-hidden rounded-full';
-  // default: rectangular (historic look)
   return 'h-48 bg-gray-100 flex-shrink-0 overflow-hidden';
 }
 
 function getImgClass(style) {
-  if (style === 'round') return 'w-full h-full object-cover';
   return 'w-full h-full object-cover';
 }
 
-// Return grid classes for a group. Students use 5 columns on large screens.
 function getGridClass(group) {
-  if (group === 'robot') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
-  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6';
+  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
 }
 
-
+// --- GROUP CONFIGURATION ---
+// The keys here ('robot', 'retired') must match the "group" field in your markdown
 const GROUPS = {
-  robot: {}
+  robot: {
+    title: 'Active Fleet',
+    intro: 'We have a number of robots that we use to test our algorithms, system development, and implementations.'
+  },
+  retired: {
+    title: 'Past Robots', // This title appears under the divider
+    intro: 'Retired robots that paved the way for our current research.'
+  }
 };
 
 function membersByGroup(group) {
-  return robots.filter((p) => (p.group || 'graduate') === group);
+  // If a robot has no group, it defaults to 'robot' (active)
+  return robots.filter((p) => (p.group || 'robot') === group);
 }
 
-// Fisher-Yates shuffle (non-destructive)
+// Fisher-Yates shuffle
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -75,87 +78,96 @@ function shuffle(arr) {
   return a;
 }
 
-// Return a randomized/ordered list for a group.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   return shuffle(list);
 }
-
 ---
 
 <PageLayout metadata={metadata}>
   <header class="max-w-4xl mx-auto px-4 pt-12 pb-6">
     <h1 class="text-4xl md:text-5xl font-heading font-bold mb-3">Robots</h1>
-    <p class="text-lg text-muted max-w-3xl">We have a number of robots that we use to test our algorithms, system development, and implementations.</p>
+    <p class="text-lg text-muted max-w-3xl">
+      Exploring the boundaries of autonomous systems with our custom fleet.
+    </p>
   </header>
 
   <section class="max-w-4xl mx-auto px-4 py-8">
     {Object.keys(GROUPS).map((g) => {
       const list = getOrderedMembers(g);
       return list.length ? (
-        <section class="mb-12">
-          <div class="flex items-baseline justify-between mb-4">
-            <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
-            {/* <p class="text-sm text-muted hidden sm:block">{list.length} member{list.length > 1 ? 's' : ''}</p> */}
-          </div>
-          <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
+        <>
+          {/* --- DIVIDER LOGIC --- */}
+          {g === 'retired' && (
+             <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12">
+             </div>
+          )}
 
-          <div class={getGridClass(g)}>
-            {list.map((p,i) => (
-              <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
-                <a href={`/robots/${p.slug}`} class="absolute inset-0 z-10" aria-label={p.name}></a>
-                <div class={getImageWrapperClass(IMAGE_STYLE)}>
-                  <Image
-                    src={p.photo}
-                    alt={p.name}
-                    class={getImgClass(IMAGE_STYLE)}
-                    widths={[160, 320, 480]}
-                    formats={["avif", "webp", "jpeg"]}
-                    loading={g === 'robot' && i < 2 ? 'eager' : 'lazy'}
-                    fetchpriority={g === 'robot' && i < 2 ? 'high' : 'auto'}
-                    width={IMAGE_DIMENSIONS.width}
-                    height={IMAGE_DIMENSIONS.height}
-                  />
-                </div>
-                <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
-                  <div>
-                    <h3 class="text-lg font-semibold">{p.name}</h3>
-                    <p class="text-sm text-gray-500">{p.title}</p>
+          <section class="mb-12">
+            <div class="flex items-baseline justify-between mb-4">
+              <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
+            </div>
+            <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
+
+            <div class={getGridClass(g)}>
+              {list.map((p,i) => (
+                <article class="bg-white dark:bg-slate-800 rounded-lg shadow hover:shadow-lg overflow-hidden transition-shadow h-full flex flex-col relative intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter">
+                  <a href={`/robots/${p.slug}`} class="absolute inset-0 z-10" aria-label={p.name}></a>
+                  
+                  <div class={getImageWrapperClass(IMAGE_STYLE)}>
+                    <Image
+                      src={p.photo}
+                      alt={p.name}
+                      class={getImgClass(IMAGE_STYLE)}
+                      widths={[160, 320, 480]}
+                      formats={["avif", "webp", "jpeg"]}
+                      loading={g === 'robot' && i < 2 ? 'eager' : 'lazy'}
+                      fetchpriority={g === 'robot' && i < 2 ? 'high' : 'auto'}
+                      width={IMAGE_DIMENSIONS.width}
+                      height={IMAGE_DIMENSIONS.height}
+                    />
                   </div>
-
-                  {p.links && p.links.length ? (
-                    <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
-                      {p.links.map((l) => {
-                        const url = l.url || '';
-                        const label = (l.label || '').toLowerCase();
-                        let iconName = 'tabler:globe';
-                        if (url.includes('github.com') || label.includes('github')) iconName = 'tabler:brand-github';
-                        else if (url.includes('linkedin.com') || label.includes('linkedin')) iconName = 'tabler:brand-linkedin';
-                        else if (url.includes('x.com') || url.includes('twitter.com') || label.includes('twitter') || label === 'x') iconName = 'tabler:brand-x';
-                        else if (url.startsWith('mailto:') || label.includes('email')) iconName = 'tabler:mail';
-                        else if (label.includes('cv') || label.includes('resume')) iconName = 'tabler:file-cv';
-
-                        return (
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
-                            title={l.label}
-                            aria-label={l.label}
-                          >
-                            <Icon name={iconName} class="w-5 h-5" />
-                          </a>
-                        );
-                      })}
+                  
+                  <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
+                    <div>
+                      <h3 class="text-lg font-semibold">{p.name}</h3>
+                      <p class="text-sm text-gray-500">{p.title}</p>
                     </div>
-                  ) : null}
-                </div>
-              </article>
+
+                    {p.links && p.links.length ? (
+                      <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
+                        {p.links.map((l) => {
+                          const url = l.url || '';
+                          const label = (l.label || '').toLowerCase();
+                          let iconName = 'tabler:globe';
+                          if (url.includes('github.com') || label.includes('github')) iconName = 'tabler:brand-github';
+                          else if (url.includes('linkedin.com') || label.includes('linkedin')) iconName = 'tabler:brand-linkedin';
+                          else if (url.includes('x.com') || url.includes('twitter.com') || label.includes('twitter') || label === 'x') iconName = 'tabler:brand-x';
+                          else if (url.startsWith('mailto:') || label.includes('email')) iconName = 'tabler:mail';
+                          else if (label.includes('cv') || label.includes('resume')) iconName = 'tabler:file-cv';
+
+                          return (
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
+                              title={l.label}
+                              aria-label={l.label}
+                            >
+                              <Icon name={iconName} class="w-5 h-5" />
+                            </a>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
+                </article>
               ))}
-          </div>
-        </section>
+            </div>
+          </section>
+        </>
       ) : null;
-  })}
+    })}
   </section>
 </PageLayout>
