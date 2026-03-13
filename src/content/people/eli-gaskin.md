@@ -1,9 +1,9 @@
 ---
 name: "Eli Gaskin"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_alum/eli-gaskin.jpg"
-grad_date: 2026-02-01
+grad_date: 2026-03-01
 links:
   - label: "LinkedIn"
     url: "linkedin.com/in/eli-gaskin"

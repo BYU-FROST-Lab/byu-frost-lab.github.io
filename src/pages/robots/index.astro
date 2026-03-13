@@ -22,27 +22,28 @@ robots.sort((a, b) => a.name.localeCompare(b.name));
 
 const metadata = { title: 'Robots' };
 
-// Set the image style for index cards: 'rect' | 'square' | 'round'
-// Change this value to quickly preview different styles.
 const IMAGE_STYLE = DEFAULT_CARD_IMAGE_STYLE;
 const IMAGE_DIMENSIONS = CARD_IMAGE_SIZES[IMAGE_STYLE];
 
-// Return grid classes for a group. Students use 5 columns on large screens.
-function getGridClass(group) {
-  if (group === 'robot') return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
-  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6';
+function getGridClass() {
+  return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
 }
 
-
 const GROUPS = {
-  robot: {}
+  robot: {
+    title: 'Active Fleet',
+    intro: 'We have a number of robots that we use to test our algorithms, system development, and implementations.',
+  },
+  retired: {
+    title: 'Past Robots',
+    intro: 'Retired robots that paved the way for our current research.',
+  },
 };
 
 function membersByGroup(group) {
-  return robots.filter((p) => (p.group || 'graduate') === group);
+  return robots.filter((p) => (p.group || 'robot') === group);
 }
 
-// Fisher-Yates shuffle (non-destructive)
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -52,48 +53,46 @@ function shuffle(arr) {
   return a;
 }
 
-// Return a randomized/ordered list for a group.
 function getOrderedMembers(group) {
   const list = membersByGroup(group);
   return shuffle(list);
 }
-
 ---
 
 <SectionedCardPage
   metadata={metadata}
   title="Robots"
-  intro="We have a number of robots that we use to test our algorithms, system development, and implementations."
+  intro="Exploring the boundaries of autonomous systems with our custom fleet."
 >
   {Object.keys(GROUPS).map((g) => {
     const list = getOrderedMembers(g);
     return list.length ? (
-      <section class="mb-12">
-        {GROUPS[g].title ? (
+      <>
+        {g === 'retired' && <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12"></div>}
+        <section class="mb-12">
           <div class="flex items-baseline justify-between mb-4">
             <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
-            {/* <p class="text-sm text-muted hidden sm:block">{list.length} member{list.length > 1 ? 's' : ''}</p> */}
           </div>
-        ) : null}
-        {GROUPS[g].intro ? <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p> : null}
+          <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
 
-        <div class={getGridClass(g)}>
-          {list.map((p, i) => (
-            <EntityCard
-              href={`/robots/${p.slug}`}
-              title={p.name}
-              subtitle={p.title}
-              image={p.photo}
-              imageAlt={p.name}
-              imageStyle={IMAGE_STYLE}
-              imageDimensions={IMAGE_DIMENSIONS}
-              priority={g === 'robot' && i < 2}
-              links={p.links}
-              cardClass="intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter"
-            />
-          ))}
-        </div>
-      </section>
+          <div class={getGridClass()}>
+            {list.map((p, i) => (
+              <EntityCard
+                href={`/robots/${p.slug}`}
+                title={p.name}
+                subtitle={p.title}
+                image={p.photo}
+                imageAlt={p.name}
+                imageStyle={IMAGE_STYLE}
+                imageDimensions={IMAGE_DIMENSIONS}
+                priority={g === 'robot' && i < 2}
+                links={p.links}
+                cardClass="intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter"
+              />
+            ))}
+          </div>
+        </section>
+      </>
     ) : null;
   })}
 </SectionedCardPage>
