@@ -52,6 +52,7 @@ export interface Taxonomy {
 export interface MetaData {
   title?: string;
   ignoreTitleTemplate?: boolean;
+  heroOverlap?: boolean;
 
   canonical?: string;
 

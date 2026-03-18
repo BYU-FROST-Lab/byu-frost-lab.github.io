@@ -2,18 +2,14 @@
 import PageLayout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
+import { makePhotoResolver } from '~/utils/local-images';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/robots/*.{jpg,jpeg,png,webp,avif}',
   { eager: true },
 ) as Record<string, any>);
 
-function resolvePhoto(photo) {
-  if (!photo) return photo;
-  // Convert frontmatter string paths to the glob key so Astro can serve optimized assets.
-  const key = photo.replace(/^\/?\bsrc\//, '../../');
-  return photoImports[key]?.default ?? photo;
-}
+const resolvePhoto = makePhotoResolver(photoImports);
 
 export async function getStaticPaths() {
   const modules = (import.meta.glob('../../content/robots/*.md', { eager: true }) as any);
@@ -54,7 +50,6 @@ const metadata = { title: `${robot.name} | Robots | FROST Lab` };
             alt={robot.name}
             class="w-full h-full object-cover"
             widths={[320, 640, 1024]}
-            formats={['avif', 'webp', 'jpeg']}
             width={480}
             height={480}
           />
