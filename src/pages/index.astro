@@ -3,6 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 
 import Hero3 from '~/components/widgets/Hero3.astro';
 import Features from '~/components/widgets/Features.astro';
+import logoWhite from '~/assets/images/logo_white_name.svg';
 
 const metadata = {
   title: 'Home | FROST Lab',
@@ -28,8 +29,7 @@ const metadata = {
     image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
     <Fragment slot="title">
-      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700;">FROST  </span>
-      <span style="font-family: 'Futura', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500;"> Lab</span>
+      <img src={logoWhite.src} alt="FROST Lab" class="h-24 md:h-32 w-auto mx-auto" />
     </Fragment>
 
     <Fragment slot="subtitle">
