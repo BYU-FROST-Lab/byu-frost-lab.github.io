@@ -6,13 +6,14 @@ import mangelsonRaw from '../data/bib/mangelson.bib?raw';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 // Preload any publication images referenced in bib files so they resolve in production builds.
 // Use astro:assets metadata so we can render via <Image /> for optimized output.
 const publicationImages = import.meta.glob('../assets/images/publications/*.{png,jpg,jpeg,webp,avif,gif}', {
   eager: true,
   import: 'default',
-});
+}) as Record<string, ImageMetadata>;
 
 const PUBLICATIONS_BASE = 'assets/images/publications/';
 
@@ -51,13 +52,13 @@ function normalizeImageKey(raw: string) {
 // Resolve to assets/images/publications/<file>. Accepts bib values like
 // "publications/foo.png" or just "foo.png".
 function resolvePublicationImage(raw?: string) {
-  if (!raw) return '';
+  if (!raw) return null;
   const normalized = normalizeImageKey(raw)
     .replace(/^assets\/?images\/?publications\//, '')
     .replace(/^images\/?publications\//, '')
     .replace(/^publications\//, '');
   const canonical = `${PUBLICATIONS_BASE}${normalized}`;
-  return publicationImageMap.get(canonical) || '';
+  return publicationImageMap.get(canonical) || null;
 }
 
 function sanitizeBib(bib?: string) {
@@ -100,7 +101,7 @@ function sanitizeBib(bib?: string) {
                   <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
                     <Image
                       src={imageSrc}
-                      alt={entry.fields.title || entry.citationKey}
+                      alt={entry.fields.title || entry.citationKey || null}
                       widths={[80, 96, 120, 160]}
                       sizes="(min-width: 768px) 96px, 80px"
                       class="w-full h-full object-cover block"
