@@ -28,7 +28,7 @@
     "@astrolib/seo": "^1.0.0-beta.8",
     "@fontsource-variable/inter": "^5.2.6",
     "@iconify-json/academicons": "^1.2.4",
-    "astro": "^5.18.0",
+    "astro": "^5.18.1",
     "astro-embed": "^0.9.0",
     "astro-icon": "^1.1.5",
     "citation-js": "^0.7.14",
