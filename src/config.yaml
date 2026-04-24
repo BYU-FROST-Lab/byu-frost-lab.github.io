@@ -1,6 +1,6 @@
 site:
   name: FROST Lab
-  site: 'https://byu-frost-lab.github.io'
+  site: 'https://frostlab.byu.edu'
   base: '/'
   trailingSlash: false
 
