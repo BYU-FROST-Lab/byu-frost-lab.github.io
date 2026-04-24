@@ -1,13 +1,37 @@
 ---
 import { GoogleAnalytics } from '@astrolib/analytics';
 import { ANALYTICS } from 'astrowind:config';
+
+const googleAnalyticsId = ANALYTICS?.vendors?.googleAnalytics?.id
+  ? String(ANALYTICS.vendors.googleAnalytics.id)
+  : undefined;
 ---
 
 {
-  ANALYTICS?.vendors?.googleAnalytics?.id ? (
-    <GoogleAnalytics
-      id={String(ANALYTICS.vendors.googleAnalytics.id)}
-      partytown={ANALYTICS?.vendors?.googleAnalytics?.partytown}
-    />
+  googleAnalyticsId ? (
+    <>
+      <GoogleAnalytics
+        id={googleAnalyticsId}
+        partytown={ANALYTICS?.vendors?.googleAnalytics?.partytown}
+      />
+      <script is:inline>
+        (() => {
+          const track404Page = () => {
+            if (!document.querySelector('[data-page-type="404"]') || typeof window.gtag !== 'function') {
+              return;
+            }
+
+            window.gtag('event', 'page_not_found', {
+              page_location: window.location.href,
+              page_path: window.location.pathname,
+              page_referrer: document.referrer,
+            });
+          };
+
+          document.addEventListener('DOMContentLoaded', track404Page);
+          document.addEventListener('astro:after-swap', track404Page);
+        })();
+      </script>
+    </>
   ) : null
 }
