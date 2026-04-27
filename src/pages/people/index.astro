@@ -3,6 +3,7 @@ import SectionedCardPage from '~/components/SectionedCardPage.astro';
 import EntityCard from '~/components/EntityCard.astro';
 import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
+import groupPhoto from '~/assets/images/group_april_2026.jpg';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/people/**/*.{jpg,jpeg,png,webp,avif}',
@@ -91,6 +92,15 @@ function getOrderedMembers(group) {
   title="Lab Members"
   intro="Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering."
 >
+  <div class="-mt-10 mb-10">
+    <img
+      src={groupPhoto.src}
+      alt="Lab group photo April 2026"
+      class="w-full h-auto rounded-xl shadow-md"
+      loading="lazy"
+    />
+  </div>
+
   {Object.keys(GROUPS).map((g) => {
     const list = getOrderedMembers(g);
     return list.length ? (
