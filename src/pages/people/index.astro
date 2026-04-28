@@ -1,9 +1,10 @@
 ---
 import SectionedCardPage from '~/components/SectionedCardPage.astro';
 import EntityCard from '~/components/EntityCard.astro';
+import Image from '~/components/common/Image.astro';
 import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
-import groupPhoto from '~/assets/images/group_april_2026.jpg';
+import groupPhoto from '~/assets/images/group_april_2026_crop.jpg';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/people/**/*.{jpg,jpeg,png,webp,avif}',
@@ -12,6 +13,8 @@ const photoImports = ((import.meta as any).glob(
 
 const modules = ((import.meta as any).glob('../../content/people/*.md', { eager: true }) as any);
 const resolvePhoto = makePhotoResolver(photoImports);
+const pageIntro =
+  'Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering.';
 
 const people = Object.entries(modules).map(([path, mod]: [string, any]) => {
   const parts = path.split('/');
@@ -90,16 +93,25 @@ function getOrderedMembers(group) {
 <SectionedCardPage
   metadata={metadata}
   title="Lab Members"
-  intro="Meet the people driving our research—faculty, graduate students, and undergraduates collaborating on projects across perception, autonomy, and systems engineering."
+  intro={pageIntro}
+  maxWidthClass="max-w-5xl"
 >
-  <div class="-mt-10 mb-10">
-    <img
-      src={groupPhoto.src}
+  <figure class="-mt-2 mb-10">
+    <Image
+      src={groupPhoto}
       alt="Lab group photo April 2026"
-      class="w-full h-auto rounded-xl shadow-md"
-      loading="lazy"
+      class="w-full h-auto rounded-[2rem] shadow-xl ring-1 ring-black/10"
+      widths={[640, 960, 1280, 1668, 2048]}
+      sizes="(min-width: 1040px) 992px, calc(100vw - 2rem)"
+      width={groupPhoto.width}
+      height={groupPhoto.height}
+      loading="eager"
+      fetchpriority="high"
     />
-  </div>
+    <figcaption class="mt-3 text-sm text-muted">
+      Lab group photo, April 2026.
+    </figcaption>
+  </figure>
 
   {Object.keys(GROUPS).map((g) => {
     const list = getOrderedMembers(g);
