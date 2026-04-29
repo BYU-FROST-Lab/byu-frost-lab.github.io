@@ -2,9 +2,7 @@
 import { GoogleAnalytics } from '@astrolib/analytics';
 import { ANALYTICS } from 'astrowind:config';
 
-const googleAnalyticsId = ANALYTICS?.vendors?.googleAnalytics?.id
-  ? String(ANALYTICS.vendors.googleAnalytics.id)
-  : undefined;
+const googleAnalyticsId = import.meta.env.PUBLIC_GA_ID?.trim() || undefined;
 ---
 
 {
