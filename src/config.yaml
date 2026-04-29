@@ -11,7 +11,7 @@ metadata:
   title:
     default: FROST Lab
     template: '%s — FROST Lab'
-  description: "The FROST Lab at Brigham Young University focuses on research in robotics, automation, and intelligent systems."
+  description: "The Field Robotic Systems (FROST) Lab at Brigham Young University focuses on research in robotics, automation, and intelligent systems."
   robots:
     index: true
     follow: true
@@ -66,7 +66,7 @@ apps:
 analytics:
   vendors:
     googleAnalytics:
-      id: G-R1DGFQ9H39 # or "G-XXXXXXXXXX"
+      id: '' # Set PUBLIC_GA_ID in your build environment to enable analytics.
       partytown: false
 
 ui:
