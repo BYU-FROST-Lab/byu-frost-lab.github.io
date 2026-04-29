@@ -11,7 +11,7 @@ metadata:
   title:
     default: FROST Lab
     template: '%s — FROST Lab'
-  description: "The FROST Lab at Brigham Young University focuses on research in robotics, automation, and intelligent systems."
+  description: "The Field Robotic Systems (FROST) Lab at Brigham Young University focuses on research in robotics, automation, and intelligent systems."
   robots:
     index: true
     follow: true
