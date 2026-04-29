@@ -19,6 +19,8 @@ docker compose up
 ```
 Then navigate to localhost:8080 to view the website.
 
+To enable Google Analytics, set the public build-time env var `PUBLIC_GA_ID` to your GA4 measurement ID. Leave it unset to keep analytics disabled, which is the default behavior for forks.
+
 
 
 ### Project structure

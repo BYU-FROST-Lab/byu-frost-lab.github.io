@@ -66,7 +66,7 @@ apps:
 analytics:
   vendors:
     googleAnalytics:
-      id: G-R1DGFQ9H39 # or "G-XXXXXXXXXX"
+      id: '' # Set PUBLIC_GA_ID in your build environment to enable analytics.
       partytown: false
 
 ui:
