@@ -63,8 +63,8 @@ export const footerData = {
       links: [
         { text: 'LinkedIn', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
         { text: 'GitHub', href: 'https://github.com/byu-frost-lab' },
-        { text: 'YouTube', href: 'https://www.youtube.com/@byufrostlab' },
-        { text: 'Twitter', href: 'https://x.com/byu-frost-lab' },
+        { text: 'YouTube', href: 'https://www.youtube.com/@byu-frost-lab' },
+        { text: 'Twitter', href: 'https://x.com/byu_frost_lab' },
       ],
     },
     {
@@ -82,9 +82,9 @@ export const footerData = {
   socialLinks: [
     { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/byu-frost-lab/' },
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/byu-frost-lab' },
-    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byufrostlab' },
+    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://www.youtube.com/@byu-frost-lab' },
     // { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu-frost-lab' },
+    { ariaLabel: 'X', icon: 'tabler:brand-x', href: 'https://twitter.com/byu_frost_lab' },
   ],
   footNote: `
     Built using <a class="text-blue-800 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo Theme</a> · All rights reserved.
