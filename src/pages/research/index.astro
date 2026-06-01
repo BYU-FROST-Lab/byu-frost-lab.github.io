@@ -3,6 +3,7 @@ import SectionedCardPage from '~/components/SectionedCardPage.astro';
 import EntityCard from '~/components/EntityCard.astro';
 import { DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
+import { getPermalink } from '~/utils/permalinks';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/research_projects/*.{jpg,jpeg,png,webp,avif}',
@@ -97,7 +98,7 @@ function projectsByGroup(group) {
         <div class={getGridClass(g)}>
           {list.map((p) => (
             <EntityCard
-              href={`/research/${p.slug}`}
+              href={getPermalink(`/research/${p.slug}`)}
               title={p.project_name}
               subtitle={p.subtext}
               image={p.photo}

@@ -1,10 +1,14 @@
 import { getImage } from 'astro:assets';
 import { transformUrl, parseUrl } from 'unpic';
+import { SITE } from 'astrowind:config';
 
 import type { ImageMetadata } from 'astro';
 import type { HTMLAttributes } from 'astro/types';
 
 type Layout = 'fixed' | 'constrained' | 'fullWidth' | 'cover' | 'responsive' | 'contained';
+
+const normalizeImageServiceUrl = (src: string) =>
+  SITE.trailingSlash && src.startsWith('/_image?') ? src.replace('/_image?', '/_image/?') : src;
 
 export interface ImageProps extends Omit<HTMLAttributes<'img'>, 'src'> {
   src?: string | ImageMetadata | null;
@@ -228,7 +232,7 @@ export const astroAssetsOptimizer: ImagesOptimizer = async (
       const result = await getImage({ src: image, width: w, inferSize: true, ...(format ? { format: format } : {}) });
 
       return {
-        src: result?.src,
+        src: result?.src ? normalizeImageServiceUrl(result.src) : result?.src,
         width: result?.attributes?.width ?? w,
         height: result?.attributes?.height,
       };
@@ -332,7 +336,7 @@ export async function getImagesOptimized(
     .join(', ');
 
   return {
-    src: typeof image === 'string' ? image : image.src,
+    src: normalizeImageServiceUrl(typeof image === 'string' ? image : image.src),
     attributes: {
       width: width,
       height: height,

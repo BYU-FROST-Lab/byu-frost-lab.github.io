@@ -5,7 +5,7 @@ import moonRaw from '../data/bib/moon.bib?raw';
 import mangelsonRaw from '../data/bib/mangelson.bib?raw';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
+import Image from '~/components/common/Image.astro';
 import type { ImageMetadata } from 'astro';
 
 // Preload any publication images referenced in bib files so they resolve in production builds.
