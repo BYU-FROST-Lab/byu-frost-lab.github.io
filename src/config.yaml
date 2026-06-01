@@ -2,7 +2,7 @@ site:
   name: FROST Lab
   site: 'https://frostlab.byu.edu'
   base: '/'
-  trailingSlash: false
+  trailingSlash: true
 
   googleSiteVerificationId: c9_HrFsGMs1WvXLNbdPboXgvanNhCW7252VfoFwnBm0
 

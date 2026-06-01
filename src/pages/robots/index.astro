@@ -3,6 +3,7 @@ import SectionedCardPage from '~/components/SectionedCardPage.astro';
 import EntityCard from '~/components/EntityCard.astro';
 import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
+import { getPermalink } from '~/utils/permalinks';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/robots/*.{jpg,jpeg,png,webp,avif}',
@@ -78,7 +79,7 @@ function getOrderedMembers(group) {
           <div class={getGridClass()}>
             {list.map((p, i) => (
               <EntityCard
-                href={`/robots/${p.slug}`}
+                href={getPermalink(`/robots/${p.slug}`)}
                 title={p.name}
                 subtitle={p.title}
                 image={p.photo}

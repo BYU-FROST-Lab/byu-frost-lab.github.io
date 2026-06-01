@@ -5,6 +5,17 @@ import { SITE, APP_BLOG } from 'astrowind:config';
 import { trim } from '~/utils/utils';
 
 export const trimSlash = (s: string) => trim(trim(s, '/'));
+const stripIndexHtmlSuffix = (path = '') => path.replace(/\/index\.html$/, '/');
+const hasFileExtension = (path = '') => /\.[^/]+$/.test(path);
+
+export const normalizePathname = (path = ''): string => {
+  const normalized = trimSlash(stripIndexHtmlSuffix(path));
+  if (normalized && hasFileExtension(normalized)) {
+    return `/${normalized}`;
+  }
+  return normalized ? `/${normalized}${SITE.trailingSlash ? '/' : ''}` : '/';
+};
+
 const createPath = (...params: string[]) => {
   const paths = params
     .map((el) => trimSlash(el))
@@ -29,10 +40,18 @@ export const POST_PERMALINK_PATTERN = trimSlash(APP_BLOG?.post?.permalink || `${
 
 /** */
 export const getCanonical = (path = ''): string | URL => {
-  const url = String(new URL(path, SITE.site));
+  const normalizedPath =
+    typeof path === 'string' && !/^(https?:)?\/\//.test(path) ? normalizePathname(path) : path;
+  const url = String(new URL(normalizedPath, SITE.site));
+
   if (SITE.trailingSlash == false && path && url.endsWith('/')) {
     return url.slice(0, -1);
-  } else if (SITE.trailingSlash == true && path && !url.endsWith('/')) {
+  } else if (
+    SITE.trailingSlash == true &&
+    path &&
+    !url.endsWith('/') &&
+    !hasFileExtension(trimSlash(new URL(url).pathname))
+  ) {
     return url + '/';
   }
   return url;

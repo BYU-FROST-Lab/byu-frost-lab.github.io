@@ -4,6 +4,7 @@ import EntityCard from '~/components/EntityCard.astro';
 import Image from '~/components/common/Image.astro';
 import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
+import { getPermalink } from '~/utils/permalinks';
 import groupPhoto from '~/assets/images/group_april_2026_crop.jpg';
 
 const photoImports = ((import.meta as any).glob(
@@ -136,7 +137,7 @@ function getOrderedMembers(group) {
           <div class={getGridClass(g)}>
             {list.map((p, i) => (
               <EntityCard
-                href={`/people/${p.slug}`}
+                href={getPermalink(`/people/${p.slug}`)}
                 title={p.name}
                 subtitle={p.title}
                 image={p.photo}

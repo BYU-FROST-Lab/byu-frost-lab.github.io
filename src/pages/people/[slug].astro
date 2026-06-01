@@ -1,8 +1,9 @@
 ---
 import PageLayout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
+import Image from '~/components/common/Image.astro';
 import { makePhotoResolver } from '~/utils/local-images';
+import { getPermalink } from '~/utils/permalinks';
 
 const photoImports = ((import.meta as any).glob(
   '../../assets/images/people/**/*.{jpg,jpeg,png,webp,avif}',
@@ -40,7 +41,7 @@ const metadata = { title: `${person.name} | People | FROST Lab` };
 
 <PageLayout metadata={metadata}>
   <section class="max-w-4xl mx-auto px-4 py-12">
-    <a class="text-sm text-blue-600 mb-4 inline-block" href="/people">← Back to people</a>
+    <a class="text-sm text-blue-600 mb-4 inline-block" href={getPermalink('/people')}>← Back to people</a>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
       <aside class="md:col-span-1">
