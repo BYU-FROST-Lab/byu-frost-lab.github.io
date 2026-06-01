@@ -102,6 +102,8 @@ function sanitizeBib(bib?: string) {
                     <Image
                       src={imageSrc}
                       alt={entry.fields.title || entry.citationKey || null}
+                      width={96}
+                      height={96}
                       widths={[80, 96, 120, 160]}
                       sizes="(min-width: 768px) 96px, 80px"
                       class="w-full h-full object-cover block"
