@@ -5,9 +5,9 @@ group: "undergraduate"
 photo: "/src/assets/images/people/undergrad_curr/porter-mathews.jpg"
 links:
   - label: "Email"
-    url: "porterlikesbacon@gmail.com"
+    url: "mailto:porterlikesbacon@gmail.com"
   - label: "LinkedIn"
-    url: "www.linkedin.com/in/porter-mathews"
+    url: "https://www.linkedin.com/in/porter-mathews"
   - label: "GitHub"
     url: "https://github.com/PorterMathews"
 ---

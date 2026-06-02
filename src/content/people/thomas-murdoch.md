@@ -5,7 +5,7 @@ group: "undergraduate"
 photo: "src/assets/images/people/undergrad_curr/thomas-murdoch.jpg"
 links:
   - label: "Email"
-    url: "murdotho@byu.edu"
+    url: "mailto:murdotho@byu.edu"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/tomurdoch/"
 ---

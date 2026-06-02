@@ -5,7 +5,7 @@ group: "graduate"
 photo: "/src/assets/images/people/grad_curr/iverson-chantung.png"
 links:
   - label: "Email"
-    url: "iversonchantung@gmail.com"
+    url: "mailto:iversonchantung@gmail.com"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/iverson-chan-tung-226732335/"
 ---
