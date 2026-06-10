@@ -1,8 +1,9 @@
 ---
 name: "Porter Mathews"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_curr/porter-mathews.jpg"
+grad_date: 2026-04-01
 links:
   - label: "Email"
     url: "porterlikesbacon@gmail.com"

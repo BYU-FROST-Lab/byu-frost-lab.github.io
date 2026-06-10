@@ -1,8 +1,9 @@
 ---
 name: "Ryan Bartholomew"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_curr/ryan-bartholomew.png"
+grad_date: 2026-05-01
 links:
   - label: "Personal site"
     url: "https://sites.google.com/view/ryan-m-bartholomew"
