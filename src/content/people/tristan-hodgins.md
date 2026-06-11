@@ -1,8 +1,9 @@
 ---
 name: "Tristan Hodgins"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_curr/tristan-hodgins.jpg"
+grad_date: 2026-05-01
 links:
   - label: "Email"
     url: "mailto:tah88@byu.edu"

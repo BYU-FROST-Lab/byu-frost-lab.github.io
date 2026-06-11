@@ -1,8 +1,9 @@
 ---
 name: "Blake Romrell"
 title: "Master's Student"
-group: "graduate"
+group: "graduate_alum"
 photo: "/src/assets/images/people/grad_curr/blake-romrell.jpg"
+grad_date: 2026-05-01
 ---
 # About
 Blake Paul Romrell is a Graduate Student majoring in Computer Engineering, in the Electrical and computer Engineering department with an undergraduate degree in Applied Physics, with minors in Computer Science and Mathematics from BYU (graduated April 2023). He joined the FROST Lab in May 2023.

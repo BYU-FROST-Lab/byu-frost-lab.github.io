@@ -1,8 +1,9 @@
 ---
 name: "Hannah Spigarelli"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "src/assets/images/people/undergrad_curr/hannah-spigarelli.jpg"
+grad_date: 2026-05-01
 links:
   - label: "Email"
     url: "mailto:spiga@byu.edu"
