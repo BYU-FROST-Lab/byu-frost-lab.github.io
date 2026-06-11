@@ -7,7 +7,7 @@ links:
   - label: "Personal site"
     url: "https://drbenham.website"
   - label: "Email"
-    url: "wwardle@byu.edu"
+    url: "mailto:wwardle@byu.edu"
 ---
 
 #  About
