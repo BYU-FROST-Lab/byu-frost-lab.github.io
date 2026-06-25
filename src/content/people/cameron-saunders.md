@@ -1,8 +1,9 @@
 ---
 name: "Cameron Saunders"
 title: "Research Assistant"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "/src/assets/images/people/undergrad_curr/cameron-saunders.jpg"
+grad_date: 2026-02-01
 # links:
 #   - label: "Email"
 #     url: "mailto:"

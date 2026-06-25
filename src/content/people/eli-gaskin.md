@@ -6,7 +6,7 @@ photo: "/src/assets/images/people/undergrad_alum/eli-gaskin.jpg"
 grad_date: 2026-03-01
 links:
   - label: "LinkedIn"
-    url: "linkedin.com/in/eli-gaskin"
+    url: "https://linkedin.com/in/eli-gaskin"
   - label: "Email"
     url: "mailto:egaskin2@byu.com"
 ---

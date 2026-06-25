@@ -1,11 +1,12 @@
 ---
 name: "Thomas Murdoch"
 title: "Undergraduate Student"
-group: "undergraduate"
+group: "undergraduate_alum"
 photo: "src/assets/images/people/undergrad_curr/thomas-murdoch.jpg"
+grad_date: 2026-05-01
 links:
   - label: "Email"
-    url: "murdotho@byu.edu"
+    url: "mailto:murdotho@byu.edu"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/tomurdoch/"
 ---

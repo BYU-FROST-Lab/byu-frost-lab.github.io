@@ -3,6 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 
 import Hero3 from '~/components/widgets/Hero3.astro';
 import Features from '~/components/widgets/Features.astro';
+import { getPermalink } from '~/utils/permalinks';
 import logoWhite from '~/assets/images/logo_white_name.svg';
 
 const metadata = {
@@ -20,11 +21,11 @@ const metadata = {
       {
         variant: 'primary',
         text: 'See our research',
-        href: '/research',
+        href: getPermalink('/research'),
         // target: '_blank',
         icon: 'tabler:robot',
       },
-      { text: 'Meet the team', href: '/people' },
+      { text: 'Meet the team', href: getPermalink('/people') },
     ]}
     image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
