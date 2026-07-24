@@ -2,6 +2,7 @@
 import PageLayout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import Image from '~/components/common/Image.astro';
+import RobotVideo from '~/components/RobotVideo.astro';
 import { makePhotoResolver } from '~/utils/local-images';
 import { getPermalink } from '~/utils/permalinks';
 
@@ -93,5 +94,7 @@ const metadata = { title: `${robot.name} | Robots | FROST Lab` };
         </article>
       </main>
     </div>
+
+    <RobotVideo video={robot.video} poster={robot.photo} />
   </section>
 </PageLayout>
