@@ -1,0 +1,133 @@
+---
+import { getImage } from 'astro:assets';
+
+const { video, poster } = Astro.props;
+
+function getYouTubeId(value = '') {
+  if (!value) return '';
+
+  if (/^[\w-]{11}$/.test(value)) return value;
+
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.replace(/^www\./, '');
+
+    if (hostname === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
+    if (hostname.endsWith('youtube.com')) {
+      if (url.searchParams.get('v')) return url.searchParams.get('v') || '';
+
+      const [, id] = url.pathname.match(/^\/(?:embed|shorts)\/([\w-]{11})/) || [];
+      return id || '';
+    }
+  } catch {
+    return '';
+  }
+
+  return '';
+}
+
+const type = video?.type;
+const title = video?.title || 'Robot demonstration video';
+const youtubeId = type === 'youtube' ? getYouTubeId(video?.url || video?.id) : '';
+const localSource = type === 'local' ? video?.src : '';
+const hasVideo = Boolean(youtubeId || localSource);
+const shouldLoop = Boolean(video?.loop);
+const youtubeQuery = youtubeId
+  ? new URLSearchParams({
+      rel: '0',
+      playsinline: '1',
+      mute: '1',
+      enablejsapi: '1',
+      origin: Astro.site?.origin || Astro.url.origin,
+    }).toString()
+  : '';
+const generatedPoster =
+  type === 'local' && poster && typeof poster !== 'string'
+    ? await getImage({ src: poster, width: 1280, format: 'webp' })
+    : null;
+const posterSrc = video?.poster || generatedPoster?.src;
+---
+
+{
+  hasVideo ? (
+    <section class="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700" aria-labelledby="robot-video-title">
+      <div class="mb-4">
+        <p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+          Field demo
+        </p>
+        <h2 id="robot-video-title" class="m-0 text-2xl font-bold">
+          {title}
+        </h2>
+      </div>
+
+      <div class="aspect-video overflow-hidden rounded-xl bg-slate-950 shadow-lg">
+        {youtubeId ? (
+          <iframe
+            class="robot-youtube-video h-full w-full"
+            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?${youtubeQuery}`}
+            title={title}
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
+        ) : (
+          <video
+            class:list={['h-full w-full object-cover', { 'robot-loop-video': shouldLoop }]}
+            src={localSource}
+            poster={posterSrc}
+            autoplay={shouldLoop}
+            muted={shouldLoop}
+            loop={shouldLoop}
+            playsinline
+            controls
+            preload="metadata"
+            aria-label={title}
+          >
+            Your browser does not support embedded video.
+          </video>
+        )}
+      </div>
+
+      {video?.caption ? <p class="mt-3 text-sm text-muted">{video.caption}</p> : null}
+    </section>
+  ) : null
+}
+
+<script is:inline>
+  function muteYouTubeVideos() {
+    document.querySelectorAll('.robot-youtube-video').forEach((iframe) => {
+      const mute = () => {
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ event: 'command', func: 'mute', args: [] }),
+          'https://www.youtube-nocookie.com'
+        );
+      };
+
+      mute();
+      if (iframe.dataset.muteReady === 'true') return;
+      iframe.dataset.muteReady = 'true';
+      iframe.addEventListener('load', () => {
+        mute();
+        window.setTimeout(mute, 250);
+        window.setTimeout(mute, 1000);
+      });
+    });
+  }
+
+  function respectReducedMotion() {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.querySelectorAll('.robot-loop-video').forEach((video) => {
+      video.pause();
+      video.removeAttribute('autoplay');
+    });
+  }
+
+  muteYouTubeVideos();
+  respectReducedMotion();
+  document.addEventListener('astro:page-load', () => {
+    muteYouTubeVideos();
+    respectReducedMotion();
+  });
+</script>

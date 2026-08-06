@@ -10,8 +10,6 @@ links:
     url: "https://linkedin.com/in/snelsondurrant"
   - label: "GitHub"
     url: "https://github.com/snelsondurrant"
-  - label: "CV"
-    url: "https://docs.google.com/document/d/1d0JMr5vxPuSD83KS0W7v9_9oa7-y7VWXeIDLu0lz-yg/edit?usp=sharing"
 ---
 
 Nelson is currently a MS student in the BYU FROST Lab, and graduated with his BS in Computer Engineering from Brigham Young University in 2025. He recently completed an internship at the NAVSEA Naval Surface Warfare Center in Panama City. Nelson has gained robotics experience on the BYU Agricultural Robotics and Mars Rover competition teams, and is especially interested in robotic autonomy in unstructured outdoor and marine environments. Outside of school, he enjoys reading, playing tennis, hiking and backpacking with his wife Abigail, and fly fishing.
