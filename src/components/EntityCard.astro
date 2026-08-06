@@ -26,9 +26,9 @@ const {
 const resolvedDimensions = imageDimensions || CARD_IMAGE_SIZES[imageStyle] || CARD_IMAGE_SIZES.square;
 
 function getImageWrapperClass(style) {
-  if (style === 'square') return 'w-full aspect-square bg-gray-100 flex-shrink-0 overflow-hidden';
+  if (style === 'square') return 'w-full aspect-square bg-gray-100 shrink-0 overflow-hidden';
   if (style === 'round') return 'w-48 h-48 mx-auto md:mx-0 overflow-hidden rounded-full';
-  return 'h-48 bg-gray-100 flex-shrink-0 overflow-hidden';
+  return 'h-48 bg-gray-100 shrink-0 overflow-hidden';
 }
 
 function getImgClass(style) {
@@ -84,7 +84,7 @@ function getIconName(url, label) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
+              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-hidden focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
               title={link.label}
               aria-label={link.label}
             >

@@ -1,41 +1,55 @@
 ---
-import { GoogleAnalytics } from '@astrolib/analytics';
 import { ANALYTICS } from 'astrowind:config';
 
 const googleAnalyticsId = import.meta.env.PUBLIC_GA_ID?.trim() || undefined;
+const scriptType = ANALYTICS?.vendors?.googleAnalytics?.partytown ? 'text/partytown' : undefined;
+const googleAnalyticsScript = googleAnalyticsId
+  ? `
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', ${JSON.stringify(googleAnalyticsId).replace(/</g, '\\u003c')});
+    `
+  : '';
+const notFoundTrackingScript = `
+  (() => {
+    const gtag = (...args) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(args);
+    };
+
+    const track404Page = () => {
+      if (!document.querySelector('[data-page-type="404"]') || window.__awTracked404Page === window.location.href) {
+        return;
+      }
+
+      gtag('event', 'page_not_found', {
+        page_location: window.location.href,
+        page_path: window.location.pathname,
+        page_referrer: document.referrer,
+      });
+      window.__awTracked404Page = window.location.href;
+    };
+
+    document.addEventListener('DOMContentLoaded', track404Page);
+    document.addEventListener('astro:after-swap', track404Page);
+  })();
+`;
 ---
 
 {
   googleAnalyticsId ? (
     <>
-      <GoogleAnalytics
-        id={googleAnalyticsId}
-        partytown={ANALYTICS?.vendors?.googleAnalytics?.partytown}
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+        type={scriptType}
       />
-      <script is:inline>
-        (() => {
-          const gtag = (...args) => {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push(args);
-          };
-
-          const track404Page = () => {
-            if (!document.querySelector('[data-page-type="404"]') || window.__awTracked404Page === window.location.href) {
-              return;
-            }
-
-            gtag('event', 'page_not_found', {
-              page_location: window.location.href,
-              page_path: window.location.pathname,
-              page_referrer: document.referrer,
-            });
-            window.__awTracked404Page = window.location.href;
-          };
-
-          document.addEventListener('DOMContentLoaded', track404Page);
-          document.addEventListener('astro:after-swap', track404Page);
-        })();
-      </script>
+      <script is:inline type={scriptType} set:html={googleAnalyticsScript} />
+      <script is:inline set:html={notFoundTrackingScript} />
     </>
   ) : null
 }

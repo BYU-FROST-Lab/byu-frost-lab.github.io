@@ -1,17 +1,27 @@
 ---
 import merge from 'lodash.merge';
-import { AstroSeo } from '@astrolib/seo';
-
-import type { Props as AstroSeoProps } from '@astrolib/seo';
 
 import { SITE, METADATA, I18N } from 'astrowind:config';
-import type { MetaData } from '~/types';
+import type { MetaData, MetaDataOpenGraph, MetaDataRobots, MetaDataTwitter } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
-export interface Props extends MetaData {
-  dontUseTitleTemplate?: boolean;
+export type Props = MetaData;
+
+type ResolvedOpenGraph = MetaDataOpenGraph & {
+  title?: string;
+  description?: string;
+};
+
+interface ResolvedMetadata {
+  title?: string;
+  titleTemplate?: string;
+  canonical?: string;
+  robots?: MetaDataRobots;
+  description?: string;
+  openGraph?: ResolvedOpenGraph;
+  twitter?: MetaDataTwitter;
 }
 
 const {
@@ -24,13 +34,15 @@ const {
   twitter = {},
 } = Astro.props;
 
-const seoProps: AstroSeoProps = merge(
+const metadata = merge(
   {
     title: '',
     titleTemplate: '%s',
-    canonical: canonical,
-    noindex: true,
-    nofollow: true,
+    canonical,
+    robots: {
+      index: false,
+      follow: false,
+    },
     description: undefined,
     openGraph: {
       url: canonical,
@@ -46,23 +58,58 @@ const seoProps: AstroSeoProps = merge(
   {
     title: METADATA?.title?.default,
     titleTemplate: METADATA?.title?.template,
-    noindex: typeof METADATA?.robots?.index !== 'undefined' ? !METADATA.robots.index : undefined,
-    nofollow: typeof METADATA?.robots?.follow !== 'undefined' ? !METADATA.robots.follow : undefined,
+    robots: METADATA?.robots,
     description: METADATA?.description,
     openGraph: METADATA?.openGraph,
     twitter: METADATA?.twitter,
   },
   {
-    title: title,
+    title,
     titleTemplate: ignoreTitleTemplate ? '%s' : undefined,
-    canonical: canonical,
-    noindex: typeof robots?.index !== 'undefined' ? !robots.index : undefined,
-    nofollow: typeof robots?.follow !== 'undefined' ? !robots.follow : undefined,
-    description: description,
+    canonical,
+    robots,
+    description,
     openGraph: { url: canonical, ...openGraph },
-    twitter: twitter,
+    twitter,
   }
-);
+) as ResolvedMetadata;
+
+const resolvedOpenGraph = (await adaptOpenGraphImages(metadata.openGraph, Astro.site)) as ResolvedOpenGraph;
+const formattedTitle = metadata.title
+  ? metadata.titleTemplate?.replace('%s', metadata.title) || metadata.title
+  : undefined;
+const robotsContent = [
+  typeof metadata.robots?.index === 'boolean' ? (metadata.robots.index ? 'index' : 'noindex') : undefined,
+  typeof metadata.robots?.follow === 'boolean' ? (metadata.robots.follow ? 'follow' : 'nofollow') : undefined,
+]
+  .filter(Boolean)
+  .join(',');
+const openGraphTitle = resolvedOpenGraph.title || metadata.title;
+const openGraphDescription = resolvedOpenGraph.description || metadata.description;
+const openGraphSiteName = resolvedOpenGraph.site_name || resolvedOpenGraph.siteName;
 ---
 
-<AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />
+{formattedTitle && <title>{formattedTitle}</title>}
+{metadata.description && <meta name="description" content={metadata.description} />}
+{robotsContent && <meta name="robots" content={robotsContent} />}
+{metadata.canonical && <link rel="canonical" href={metadata.canonical} />}
+
+{openGraphTitle && <meta property="og:title" content={openGraphTitle} />}
+{openGraphDescription && <meta property="og:description" content={openGraphDescription} />}
+{resolvedOpenGraph.url && <meta property="og:url" content={resolvedOpenGraph.url} />}
+{resolvedOpenGraph.type && <meta property="og:type" content={resolvedOpenGraph.type} />}
+{
+  resolvedOpenGraph.images?.map((image) => (
+    <>
+      <meta property="og:image" content={image.url} />
+      {image.width && <meta property="og:image:width" content={String(image.width)} />}
+      {image.height && <meta property="og:image:height" content={String(image.height)} />}
+    </>
+  ))
+}
+{resolvedOpenGraph.locale && <meta property="og:locale" content={resolvedOpenGraph.locale} />}
+{openGraphSiteName && <meta property="og:site_name" content={openGraphSiteName} />}
+
+{metadata.twitter?.cardType && <meta name="twitter:card" content={metadata.twitter.cardType} />}
+{metadata.twitter?.site && <meta name="twitter:site" content={metadata.twitter.site} />}
+{metadata.twitter?.handle && <meta name="twitter:creator" content={metadata.twitter.handle} />}
