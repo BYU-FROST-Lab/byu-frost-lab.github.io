@@ -98,7 +98,7 @@ function sanitizeBib(bib?: string) {
               <div class="mb-2">
                 <article class="flex items-stretch border rounded overflow-hidden">
                 {imageSrc ? (
-                  <div class="w-20 md:w-24 flex-shrink-0 self-stretch overflow-hidden bg-gray-50">
+                  <div class="w-20 md:w-24 shrink-0 self-stretch overflow-hidden bg-gray-50">
                     <Image
                       src={imageSrc}
                       alt={entry.fields.title || entry.citationKey || null}
