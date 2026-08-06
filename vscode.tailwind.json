@@ -2,8 +2,8 @@
   "version": 1.1,
   "atDirectives": [
     {
-      "name": "@tailwind",
-      "description": "@tailwind tailwindcss"
+      "name": "@theme",
+      "description": "Define Tailwind theme variables"
     },
     {
       "name": "@layer",
@@ -12,6 +12,18 @@
     {
       "name": "@apply",
       "description": "@apply tailwindcss"
+    },
+    {
+      "name": "@utility",
+      "description": "Define a Tailwind custom utility"
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Define a Tailwind custom variant"
+    },
+    {
+      "name": "@plugin",
+      "description": "Load a legacy Tailwind plugin"
     }
   ]
 }

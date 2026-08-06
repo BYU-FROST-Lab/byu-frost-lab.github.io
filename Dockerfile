@@ -1,14 +1,13 @@
-FROM node:lts AS base
+FROM node:22 AS base
 WORKDIR /app
 
 FROM base AS deps
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 FROM base AS dev
 # Development image: installs dependencies and runs the dev server with live reload
-COPY package*.json ./
-RUN npm install
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 EXPOSE 8080
 # Bind to 0.0.0.0 so the dev server is reachable from the host
