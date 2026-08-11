@@ -25,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Install, build, and upload site (Astro)
-        uses: withastro/action@v5
+        uses: withastro/action@v6
         env:
           PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
         # with:
