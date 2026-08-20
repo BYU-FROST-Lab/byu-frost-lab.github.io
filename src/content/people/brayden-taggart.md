@@ -1,6 +1,6 @@
 ---
 name: "Brayden Taggart"
-title: "Undergraduate Student"
+title: "Research Assistant"
 group: "undergraduate"
 photo: "src/assets/images/people/undergrad_curr/brayden-taggart.jpg"
 links:
