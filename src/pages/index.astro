@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero3 from '~/components/widgets/Hero3.astro';
+import HeroCarousel from '~/components/widgets/HeroCarousel.astro';
 import Features from '~/components/widgets/Features.astro';
 import { getPermalink } from '~/utils/permalinks';
 import logoWhite from '~/assets/images/logo_white_name.svg';
@@ -27,8 +28,20 @@ const metadata = {
       },
       { text: 'Meet the team', href: getPermalink('/people') },
     ]}
-    image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
+    <Fragment slot="bg">
+      <HeroCarousel
+        interval={4000}
+        images={[
+          { src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image', objectPosition: '100% 50%' },
+          { src: '~/assets/images/couguv_wamv_home.jpg', alt: 'CougUV robot at the shoreline', objectPosition: '50% 0%' },
+          { src: '~/assets/images/neecteam_home.jpg', alt: 'NEEC field test', objectPosition: '0% 70%' },
+          { src: '~/assets/images/couguv_home.jpg', alt: 'CougUV robot on a dock', objectPosition: '0% 70%' },
+
+        ]}
+      />
+    </Fragment>
+
     <Fragment slot="title">
       <img src={logoWhite.src} alt="FROST Lab" class="h-24 md:h-32 w-auto mx-auto" />
     </Fragment>

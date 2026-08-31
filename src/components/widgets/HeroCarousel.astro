@@ -1,0 +1,65 @@
+---
+import Image from '~/components/common/Image.astro';
+
+export interface Props {
+  images: Array<{ src: string | ImageMetadata; alt?: string; objectPosition?: string }>;
+  interval?: number;
+}
+
+const { images, interval = 6000 } = Astro.props;
+---
+
+{
+  images && images.length > 0 && (
+    <div class="absolute inset-0 overflow-hidden" data-hero-carousel data-interval={interval}>
+      {images.map(({ src, alt, objectPosition }, index) => (
+        <Image
+          src={src}
+          alt={alt ?? ''}
+          class={`hero-carousel-slide absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-1000 ease-in-out ${
+            index === 0 ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={`object-position:${objectPosition ?? '50% 50%'};`}
+          widths={[400, 768, 1024, 2040]}
+          sizes="100vw"
+          loading="eager"
+          width={2040}
+          height={1152}
+          layout="cover"
+        />
+      ))}
+    </div>
+  )
+}
+
+<script is:inline>
+  function initHeroCarousels() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('[data-hero-carousel]').forEach((container) => {
+      if (container instanceof HTMLElement === false) return;
+      if (container.dataset.carouselInit === 'true') return;
+      container.dataset.carouselInit = 'true';
+
+      const slides = Array.from(container.querySelectorAll('.hero-carousel-slide'));
+      if (slides.length < 2 || prefersReducedMotion) return;
+
+      const interval = Number(container.dataset.interval) || 6000;
+      let index = 0;
+
+      setInterval(() => {
+        const current = slides[index];
+        index = (index + 1) % slides.length;
+        const next = slides[index];
+
+        current.classList.remove('opacity-100');
+        current.classList.add('opacity-0');
+        next.classList.remove('opacity-0');
+        next.classList.add('opacity-100');
+      }, interval);
+    });
+  }
+
+  initHeroCarousels();
+  document.addEventListener('astro:page-load', initHeroCarousels);
+</script>
