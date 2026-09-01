@@ -7,6 +7,8 @@ grad_date: 2023-05-01
 links:
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/szu-wei-lin/"
+  - label: "Thesis"
+    url: "https://scholarsarchive.byu.edu/etd/9851/"
 ---
 Szu-Wei is a graduate student in the Electrical and Computer Engineering Department at Brigham Young University. He received his bachelor’s degree in Electrical Engineering at National Chung Hsing University in June 2017. He joined the FROST Lab in October of 2020.
 
