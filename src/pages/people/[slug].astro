@@ -70,6 +70,7 @@ const metadata = { title: `${person.name} | People | FROST Lab` };
               else if (url.includes('x.com') || url.includes('twitter.com') || lname.includes('twitter') || lname === 'x') iconName = 'tabler:brand-x';
               else if (url.startsWith('mailto:') || lname.includes('email')) iconName = 'tabler:mail';
               else if (lname.includes('cv') || lname.includes('resume')) iconName = 'tabler:file-cv';
+              else if (lname.includes('thesis') || lname.includes('dissertation')) iconName = 'tabler:book-2';
 
               return (
                 <a
