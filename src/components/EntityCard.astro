@@ -43,6 +43,8 @@ function getIconName(url, label) {
     return 'tabler:brand-x';
   if (url.startsWith('mailto:') || label.includes('email')) return 'tabler:mail';
   if (label.includes('cv') || label.includes('resume')) return 'tabler:file-cv';
+  if (label.includes('thesis') || label.includes('dissertation')) return 'tabler:book-2';
+
   return 'tabler:globe';
 }
 ---
