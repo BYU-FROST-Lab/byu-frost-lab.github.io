@@ -52,6 +52,10 @@ function membersByGroup(group) {
   return people.filter((p) => (p.group || 'graduate') === group);
 }
 
+function sortLinks(links: Array<{ label?: string }> = []) {
+  return [...links].sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+}
+
 // Fisher-Yates shuffle (non-destructive)
 function shuffle(arr) {
   const a = arr.slice();
@@ -145,7 +149,7 @@ function getOrderedMembers(group) {
                 imageStyle={IMAGE_STYLE}
                 imageDimensions={IMAGE_DIMENSIONS}
                 priority={g === 'faculty' && i < 2}
-                links={p.links}
+                links={sortLinks(p.links)}
                 cardClass={
                   g === 'faculty'
                     ? 'motion-safe:md:animate-fade'

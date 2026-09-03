@@ -9,6 +9,8 @@ links:
     url: "mailto:eastonpots@byu.edu"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/epot/"
+  - label: "Thesis"
+    url: "https://scholarsarchive.byu.edu/etd/10012/"
 ---
 # About
 Easton Potokar is Master's Student in the Electrical Engineering department and has an undergraduate degree in Mathematics (Applied and Computational Math Emphasis, or ACME, program; graduated April 2020) with an emphasis in signals and systems. He joined the FROST Lab in August 2020.

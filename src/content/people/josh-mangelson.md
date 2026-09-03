@@ -5,9 +5,9 @@ group: "faculty"
 photo: "/src/assets/images/people/joshua-mangelson.jpg"
 links:
   - label: "Email"
-    url: "mailto:mangelson@byu.edu"
+    url: "mailto:joshua_mangelson@byu.edu"
   - label: "CV"
-    url: "https://robots.et.byu.edu/jmangelson/cv/jmangelson_cv.pdf"
+    url: "https://byu.box.com/s/ztjot4q0ipuhzvnxg9pu8gwe6i84vvfo"
 ---
 
 Joshua Mangelson is the founder and director of the Field Robotic Systems (FROST) Lab and an Associate Professor in <a href="https://ece.byu.edu/" target="_blank">Electrical and Computer Engineering</a> at <a href="https://www.byu.edu/" target="_blank">Brigham Young University</a>. He received a PhD and MS in [Robotics](https://robotics.umich.edu/) from the [University of Michigan](https://umich.edu/). Before coming to BYU in 2020, he held post-doctoral appointments in [Naval Architecture and Marine Engineering](https://name.engin.umich.edu/) at the [University of Michigan](https://umich.edu/) and in the [Field Robotics Center](https://frc.ri.cmu.edu/) of the [Robotics Institute](https://www.ri.cmu.edu/) at [Carnegie Mellon University](https://www.cmu.edu/).
