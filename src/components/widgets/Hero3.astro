@@ -71,7 +71,7 @@ const {
           {
             subtitle && (
               <p
-                class="text-xl text-white/90 mb-6 dark:text-white/90 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade drop-shadow-md"
+                class="text-xl text-white/90 mb-6 dark:text-white/90 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade drop-shadow-lg drop-shadow-black/40"
                 set:html={subtitle}
               />
             )
@@ -82,7 +82,7 @@ const {
                 {Array.isArray(actions) ? (
                   actions.map((action) => (
                     <div class="flex w-full sm:w-auto">
-                      <Button {...(action || {})} class={`w-full sm:mb-0 ${action?.class ?? ''} text-white  dark:text-white`} />
+                      <Button {...(action || {})} class={`w-full sm:mb-0 ${action?.class ?? ''} text-white  dark:text-white drop-shadow-lg drop-shadow-black/40`} />
                     </div>
                   ))
                 ) : (
