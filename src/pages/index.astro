@@ -2,6 +2,7 @@
 import Layout from '~/layouts/PageLayout.astro';
 
 import Hero3 from '~/components/widgets/Hero3.astro';
+import HeroCarousel from '~/components/widgets/HeroCarousel.astro';
 import Features from '~/components/widgets/Features.astro';
 import { getPermalink } from '~/utils/permalinks';
 import logoWhite from '~/assets/images/logo_white_name.svg';
@@ -27,10 +28,25 @@ const metadata = {
       },
       { text: 'Meet the team', href: getPermalink('/people') },
     ]}
-    image={{ src: '~/assets/images/heron.jpeg', alt: 'FROST Lab Hero Image' }}
   >
+    <Fragment slot="bg">
+      <HeroCarousel
+        interval={4000}
+        images={[
+          { src: '~/assets/images/home_carousel/heron_home.jpeg', alt: 'FROST Lab Hero Image', objectPosition: '100% 50%' },
+          { src: '~/assets/images/home_carousel/couguv_home.jpg', alt: 'CougUV robot on a dock', objectPosition: '0% 70%' },
+          { src: '~/assets/images/home_carousel/neecteam_home.jpg', alt: 'NEEC field test', objectPosition: '0% 70%' },
+          { src: '~/assets/images/home_carousel/couguv_wamv_home.jpg', alt: 'CougUV robot at the shoreline', objectPosition: '50% 0%' },
+          { src: '~/assets/images/home_carousel/blueboat_home.jpg', alt: 'Blueboat on the water', objectPosition: '0% 40%' },
+          { src: '~/assets/images/home_carousel/wamv_home.jpg', alt: 'WamV robot on the water', objectPosition: '0% 30%' },
+          { src: '~/assets/images/home_carousel/iver_home.jpg', alt: 'IVER robot on the water', objectPosition: '0% 30%' },
+
+        ]}
+      />
+    </Fragment>
+
     <Fragment slot="title">
-      <img src={logoWhite.src} alt="FROST Lab" class="h-24 md:h-32 w-auto mx-auto" />
+      <img src={logoWhite.src} alt="FROST Lab" class="h-24 md:h-32 w-auto mx-auto drop-shadow-lg drop-shadow-black/40" />
     </Fragment>
 
     <Fragment slot="subtitle">
