@@ -1,124 +1,203 @@
-import type CiteType from 'citation-js';
-let Cite: typeof CiteType | undefined;
-try {
-  // dynamic import to avoid breaking environments where the package isn't installed yet
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  // @ts-ignore
-  Cite = require('citation-js');
-} catch (e) {
-  Cite = undefined;
-}
+import { escapeHtml, latexToHtml, latexToText } from './latex.ts';
+
+export type BibField = {
+  /** Field name exactly as written in the .bib file. */
+  name: string;
+  /** Field value as written, minus the outer delimiters. */
+  value: string;
+  /** How the value was delimited: braces, quotes, or nothing (a number or a macro). */
+  delimiter: '{' | '"' | '';
+};
 
 export type BibEntry = {
   id: string;
-  type?: string;
-  citationKey?: string;
+  type: string;
+  citationKey: string;
+  /** Field values keyed by lower-cased name; the display fields have their LaTeX resolved. */
   fields: Record<string, string>;
-  bibtex?: string;
-  raw?: any;
+  /** The display fields rendered as HTML, so math and emphasis survive. */
+  html: Record<string, string>;
+  /** Fields in source order, used to rebuild the entry. */
+  bibFields: BibField[];
+  /** The entry as shown for copying: real BibTeX only, with the site's own fields dropped. */
+  bibtex: string;
 };
 
-// Try to use citation-js when available for robust parsing; otherwise fallback to simple regex parser.
-export function parseBib(bibRaw: string): BibEntry[] {
-  if (Cite) {
-    try {
-      const cite = new (Cite as any)(bibRaw);
-      const items = cite.get ? cite.get({ type: 'data' }) : (cite.data || []);
-      return (items || []).map((it: any) => {
-        const fields: Record<string, string> = {};
-        fields.title = it.title || it['title'] || '';
-        fields.abstract = it.abstract || it['abstract'] || '';
-        fields.url = it.URL || it.url || it.link || '';
-        // Prefer an explicit "website" field when present in citation-js data
-        // Do NOT fall back to url here — only set `website` when explicitly present.
-        fields.website = (it.website || it.websiteTitle) ? (it.website || it.websiteTitle) : '';
-        fields.pdf = it.pdf || it.PDF || it.file || '';
-        fields.doi = it.DOI || it.doi || it['doi'] || '';
-        fields.code = it.code || it['code'] || it.repository || it.repo || '';
-        fields.poster = it.poster || '';
-        // image/thumbnail fields
-        fields.image = it.image || it.thumbnail || it.image_url || it['image'] || '';
-        // Determine venue from common Citation.js/CSL fields
-        fields.venue = it['container-title'] || it.containerTitle || it.journal || it['journal'] || it.publisher || it.booktitle || it['collection-title'] || '';
-        
-        const year = (it.issued && it.issued['date-parts'] && it.issued['date-parts'][0] && it.issued['date-parts'][0][0]) || it.year || '';
-        fields.year = year ? String(year) : '';
+/**
+ * Fields dropped from the entry offered for copying. Most are the site's own invention and no
+ * bibliography style renders them; `note` is standard BibTeX, but here it carries award
+ * annotations ("Best Paper") that belong on the page rather than in someone's reference list.
+ */
+const FIELDS_HIDDEN_FROM_CITATION = new Set([
+  'thumbnail',
+  'image',
+  'poster',
+  '_venue',
+  'website',
+  'video',
+  'code',
+  'selected',
+  'note',
+]);
 
-        const authorsArr = (it.author || []).map((a: any) => {
-          if (typeof a === 'string') return a;
-          const given = a.given || a['given'] || '';
-          const family = a.family || a['family'] || '';
-          if (given && family) return `${given} ${family}`;
-          return `${given} ${family}`.trim();
-        }).filter(Boolean);
-        fields.author = authorsArr.join(', ');
+/**
+ * Parse a .bib file. Braces are matched by scanning rather than with a regex so that nested
+ * braces survive (`title = {A {SLAM} Survey}`) and so that a field missing its separating
+ * comma does not swallow the rest of the entry.
+ */
+function parseEntries(src: string) {
+  const entries: { type: string; key: string; fields: BibField[] }[] = [];
+  let i = 0;
 
-        return {
-          id: it.id || it['citationKey'] || Math.random().toString(36).slice(2),
-          type: it.type || '',
-          citationKey: it.id || it['citationKey'] || '',
-          fields,
-          bibtex: it['bibtex'] || '',
-          raw: it,
-        } as BibEntry;
-      });
-    } catch (err) {
-      // fall through to fallback parser
-      // eslint-disable-next-line no-console
-      console.warn('citation-js parse failed, falling back to regex parser', err);
+  function readDelimited(close: string): string {
+    let depth = 1;
+    let value = '';
+    while (i < src.length) {
+      const ch = src[i];
+      if (ch === '\\' && i + 1 < src.length) {
+        value += ch + src[i + 1];
+        i += 2;
+        continue;
+      }
+      if (ch === close && --depth === 0) {
+        i++;
+        break;
+      }
+      if (close === '}' && ch === '{') depth++;
+      value += ch;
+      i++;
     }
+    return value;
   }
 
-  // Fallback simple parser (previous implementation)
-  const entries: BibEntry[] = [];
-  const entryRegex = /@(\w+)\s*\{\s*([^,]+),([\s\S]*?)\n\}/g;
-  let m: RegExpExecArray | null;
-  while ((m = entryRegex.exec(bibRaw))) {
-    const type = m[1];
-    const citationKey = m[2].trim();
-    const body = m[3];
-
-    const fields: Record<string, string> = {};
-    const fieldRegex = /(\w+)\s*=\s*(\{|")([\s\S]*?)(\}|\")\s*,?/g;
-    let fm: RegExpExecArray | null;
-    while ((fm = fieldRegex.exec(body))) {
-      const k = fm[1].toLowerCase();
-      const v = fm[3].trim();
-      fields[k] = v;
+  function readValue(): { value: string; delimiter: BibField['delimiter'] } {
+    if (src[i] === '{') {
+      i++;
+      return { value: readDelimited('}'), delimiter: '{' };
     }
+    if (src[i] === '"') {
+      i++;
+      return { value: readDelimited('"'), delimiter: '"' };
+    }
+    // A bare value is a number or a macro like `may`; it never spans a line, so stopping at
+    // the newline keeps a missing comma from swallowing the next field.
+    let value = '';
+    while (i < src.length && !',}\n'.includes(src[i])) value += src[i++];
+    return { value: value.trim(), delimiter: '' };
+  }
 
-    // populate venue from common fallback fields
-    fields.venue = fields.journal || fields.booktitle || fields.publisher || fields['collection-title'] || fields.series || '';
-    // fallback for images in raw bibtex
+  while (i < src.length) {
+    const at = src.indexOf('@', i);
+    if (at === -1) break;
+    i = at + 1;
+
+    let type = '';
+    while (i < src.length && /[A-Za-z]/.test(src[i])) type += src[i++];
+    while (/\s/.test(src[i])) i++;
+    if (!type || src[i] !== '{') continue;
+    i++;
+
+    let key = '';
+    while (i < src.length && src[i] !== ',' && src[i] !== '}') key += src[i++];
+
+    const fields: BibField[] = [];
+    while (i < src.length && src[i] !== '}') {
+      // Separators are read liberally: a field missing its comma still starts a new field.
+      while (i < src.length && (/\s/.test(src[i]) || src[i] === ',')) i++;
+      if (i >= src.length || src[i] === '}') break;
+
+      let name = '';
+      while (i < src.length && /[\w:.+/-]/.test(src[i])) name += src[i++];
+      while (/\s/.test(src[i])) i++;
+      if (src[i] !== '=') {
+        if (!name) i++; // not a field assignment; step over it rather than stall
+        continue;
+      }
+      i++;
+      while (/\s/.test(src[i])) i++;
+      const { value, delimiter } = readValue();
+      if (name) fields.push({ name, value, delimiter });
+    }
+    if (src[i] === '}') i++;
+
+    entries.push({ type, key: key.trim(), fields });
+  }
+
+  return entries;
+}
+
+/**
+ * Turn a BibTeX author list ("Moon, Brady and Scherer, Sebastian") into a readable
+ * "Brady Moon, Sebastian Scherer", leaving any LaTeX in the names for the caller to resolve.
+ */
+function readableAuthors(raw: string): string {
+  return raw
+    .split(/\s+and\s+|;/i)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const comma = part.indexOf(',');
+      if (comma === -1) return part;
+      return `${part.slice(comma + 1).trim()} ${part.slice(0, comma).trim()}`.trim();
+    })
+    .join(', ');
+}
+
+export function parseBib(bibRaw: string): BibEntry[] {
+  return parseEntries(bibRaw).map(({ type, key, fields: bibFields }) => {
+    // Start from the values as written; only the four display fields below get their LaTeX
+    // resolved, so URLs and identifiers are never rewritten.
+    const fields: Record<string, string> = {};
+    for (const field of bibFields) fields[field.name.toLowerCase()] = field.value;
+
+    const venue =
+      fields.journal || fields.booktitle || fields.publisher || fields['collection-title'] || fields.series || '';
+    const authors = readableAuthors(fields.author || '');
+    const { title = '', abstract = '' } = fields;
+
+    fields.title = latexToText(title);
+    fields.author = latexToText(authors);
+    fields.venue = latexToText(venue);
+    fields.abstract = latexToText(abstract);
     fields.image = fields.image || fields.thumbnail || fields.photo || '';
-    // DOI and code may be present as fields in raw bibtex
-    fields.doi = fields.doi || fields.DOI || '';
     fields.code = fields.code || fields.repository || fields.repo || '';
-    // Expose a `website` field for bib entries only if present (do NOT fall back to url)
+    // Only expose `website` when the entry has one — never fall back to `url`.
     fields.website = fields.website || '';
 
-    // Normalize author string to "Given Family" comma-separated when possible
-    if (fields.author && typeof fields.author === 'string') {
-      const parts = fields.author.split(/\s+and\s+|\s*&\s*|;/i).map((p) => p.trim()).filter(Boolean);
-      const norm = parts.map((p) => {
-        if (p.indexOf(',') !== -1) {
-          const [last, first] = p.split(',').map((s) => s.trim());
-          return `${first} ${last}`.trim();
-        }
-        return p;
-      });
-      fields.author = norm.join(', ');
-    }
-
-    entries.push({
-      id: citationKey,
+    const entry = {
+      id: key,
       type,
-      citationKey,
+      citationKey: key,
       fields,
-      bibtex: m[0].trim(),
+      html: {
+        title: latexToHtml(title) || escapeHtml(key),
+        author: latexToHtml(authors),
+        venue: latexToHtml(venue),
+        abstract: latexToHtml(abstract),
+      },
+      bibFields,
+    };
+    return { ...entry, bibtex: formatBibtex(entry) };
+  });
+}
+
+/**
+ * Rebuild the entry from its parsed fields. Rebuilding rather than editing the source text is
+ * what guarantees the separating commas, and each value keeps its original delimiter so that
+ * `month = may` stays a macro instead of becoming the literal string "may".
+ */
+function formatBibtex(entry: Pick<BibEntry, 'type' | 'citationKey' | 'bibFields'>): string {
+  const lines = entry.bibFields
+    .filter((field) => !FIELDS_HIDDEN_FROM_CITATION.has(field.name.toLowerCase()))
+    .map(({ name, value, delimiter }) => {
+      // Asterisks mark co-first authorship on the page; they are not part of the citation.
+      const text = /^(author|editor)$/i.test(name) ? value.trim().replace(/\*/g, '') : value.trim();
+      if (delimiter === '"') return `  ${name} = "${text}"`;
+      if (delimiter === '') return `  ${name} = ${text}`;
+      return `  ${name} = {${text}}`;
     });
-  }
-  return entries;
+  if (!lines.length) return `@${entry.type}{${entry.citationKey}\n}`;
+  return `@${entry.type}{${entry.citationKey},\n${lines.join(',\n')}\n}`;
 }
 
 export function groupByYear(entries: BibEntry[]) {
