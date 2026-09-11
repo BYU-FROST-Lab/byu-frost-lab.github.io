@@ -60,19 +60,6 @@ function resolvePublicationImage(raw?: string) {
   const canonical = `${PUBLICATIONS_BASE}${normalized}`;
   return publicationImageMap.get(canonical) || null;
 }
-
-function sanitizeBib(bib?: string) {
-  if (!bib) return '';
-  // Remove UI-only fields whether they appear on their own line or inline
-  // e.g. thumbnail = {..}, image="..", poster = {...}
-  let out = String(bib);
-  // Remove occurrences like thumbnail = {...}, possibly with surrounding commas
-  out = out.replace(/(?:,?\s*)?(thumbnail|image|poster|_venue|website)\s*=\s*(\{[^}]*\}|"[^"]*"|[^,}\n]*)\s*,?/gi, '');
-  // Clean up any leftover duplicate commas or trailing commas before closing brace
-  out = out.replace(/,\s*,+/g, ',');
-  out = out.replace(/,\s*([}\)])/g, '$1');
-  return out.trim();
-}
 ---
 
 <Layout metadata={metadata}>
@@ -113,10 +100,10 @@ function sanitizeBib(bib?: string) {
                 ) : null}
 
                 <div class="flex-1 min-w-0 p-2">
-                  <h3 class="text-sm font-medium truncate">{entry.fields.title || entry.citationKey}</h3>
-                  <div class="text-xs text-gray-600 truncate">{entry.fields.author}</div>
+                  <h3 class="text-sm font-medium truncate" set:html={entry.html.title} />
+                  <div class="text-xs text-gray-600 truncate" set:html={entry.html.author} />
                   {entry.fields.venue && (
-                    <div class="text-xs text-gray-500 mt-1">{entry.fields.venue}</div>
+                    <div class="text-xs text-gray-500 mt-1" set:html={entry.html.venue} />
                   )}
 
                   <div class="mt-1 flex flex-wrap items-center gap-2">
@@ -196,7 +183,7 @@ function sanitizeBib(bib?: string) {
                   {entry.fields.abstract && (
                     <details id={`d-abs-${id}`} class="mt-1">
                       <summary class="sr-only">Abstract</summary>
-                      <p class="mt-1 text-xs">{entry.fields.abstract}</p>
+                      <p class="mt-1 text-xs" set:html={entry.html.abstract} />
                     </details>
                   )}
 
@@ -205,7 +192,7 @@ function sanitizeBib(bib?: string) {
 
                 <details id={`d-bib-${id}`} class="mt-2">
                   <summary class="sr-only">Raw BibTeX</summary>
-                  <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-2 rounded">{sanitizeBib(entry.bibtex)}</pre>
+                  <pre class="mt-1 text-xs overflow-auto bg-gray-100 p-2 rounded">{entry.bibtex}</pre>
                 </details>
               </div>
             );
