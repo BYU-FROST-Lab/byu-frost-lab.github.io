@@ -1,19 +1,37 @@
 ---
+import type { ImageMetadata } from 'astro';
 import SectionedCardPage from '~/components/SectionedCardPage.astro';
 import EntityCard from '~/components/EntityCard.astro';
-import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 import { makePhotoResolver } from '~/utils/local-images';
 import { getPermalink } from '~/utils/permalinks';
 
-const photoImports = ((import.meta as any).glob(
-  '../../assets/images/robots/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true },
-) as Record<string, any>);
+type RobotFrontmatter = {
+  name: string;
+  title: string;
+  summary?: string;
+  domains?: unknown;
+  group?: string;
+  photo?: string;
+  links?: Array<{ label: string; url: string }>;
+};
 
-const modules = ((import.meta as any).glob('../../content/robots/*.md', { eager: true }) as any);
+type RobotModule = {
+  frontmatter: RobotFrontmatter;
+};
+
+const photoImports = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/robots/*.{jpg,jpeg,png,webp,avif}',
+  {
+    eager: true,
+  }
+);
+
+const modules = import.meta.glob<RobotModule>('../../content/robots/*.md', {
+  eager: true,
+});
 const resolvePhoto = makePhotoResolver(photoImports);
 
-const robots = Object.entries(modules).map(([path, mod]: [string, any]) => {
+const robots = Object.entries(modules).map(([path, mod]) => {
   const parts = path.split('/');
   const filename = parts[parts.length - 1];
   const slug = filename.replace(/\.md$/, '');
@@ -23,8 +41,29 @@ robots.sort((a, b) => a.name.localeCompare(b.name));
 
 const metadata = { title: 'Robots' };
 
-const IMAGE_STYLE = DEFAULT_CARD_IMAGE_STYLE;
-const IMAGE_DIMENSIONS = CARD_IMAGE_SIZES[IMAGE_STYLE];
+const IMAGE_DIMENSIONS = { width: 480, height: 480 };
+
+const ROBOT_DOMAINS = {
+  water: { label: 'Water', icon: 'lucide:waves', tone: 'navy' },
+  land: { label: 'Land', icon: 'lucide:mountain', tone: 'green' },
+  air: { label: 'Air', icon: 'tabler:wind', tone: 'light-blue' },
+} as const;
+
+type RobotDomain = keyof typeof ROBOT_DOMAINS;
+
+function getDomainBadges(domains: unknown, slug: string) {
+  if (!Array.isArray(domains) || domains.length === 0) {
+    throw new Error(`Robot "${slug}" must define at least one domain.`);
+  }
+
+  return [...new Set(domains)].map((domain) => {
+    if (typeof domain !== 'string' || !(domain in ROBOT_DOMAINS)) {
+      throw new Error(`Robot "${slug}" has an unknown domain: ${String(domain)}`);
+    }
+
+    return ROBOT_DOMAINS[domain as RobotDomain];
+  });
+}
 
 function getGridClass() {
   return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
@@ -39,13 +78,16 @@ const GROUPS = {
     title: 'Past Robots',
     intro: 'Retired robots that paved the way for our current research.',
   },
-};
+} as const;
 
-function membersByGroup(group) {
+type RobotGroup = keyof typeof GROUPS;
+const robotGroups = Object.keys(GROUPS) as RobotGroup[];
+
+function membersByGroup(group: RobotGroup) {
   return robots.filter((p) => (p.group || 'robot') === group);
 }
 
-function shuffle(arr) {
+function shuffle<T>(arr: T[]) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -54,7 +96,7 @@ function shuffle(arr) {
   return a;
 }
 
-function getOrderedMembers(group) {
+function getOrderedMembers(group: RobotGroup) {
   const list = membersByGroup(group);
   return shuffle(list);
 }
@@ -65,35 +107,40 @@ function getOrderedMembers(group) {
   title="Robots"
   intro="Exploring the boundaries of autonomous systems with our custom fleet."
 >
-  {Object.keys(GROUPS).map((g) => {
-    const list = getOrderedMembers(g);
-    return list.length ? (
-      <>
-        {g === 'retired' && <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12"></div>}
-        <section class="mb-12">
-          <div class="flex items-baseline justify-between mb-4">
-            <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
-          </div>
-          <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
+  {
+    robotGroups.map((g) => {
+      const list = getOrderedMembers(g);
+      return list.length ? (
+        <>
+          {g === 'retired' && <div class="my-16 border-t-2 border-gray-200 dark:border-gray-700 pt-12" />}
+          <section class="mb-12">
+            <div class="flex items-baseline justify-between mb-4">
+              <h2 class="text-2xl font-semibold">{GROUPS[g].title}</h2>
+            </div>
+            <p class="text-muted mb-6 max-w-3xl">{GROUPS[g].intro}</p>
 
-          <div class={getGridClass()}>
-            {list.map((p, i) => (
-              <EntityCard
-                href={getPermalink(`/robots/${p.slug}`)}
-                title={p.name}
-                subtitle={p.title}
-                image={p.photo}
-                imageAlt={p.name}
-                imageStyle={IMAGE_STYLE}
-                imageDimensions={IMAGE_DIMENSIONS}
-                priority={g === 'robot' && i < 2}
-                links={p.links}
-                cardClass="intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter"
-              />
-            ))}
-          </div>
-        </section>
-      </>
-    ) : null;
-  })}
+            <div class={getGridClass()}>
+              {list.map((p, i) => (
+                <EntityCard
+                  href={getPermalink(`/robots/${p.slug}`)}
+                  title={p.name}
+                  subtitle={p.summary || p.title}
+                  image={p.photo}
+                  imageAlt={p.name}
+                  imageDimensions={IMAGE_DIMENSIONS}
+                  wrapperClass="w-full aspect-square bg-gray-100 shrink-0 overflow-hidden"
+                  subtitleClass="text-sm leading-5 text-gray-500 line-clamp-3"
+                  badges={getDomainBadges(p.domains, p.slug)}
+                  badgeVariant="corner"
+                  priority={g === 'robot' && i < 2}
+                  links={p.links}
+                  cardClass="intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade intersect-quarter"
+                />
+              ))}
+            </div>
+          </section>
+        </>
+      ) : null;
+    })
+  }
 </SectionedCardPage>

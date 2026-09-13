@@ -1,9 +1,12 @@
 ---
-name: "Hovering AUV"
-title: "A fully autonomous underwater vehicle used to collect data and test novel mapping, localization, and planning algorithms."
-group: "retired"
-photo: "/src/assets/images/robots/Hovering AUV.png"
+name: 'Hovering AUV'
+title: 'A fully autonomous underwater vehicle used to collect data and test novel mapping, localization, and planning algorithms.'
+summary: 'A retired AUV platform for underwater mapping, localization, and planning.'
+domains: ['water']
+group: 'retired'
+photo: '/src/assets/images/robots/Hovering AUV.png'
 ---
+
 ## Our AUV Design
 
 This AUV serves as our main underwater testing vehicle. Its modular 80/20-based design, 3D-printed parts, and easily accessible enclosures allows for flexibility in testing both new hardware and software configurations. It is also easy to transport and operate at a size of approximately 31" x 24" x 18".

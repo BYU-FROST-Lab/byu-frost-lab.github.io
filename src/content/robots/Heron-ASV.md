@@ -1,8 +1,10 @@
 ---
-name: "Heron ASV"
-title: "A platform to conduct surface marine missions where the focus is image collection. These images can be used to create mosaics or 3D maps of the surveyed area."
-group: "robot"
-photo: "/src/assets/images/robots/Heron ASV.jpg"
+name: 'Heron ASV'
+title: 'A platform to conduct surface marine missions where the focus is image collection. These images can be used to create mosaics or 3D maps of the surveyed area.'
+summary: 'A surface vessel for marine imaging, reef surveys, and 3D mapping.'
+domains: ['water']
+group: 'robot'
+photo: '/src/assets/images/robots/Heron ASV.jpg'
 ---
 
 In collaboration with [Richard Gill's Gill Laboratory](https://biology.byu.edu/gill-lab) in Biology, we have developed an ASV surveyor platform for marine environment and coral reef monitoring. The base system is a Heron Robot from Clearpath Robotics. We have augmented this system with a GPS for navigation and geotagging of data, 2 FLIR cameras for stereo imaging, and a Manta Eureka water sensor for water sampling. Stereo imagery, water quality data, and GPS information are all collected, synchronized, and geotagged for post-processing.
