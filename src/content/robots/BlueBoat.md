@@ -1,6 +1,8 @@
 ---
 name: 'BlueBoat'
 title: 'A compact uncrewed surface vessel for autonomous surveys, mapping, and field robotics research.'
+summary: 'A compact surface vessel for autonomous surveys and field robotics research.'
+domains: ['water']
 group: 'robot'
 photo: '/src/assets/images/robots/blueboat.jpg'
 video:
