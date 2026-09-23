@@ -34,6 +34,7 @@ export default defineConfig({
     icon({
       include: {
         tabler: ['*'],
+        lucide: ['waves', 'mountain'],
         'flat-color-icons': [
           'template',
           'gallery',
@@ -45,7 +46,7 @@ export default defineConfig({
           'business-contact',
           'database',
         ],
-        'academicons': ['doi', 'arxiv'],
+        academicons: ['doi', 'arxiv'],
       },
     }),
 
