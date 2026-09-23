@@ -2,7 +2,7 @@
 name: "Campbell Peterson"
 title: "Research Assistant"
 group: "undergraduate"
-photo: "/src/assets/images/people/undergrad_curr/campbellpeterson.jpg"
+photo: "/src/assets/images/people/undergrad_curr/campbellpeterson.jpeg"
 
 links:
   - label: "Email"
