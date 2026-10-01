@@ -3,6 +3,15 @@ import { Icon } from 'astro-icon/components';
 import Image from '~/components/common/Image.astro';
 import { CARD_IMAGE_SIZES, DEFAULT_CARD_IMAGE_STYLE } from '~/utils/card-images';
 
+type BadgeTone = 'navy' | 'green' | 'light-blue';
+type BadgeVariant = 'pill' | 'corner';
+
+type CardBadge = {
+  label: string;
+  icon?: string;
+  tone?: BadgeTone;
+};
+
 const {
   href,
   title,
@@ -14,6 +23,8 @@ const {
   widths = [160, 320, 480],
   priority = false,
   links = [],
+  badges: badgeProps = [],
+  badgeVariant: badgeVariantProp = 'pill',
   cardClass = '',
   titleClass = 'text-lg font-semibold',
   subtitleClass = 'text-sm text-gray-500',
@@ -22,6 +33,9 @@ const {
   cardStyle,
   dataSubgroup,
 } = Astro.props;
+
+const badges = badgeProps as CardBadge[];
+const badgeVariant = badgeVariantProp as BadgeVariant;
 
 const resolvedDimensions = imageDimensions || CARD_IMAGE_SIZES[imageStyle] || CARD_IMAGE_SIZES.square;
 
@@ -47,6 +61,12 @@ function getIconName(url, label) {
 
   return 'tabler:globe';
 }
+
+function getBadgeToneClass(tone?: BadgeTone) {
+  if (tone === 'green') return 'bg-[#44693d] text-white';
+  if (tone === 'light-blue') return 'bg-[#98c2d8] text-[#002e5d]';
+  return 'bg-[#002e5d] text-white';
+}
 ---
 
 <article
@@ -54,20 +74,54 @@ function getIconName(url, label) {
   style={cardStyle}
   data-subgroup={dataSubgroup}
 >
-  {href ? <a href={href} class="absolute inset-0 z-10" aria-label={title}></a> : null}
-  <div class={wrapperClass || getImageWrapperClass(imageStyle)}>
-    {image ? (
-      <Image
-        src={image}
-        alt={imageAlt || title}
-        class={imgClass || getImgClass(imageStyle)}
-        widths={widths}
-        loading={priority ? 'eager' : 'lazy'}
-        fetchpriority={priority ? 'high' : 'auto'}
-        width={resolvedDimensions.width}
-        height={resolvedDimensions.height}
-      />
-    ) : null}
+  {href ? <a href={href} class="absolute inset-0 z-10" aria-label={title} /> : null}
+  <div class={`relative ${wrapperClass || getImageWrapperClass(imageStyle)}`}>
+    {
+      image ? (
+        <Image
+          src={image}
+          alt={imageAlt || title}
+          class={imgClass || getImgClass(imageStyle)}
+          widths={widths}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'auto'}
+          width={resolvedDimensions.width}
+          height={resolvedDimensions.height}
+        />
+      ) : null
+    }
+
+    {
+      badges && badges.length && badgeVariant === 'corner' && badges.length === 1 ? (
+        <div class="absolute top-0 right-0 z-20 size-13 pointer-events-none">
+          {badges.map((badge) => (
+            <span
+              class={`absolute inset-0 block [clip-path:polygon(100%_0,0_0,100%_100%)] ${getBadgeToneClass(badge.tone)}`}
+            >
+              {badge.icon ? (
+                <Icon name={badge.icon} class="absolute top-2 right-2 w-3.75 h-3.75" aria-hidden="true" />
+              ) : null}
+              <span class="sr-only">{badge.label}</span>
+            </span>
+          ))}
+        </div>
+      ) : null
+    }
+
+    {
+      badges && badges.length && (badgeVariant === 'pill' || badges.length > 1) ? (
+        <div class="absolute top-3 right-3 z-20 flex max-w-[calc(100%-1.5rem)] flex-wrap justify-end gap-2 pointer-events-none">
+          {badges.map((badge) => (
+            <span
+              class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium leading-none shadow-md ring-1 ring-black/5 dark:ring-white/10 ${getBadgeToneClass(badge.tone)}`}
+            >
+              {badge.icon ? <Icon name={badge.icon} class="w-3.5 h-3.5 shrink-0" aria-hidden="true" /> : null}
+              <span>{badge.label}</span>
+            </span>
+          ))}
+        </div>
+      ) : null
+    }
   </div>
   <div class="p-4 flex flex-col flex-1 relative z-20 pointer-events-none">
     <div>
@@ -75,26 +129,28 @@ function getIconName(url, label) {
       {subtitle ? <p class={subtitleClass}>{subtitle}</p> : null}
     </div>
 
-    {links && links.length ? (
-      <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
-        {links.map((link) => {
-          const url = link.url || '';
-          const label = (link.label || '').toLowerCase();
-          const iconName = getIconName(url, label);
-          return (
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-hidden focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
-              title={link.label}
-              aria-label={link.label}
-            >
-              <Icon name={iconName} class="w-5 h-5" />
-            </a>
-          );
-        })}
-      </div>
-    ) : null}
+    {
+      links && links.length ? (
+        <div class="mt-auto pt-3 flex items-center space-x-3 flex-wrap">
+          {links.map((link) => {
+            const url = link.url || '';
+            const label = (link.label || '').toLowerCase();
+            const iconName = getIconName(url, label);
+            return (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-muted relative z-30 transition transform duration-150 ease-in-out hover:text-accent hover:scale-110 focus:outline-hidden focus:ring-2 focus:ring-accent/30 focus:ring-offset-2 rounded pointer-events-auto"
+                title={link.label}
+                aria-label={link.label}
+              >
+                <Icon name={iconName} class="w-5 h-5" />
+              </a>
+            );
+          })}
+        </div>
+      ) : null
+    }
   </div>
 </article>
