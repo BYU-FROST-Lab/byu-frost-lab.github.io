@@ -18,14 +18,14 @@ metadata:
   openGraph:
     site_name: FROST Lab
     images:
-      - url: '~/assets/images/heron_small.jpeg'
-        width: 1280
-        height: 739
+      - url: '~/assets/images/og_default.jpg'
+        width: 1200
+        height: 630
     type: website
-  # twitter:
-  #   handle: '@arthelokyo'
-  #   site: '@arthelokyo'
-  #   cardType: summary_large_image
+  twitter:
+    # handle: '@arthelokyo'
+    # site: '@arthelokyo'
+    cardType: summary_large_image
 
 i18n:
   language: en
