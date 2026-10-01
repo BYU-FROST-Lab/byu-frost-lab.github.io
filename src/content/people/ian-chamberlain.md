@@ -2,7 +2,7 @@
 name: "Ian Chamberlain"
 title: "Research Assistant"
 group: "undergraduate"
-photo: "/src/assets/images/people/..."
+photo: "/src/assets/images/people/default.jpg"
 links:
 
   - label: "Email"
