@@ -25,7 +25,10 @@ const people = Object.entries(modules).map(([path, mod]: [string, any]) => {
 });
 people.sort((a, b) => a.name.localeCompare(b.name));
 
-const metadata = { title: 'Lab Members' };
+const metadata = {
+  title: 'Lab Members',
+  openGraph: { images: [{ url: '~/assets/images/group_april_2026_crop.jpg' }] },
+};
 
 // Set the image style for index cards: 'rect' | 'square' | 'round'
 // Change this value to quickly preview different styles.

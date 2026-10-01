@@ -36,7 +36,10 @@ if (!person) {
   throw new Error(`Person not found: ${slug}`);
 }
 const Content = person.Content;
-const metadata = { title: `${person.name} | People | FROST Lab` };
+const metadata = {
+  title: `${person.name} | People`,
+  openGraph: { images: [{ url: '~/assets/images/group_april_2026_crop.jpg' }] },
+};
 ---
 
 <PageLayout metadata={metadata}>
