@@ -69,8 +69,6 @@ import { UI } from 'astrowind:config';
         return;
       }
 
-      Observer.removeAnimationDelay();
-
       document.documentElement.classList.toggle('dark');
       localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
     });
@@ -169,8 +167,11 @@ import { UI } from 'astrowind:config';
   const Observer = {
     observer: null,
     delayBetweenAnimations: 100,
+    // A big batch (e.g. after jumping to the bottom) still ripples, but nothing waits longer than this.
+    maxAnimationDelay: 1000,
     animationCounter: 0,
     elements: null,
+    restoringScroll: false,
 
     start() {
       const selectors = [
@@ -197,7 +198,24 @@ import { UI } from 'astrowind:config';
         el._intersectionThreshold = getThreshold(el);
       });
 
+      // Back/Forward restores the old scroll position, so whatever is already on screen or scrolled
+      // past is shown as it was instead of replaying its intro. Anything further down still animates in.
+      if (this.restoringScroll) {
+        const seen = [...document.querySelectorAll('[class*="animate-fade"]')].filter(
+          (el) => el.getBoundingClientRect().top < window.innerHeight
+        );
+        seen.forEach((el) => {
+          el.removeAttribute('no-intersect');
+          el.setAttribute('data-animated', 'true');
+        });
+        // Jump straight to the end of those intros, including page-load ones like the faculty cards.
+        seen.forEach((el) => el.getAnimations?.().forEach((animation) => animation.finish()));
+      }
+
       const callback = (entries) => {
+        // Stagger only the elements revealed together, so a fast scroll can't queue up long waits.
+        this.animationCounter = 0;
+
         entries.forEach((entry) => {
           requestAnimationFrame(() => {
             const target = entry.target;
@@ -221,10 +239,11 @@ import { UI } from 'astrowind:config';
                 target.removeAttribute('no-intersect');
                 target.setAttribute('data-animated', 'true');
 
-                const delay = this.animationCounter * this.delayBetweenAnimations;
+                const delay = Math.min(this.animationCounter * this.delayBetweenAnimations, this.maxAnimationDelay);
                 this.animationCounter++;
 
-                target.style.transitionDelay = `${delay}ms`;
+                // Only the entrance is staggered. A transition-delay would also hold back the element's
+                // hover transitions for as long as it stays on the page.
                 target.style.animationDelay = `${delay}ms`;
 
                 if (target.classList.contains('intersect-once')) {
@@ -234,7 +253,6 @@ import { UI } from 'astrowind:config';
             } else {
               target.setAttribute('no-intersect', '');
               target.removeAttribute('data-animated');
-              target.style.transitionDelay = '';
               target.style.animationDelay = '';
 
               this.animationCounter = 0;
@@ -246,27 +264,18 @@ import { UI } from 'astrowind:config';
       this.observer = new IntersectionObserver(callback.bind(this), { threshold: [0, 0.25, 0.5, 0.99] });
 
       this.elements.forEach((el) => {
+        // Shown as-is on Back/Forward and only meant to animate once: nothing left to watch for.
+        if (el.hasAttribute('data-animated') && el.classList.contains('intersect-once')) return;
         this.observer.observe(el);
-      });
-    },
-
-    /* 
-      REF: #643;
-      We need to remove the delay to fix flickering/delay
-      when toggling the theme. Observer only removes them
-      after data-animated is gone (out of view).
-    */
-    removeAnimationDelay() {
-      this.elements.forEach((el) => {
-        if (el.getAttribute('data-animated') === 'true') {
-          el.style.transitionDelay = '';
-          el.style.animationDelay = '';
-        }
       });
     },
   };
 
   Observer.start();
+
+  document.addEventListener('astro:before-swap', (event) => {
+    Observer.restoringScroll = event.navigationType === 'traverse';
+  });
 
   document.addEventListener('astro:after-swap', () => {
     Observer.start();
