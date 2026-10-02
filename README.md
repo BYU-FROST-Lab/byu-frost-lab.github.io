@@ -19,6 +19,8 @@ docker compose up
 ```
 Then navigate to localhost:8080 to view the website.
 
+After adding or updating dependencies, run `docker compose up --build --renew-anon-volumes` so the container's `node_modules` volume is recreated with the new packages.
+
 To enable Google Analytics, set the public build-time env var `PUBLIC_GA_ID` to your GA4 measurement ID. Leave it unset to keep analytics disabled, which is the default behavior for forks.
 
 ### Upgrade notes
@@ -27,7 +29,6 @@ To enable Google Analytics, set the public build-time env var `PUBLIC_GA_ID` to 
 - Tailwind 4 is loaded through `@tailwindcss/vite`, Astro's recommended integration. Do not switch back to `@astrojs/tailwind` unless the project intentionally returns to Tailwind 3 for older-browser support.
 - `src/assets/styles/tailwind.css` temporarily preserves Tailwind 3's border, placeholder, and button-cursor defaults. Remove that compatibility layer only after replacing those implicit styles with explicit utilities and visually checking the site.
 - SEO metadata and Google Analytics are local components because the previous `@astrolib` packages only support Astro through version 5. Revisit them only when adopting a maintained replacement or when those packages add support for the current Astro major.
-- After dependency changes, recreate Compose's anonymous `node_modules` volume with `docker compose up --build --renew-anon-volumes`.
 
 ### Project structure
 
