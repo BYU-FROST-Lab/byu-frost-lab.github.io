@@ -2,13 +2,13 @@
 name: "Ian Chamberlain"
 title: "Research Assistant"
 group: "undergraduate"
-photo: "/src/assets/images/people/default.jpg"
+photo: "/src/assets/images/people/undergrad_curr/ian-chamberlain.png"
 links:
 
   - label: "Email"
     url: "mailto:IanChamberlain808@gmail.com"
   - label: "LinkedIn"
-    url: "https://linkedin.com/in/ian-k-chamberlain-hammah"
+    url: "https://linkedin.com/in/ian-k-chamberlain-robotics"
   - label: "GitHub"
     url: "https://github.com/GUISSEPPE-G"
 ---
