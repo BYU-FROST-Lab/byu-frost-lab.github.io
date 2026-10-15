@@ -32,7 +32,8 @@ const SOURCE = `
   website = {https://example.com},
   video = {https://youtu.be/abc},
   code = {https://github.com/example/repo},
-  note = {Best Paper},
+  note = {Invited Paper},
+  award = {Best Paper on {SLAM} \\& Mapping},
   selected = {true},
   thumbnail = {src/assets/images/publications/x.png}
 }
@@ -51,6 +52,10 @@ test('parses an entry the site can render', () => {
   assert.equal(entry.fields.website, 'https://example.com');
   assert.equal(entry.fields.video, 'https://youtu.be/abc');
   assert.equal(entry.fields.image, 'src/assets/images/publications/x.png');
+  // Awards get their own field and have their LaTeX resolved like the other display fields.
+  assert.equal(entry.fields.award, 'Best Paper on SLAM & Mapping');
+  assert.equal(entry.html.award, 'Best Paper on SLAM &amp; Mapping');
+  assert.equal(entry.fields.note, 'Invited Paper');
 });
 
 test('rebuilds BibTeX that is valid and free of the site-only fields', () => {
@@ -64,7 +69,8 @@ test('rebuilds BibTeX that is valid and free of the site-only fields', () => {
       '  booktitle = "Proceedings of {ICRA}",', // original delimiter kept
       '  month = may,', // stays a macro, not the literal string {may}
       '  year = 2024,', // the comma the source file was missing
-      '  url = {https://example.com/paper.pdf}',
+      '  url = {https://example.com/paper.pdf},',
+      '  note = {Invited Paper}', // standard BibTeX, so it stays; `award` is the site's own
       '}',
     ].join('\n')
   );

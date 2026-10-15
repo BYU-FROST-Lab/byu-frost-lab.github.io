@@ -24,9 +24,10 @@ export type BibEntry = {
 };
 
 /**
- * Fields dropped from the entry offered for copying. Most are the site's own invention and no
- * bibliography style renders them; `note` is standard BibTeX, but here it carries award
- * annotations ("Best Paper") that belong on the page rather than in someone's reference list.
+ * Fields dropped from the entry offered for copying. They are the site's own invention and no
+ * bibliography style renders them. Awards ("Best Paper") go in `award` rather than the standard
+ * `note`, so they show on the page without landing in someone's reference list, while real
+ * notes ("Invited Paper", a patent number) stay in the citation.
  */
 const FIELDS_HIDDEN_FROM_CITATION = new Set([
   'thumbnail',
@@ -37,7 +38,7 @@ const FIELDS_HIDDEN_FROM_CITATION = new Set([
   'video',
   'code',
   'selected',
-  'note',
+  'award',
 ]);
 
 /**
@@ -145,7 +146,7 @@ function readableAuthors(raw: string): string {
 
 export function parseBib(bibRaw: string): BibEntry[] {
   return parseEntries(bibRaw).map(({ type, key, fields: bibFields }) => {
-    // Start from the values as written; only the four display fields below get their LaTeX
+    // Start from the values as written; only the display fields below get their LaTeX
     // resolved, so URLs and identifiers are never rewritten.
     const fields: Record<string, string> = {};
     for (const field of bibFields) fields[field.name.toLowerCase()] = field.value;
@@ -153,12 +154,14 @@ export function parseBib(bibRaw: string): BibEntry[] {
     const venue =
       fields.journal || fields.booktitle || fields.publisher || fields['collection-title'] || fields.series || '';
     const authors = readableAuthors(fields.author || '');
-    const { title = '', abstract = '' } = fields;
+    const { title = '', abstract = '', award = '', note = '' } = fields;
 
     fields.title = latexToText(title);
     fields.author = latexToText(authors);
     fields.venue = latexToText(venue);
     fields.abstract = latexToText(abstract);
+    fields.award = latexToText(award);
+    fields.note = latexToText(note);
     fields.image = fields.image || fields.thumbnail || fields.photo || '';
     fields.code = fields.code || fields.repository || fields.repo || '';
     // Only expose `website` when the entry has one — never fall back to `url`.
@@ -174,6 +177,8 @@ export function parseBib(bibRaw: string): BibEntry[] {
         author: latexToHtml(authors),
         venue: latexToHtml(venue),
         abstract: latexToHtml(abstract),
+        award: latexToHtml(award),
+        note: latexToHtml(note),
       },
       bibFields,
     };
