@@ -1,8 +1,9 @@
 // Resolves the LaTeX that appears in BibTeX fields into readable text: escaped characters
 // (\&), braces used to protect capitalization ({SLAM}), inline math ($k$) and accents (\'e).
 //
-// Only the human-readable title/author/venue/abstract go through here. The entry shown in the
-// "BibTeX" disclosure is deliberately left as LaTeX so that it still compiles when pasted.
+// Only the human-readable fields (title, author, venue, abstract, award, note) go through here.
+// The entry shown in the "BibTeX" disclosure is deliberately left as LaTeX so that it still
+// compiles when pasted.
 
 // Accent commands, as the Unicode combining mark they apply. Appending the mark and
 // normalizing to NFC yields the precomposed character: 'e' + U+0301 -> 'é'.

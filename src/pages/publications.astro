@@ -102,8 +102,12 @@ function resolvePublicationImage(raw?: string) {
                 <div class="flex-1 min-w-0 p-2">
                   <h3 class="text-sm font-medium truncate" set:html={entry.html.title} />
                   <div class="text-xs text-gray-600 truncate" set:html={entry.html.author} />
-                  {entry.fields.venue && (
-                    <div class="text-xs text-gray-500 mt-1" set:html={entry.html.venue} />
+                  {(entry.fields.venue || entry.fields.note) && (
+                    <div class="text-xs text-gray-500 mt-1">
+                      {entry.fields.venue && <span set:html={entry.html.venue} />}
+                      {entry.fields.venue && entry.fields.note && <span aria-hidden="true"> · </span>}
+                      {entry.fields.note && <span class="italic" set:html={entry.html.note} />}
+                    </div>
                   )}
 
                   <div class="mt-1 flex flex-wrap items-center gap-2">
@@ -165,6 +169,15 @@ function resolvePublicationImage(raw?: string) {
                                 <Icon name="tabler:link" class="w-4 h-4 mr-1" />
                                 <span class="hidden sm:inline">Paper Website</span>
                               </a>
+                            )}
+
+                            {/* Shaped like the links but tinted, and its text stays visible at
+                                every width since the icon alone would not say what was won. */}
+                            {entry.fields.award && (
+                              <span class="inline-flex items-center max-w-full text-[11px] px-2 py-0.5 border rounded border-amber-100 bg-amber-50/50 text-gray-700 dark:border-amber-200/10 dark:bg-amber-200/5 dark:text-gray-300">
+                                <Icon name="tabler:trophy" class="w-4 h-4 mr-1 shrink-0 text-amber-600/60 dark:text-amber-300/50" aria-hidden="true" />
+                                <span set:html={entry.html.award} />
+                              </span>
                             )}
 
                             {/* {entry.fields.abstract && (
