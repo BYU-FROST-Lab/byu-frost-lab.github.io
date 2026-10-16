@@ -6,6 +6,9 @@ services:
     container_name: astrowind
     environment:
       - NODE_ENV=development
+      # Astro's update check writes .astro/settings.json, which the dev server sees through the bind mount as a
+      # config change, so it restarts mid-startup and logs transport errors. The image installs from the lockfile anyway.
+      - ASTRO_DISABLE_UPDATE_CHECK=true
     ports:
       - "8080:8080"
     # Mount project for live reload; keep node_modules in container to avoid host/guest conflicts

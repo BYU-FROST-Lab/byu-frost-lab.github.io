@@ -25,7 +25,8 @@ To enable Google Analytics, set the public build-time env var `PUBLIC_GA_ID` to 
 
 ### Upgrade notes
 
-- Astro 6 requires Node 22.12 or newer. Docker and `.nvmrc` use the latest Node 22 release, while the Pages action uses its Node 22 default. Recheck these runtime choices at Node 22 end-of-life or the next Astro major upgrade.
+- Astro 7 requires Node 22.22 or newer. Docker and `.nvmrc` use the latest Node 22 release, while the Pages action (`withastro/action@v6`) uses its Node 24 default. Recheck these runtime choices at Node 22 end-of-life or the next Astro major upgrade.
+- Three settings in `astro.config.ts` keep the built site the same as it was on Astro 6: `compressHTML: true` keeps the space between inline elements written on separate lines (Astro 7 defaults to `'jsx'`, which drops it), Markdown and MDX stay on the remark/rehype pipeline through `@astrojs/markdown-remark` because of the plugins in `src/utils/frontmatter.ts` (Astro 7 defaults to Sätteri), and `vite.build.cssTarget` stops Vite 8's CSS minifier from dropping Safari prefixes such as `-webkit-backdrop-filter`.
 - Tailwind 4 is loaded through `@tailwindcss/vite`, Astro's recommended integration. Do not switch back to `@astrojs/tailwind` unless the project intentionally returns to Tailwind 3 for older-browser support.
 - `src/assets/styles/tailwind.css` temporarily preserves Tailwind 3's border, placeholder, and button-cursor defaults. Remove that compatibility layer only after replacing those implicit styles with explicit utilities and visually checking the site.
 - SEO metadata and Google Analytics are local components because the previous `@astrolib` packages only support Astro through version 5. Revisit them only when adopting a maintained replacement or when those packages add support for the current Astro major.
